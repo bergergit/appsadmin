@@ -6,7 +6,6 @@
 	<groupId>com.bergermobile</groupId>
 	<artifactId>appsadmin</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
 
 	<name>AppsAdmin</name>
 	<description>Apps Admin project</description>
