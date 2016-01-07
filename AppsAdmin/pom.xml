@@ -20,8 +20,28 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+		<wro4j.version>1.7.8</wro4j.version>
+		<bootstrap.version>3.2.0</bootstrap.version>
+		<angular.version>1.4.3</angular.version>
+		<jquery.version>2.1.4</jquery.version>
+		<underscore.version>1.8.3</underscore.version>
+		<angular-translate.version>2.7.2</angular-translate.version>
+		<angular-translate-loader-url>0.1.2-1</angular-translate-loader-url>
+		<font-awesome.version>4.4.0</font-awesome.version>
 	</properties>
-
+	<!-- 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-parent</artifactId>
+				<version>Angel.SR4</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	-->
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -44,6 +64,10 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
@@ -58,6 +82,12 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- 
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-zuul</artifactId>
+		</dependency>
+		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
@@ -79,11 +109,13 @@
 			<artifactId>spring-restdocs-mockmvc</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-rest-hal-browser</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		-->
 	</dependencies>
 	
 	<build>
@@ -92,6 +124,104 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<!-- Serves *only* to filter the wro.xml so it can get an absolute path 
+							for the project -->
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/wro</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/wro</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+		        <groupId>ro.isdc.wro4j</groupId>
+		        <artifactId>wro4j-maven-plugin</artifactId>
+		        <version>${wro4j.version}</version>
+		        <executions>
+		            <execution>
+		               <phase>compile</phase>
+		               <goals>
+		                   <goal>run</goal>
+		               </goals>
+		            </execution>
+		        </executions>
+		          <configuration>
+		            <jsDestinationFolder>${project.build.outputDirectory}/static/js</jsDestinationFolder>
+		            <cssDestinationFolder>${project.build.outputDirectory}/static/css</cssDestinationFolder>
+            		<wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
+					<wroFile>${project.build.directory}/wro/wro.xml</wroFile>
+					<extraConfigFile>${basedir}/src/main/wro/wro.properties</extraConfigFile>
+					<contextFolder>${basedir}/src/main/wro</contextFolder>
+		          </configuration>
+		          <dependencies>
+					<dependency>
+						<groupId>org.webjars</groupId>
+						<artifactId>jquery</artifactId>
+						<version>${jquery.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.webjars</groupId>
+						<artifactId>angularjs</artifactId>
+						<version>${angular.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.webjars.bower</groupId>
+						<artifactId>angular-route</artifactId>
+						<version>${angular.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.webjars.bower</groupId>
+						<artifactId>angular-resource</artifactId>
+						<version>${angular.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.webjars.bower</groupId>
+						<artifactId>angular-animate</artifactId>
+						<version>${angular.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.webjars</groupId>
+						<artifactId>bootstrap</artifactId>
+						<version>${bootstrap.version}</version>
+					</dependency>
+					<dependency>
+					    <groupId>org.webjars</groupId>
+					    <artifactId>angular-translate</artifactId>
+					    <version>${angular-translate.version}</version>
+					</dependency>
+					<dependency>
+					    <groupId>org.webjars</groupId>
+					    <artifactId>angular-translate-loader-url</artifactId>
+					    <version>${angular-translate-loader-url}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.webjars</groupId>
+						<artifactId>underscorejs</artifactId>
+						<version>${underscore.version}</version>
+					</dependency>
+					<dependency>
+					    <groupId>org.webjars</groupId>
+					    <artifactId>font-awesome</artifactId>
+					    <version>${font-awesome.version}</version>
+					</dependency>
+					
+				</dependencies>
+       		 </plugin>
 		</plugins>
 	</build>
 	

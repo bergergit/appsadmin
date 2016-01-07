@@ -1,12 +1,18 @@
 package com.bergermobile.persistence.domain;
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
 import java.util.Date;
 
-import lombok.Getter;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import lombok.Data;
 
 
 /**
@@ -14,7 +20,7 @@ import lombok.Getter;
  * 
  */
 @Entity
-@Getter
+@Data
 public class Content implements Serializable {
 	private static final long serialVersionUID = 1L;
 

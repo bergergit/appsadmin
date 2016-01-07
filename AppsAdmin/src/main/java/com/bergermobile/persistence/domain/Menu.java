@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import lombok.Getter;
+import lombok.Data;
 
 
 /**
@@ -19,7 +19,7 @@ import lombok.Getter;
  * 
  */
 @Entity
-@Getter
+@Data
 public class Menu implements Serializable {
 	private static final long serialVersionUID = 1L;
 
