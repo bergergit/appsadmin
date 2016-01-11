@@ -3,18 +3,15 @@
 angular.module('appsadmin', [
   'ngRoute',
   'pascalprecht.translate',
-  'datatables',
-  'googleplus',
-  'facebook',
   'bmauth.authentication',
   'bmauth.main',
   'bmauth.users',
   'bmauth.common',
   'appsadmin.navigation'
  ])
- 
-.config(['$routeProvider', '$translateProvider', '$locationProvider', '$httpProvider','FacebookProvider','GooglePlusProvider',
-         function($routeProvider, $translateProvider, $locationProvider, $httpProvider, FacebookProvider, GooglePlusProvider) {
+
+.config(['$routeProvider', '$translateProvider', '$locationProvider', '$httpProvider',
+         function($routeProvider, $translateProvider, $locationProvider, $httpProvider) {
 	// routes configuration
 	$routeProvider.when('/', { 
 		  templateUrl: 'fragments/home/home.html',

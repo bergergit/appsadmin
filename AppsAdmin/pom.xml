@@ -29,8 +29,9 @@
 		<angular-translate.version>2.7.2</angular-translate.version>
 		<angular-translate-loader-url>0.1.2-1</angular-translate-loader-url>
 		<font-awesome.version>4.4.0</font-awesome.version>
+		<datatables.version>1.10.7</datatables.version>
+		<angular-datatables.version>0.5.0</angular-datatables.version>
 	</properties>
-	<!-- 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -42,7 +43,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	-->
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -73,6 +73,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		
 		
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -84,12 +89,10 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- 
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-zuul</artifactId>
 		</dependency>
-		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
@@ -222,7 +225,16 @@
 					    <artifactId>font-awesome</artifactId>
 					    <version>${font-awesome.version}</version>
 					</dependency>
-					
+					<dependency>
+					    <groupId>org.webjars</groupId>
+					    <artifactId>datatables</artifactId>
+					    <version>${datatables.version}</version>
+					</dependency>
+					<dependency>
+					    <groupId>org.webjars.bower</groupId>
+					    <artifactId>angular-datatables</artifactId>
+					    <version>${angular-datatables.version}</version>
+					</dependency>
 				</dependencies>
        		 </plugin>
 		</plugins>
