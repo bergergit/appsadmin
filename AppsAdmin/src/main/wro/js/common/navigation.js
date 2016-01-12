@@ -26,6 +26,7 @@ angular.module('appsadmin.navigation', [])
 	}
 	
 	vm.isAnonymous = auth.isAnonymous;
+	vm.hasRole = auth.hasRole;
 	
 	
 	////////

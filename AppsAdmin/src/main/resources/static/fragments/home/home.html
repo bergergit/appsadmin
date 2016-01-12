@@ -1,6 +1,6 @@
 <div class="jumbotron">
-        <h1>Administração de Aplicativos</h1>
-        <p>Seja bem-vindo à ferramenta de administração de aplicativos da Berger Mobile!</p>
-        <p ng-show="vm.isAnonymous()"><a href="login" class="btn btn-primary btn-lg" role="button">Login &raquo;</a></p>
+	<h1>{{ 'home.header.title' | translate }}</h1>
+	<p>{{ 'home.header.text' | translate }}</p>
+	<p ng-show="vm.isAnonymous()"><a href="login" class="btn btn-primary btn-lg" role="button" translate="{{ 'home.btn.login' | translate }}"></a></p>
 </div>
 

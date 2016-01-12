@@ -9,7 +9,8 @@ angular.module('appsadmin', [
   'bmauth.main',
   'bmauth.users',
   'bmauth.common',
-  'appsadmin.navigation'
+  'appsadmin.navigation',
+  'appsadmin.admin'
  ])
 
 .config(['$routeProvider', '$translateProvider', '$locationProvider', '$httpProvider',
@@ -22,9 +23,13 @@ angular.module('appsadmin', [
 	}).when('/login', { 
 		  templateUrl: 'fragments/home/login.html',
 		  controllerAs: 'vm'
+	}).when('/users', { 
+		  templateUrl: 'fragments/admin/users.html',
+		  controller: 'UsersCtrl',
+		  controllerAs: 'vm'
 	}).when('/admin', { 
-		  templateUrl: 'fragments/home/signedin.html',
-		  //controller: 'ApplicationsListCtrl',
+		  templateUrl: 'fragments/admin/admin.html',
+		  controller: 'AdminCtrl',
 		  controllerAs: 'vm'
 	})
 	.otherwise({redirectTo: '/'});
@@ -45,8 +50,9 @@ angular.module('appsadmin', [
 }])
   
 .run(['DTDefaultOptions','$translate','$rootScope','auth', function(DTDefaultOptions, $translate, $rootScope, auth) {
-    //DTDefaultOptions.setLanguageSource('fragments/lang/dtlang-' + $translate.use() + '.json');
     $rootScope.authContext='bmauth/';	// for reverse proxy
+    $rootScope.appname = 'appsadmin';
+    
     auth.init('/', 'bmauth/user', 'bmauth/logout');
 }]);  
 

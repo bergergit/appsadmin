@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.Data;
 
 /**
@@ -30,8 +33,4 @@ public class ApplicationUser implements Serializable {
 	@ManyToOne
 	private Application application;
 	
-	//bi-directional many-to-one association to Menu
-	@OneToMany(mappedBy="application")
-	private List<Menu> menus;
-
 }

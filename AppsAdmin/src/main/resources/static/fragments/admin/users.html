@@ -1,0 +1,20 @@
+<form class="form-horizontal" role="form" ng-submit="vm.saveApplicationUsers()">
+	<table class="table table-striped">
+		<tr>
+			<th>Nome</th>
+			<th>Aplicações</th>
+		</tr>
+		<tr ng-repeat="user in vm.users">
+			<td>{{user.name}}</td>
+			<td>
+				<div ng-repeat="application in vm.applications">
+					<input type="checkbox" /> {{application.name}}
+					<br/>
+				</div>
+			</td>
+		</tr>
+	</table>
+	
+	
+	<button type="submit" class="btn btn-lg btn-primary">{{ 'btn.save' | translate}}</button>
+</form>

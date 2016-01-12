@@ -31,6 +31,7 @@
 		<font-awesome.version>4.4.0</font-awesome.version>
 		<datatables.version>1.10.7</datatables.version>
 		<angular-datatables.version>0.5.0</angular-datatables.version>
+		<angular-ui-bootstrap.version>0.14.0</angular-ui-bootstrap.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -239,6 +240,11 @@
 					    <groupId>org.webjars.bower</groupId>
 					    <artifactId>angular-datatables</artifactId>
 					    <version>${angular-datatables.version}</version>
+					</dependency>
+					<dependency>
+					    <groupId>org.webjars.npm</groupId>
+					    <artifactId>angular-ui-bootstrap</artifactId>
+					    <version>${angular-ui-bootstrap.version}</version>
 					</dependency>
 				</dependencies>
        		 </plugin>
