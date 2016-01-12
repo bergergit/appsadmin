@@ -3,6 +3,8 @@
 angular.module('appsadmin', [
   'ngRoute',
   'pascalprecht.translate',
+  'googleplus',
+  'facebook',
   'bmauth.authentication',
   'bmauth.main',
   'bmauth.users',
