@@ -17,9 +17,12 @@ angular.module('appsadmin', [
 	// routes configuration
 	$routeProvider.when('/', { 
 		  templateUrl: 'fragments/home/home.html',
-		  //controller: 'HomeCtrl',
+		  controller: 'NavigationCtrl',
 		  controllerAs: 'vm'
-	}).when('/home', { 
+	}).when('/login', { 
+		  templateUrl: 'fragments/home/login.html',
+		  controllerAs: 'vm'
+	}).when('/admin', { 
 		  templateUrl: 'fragments/home/signedin.html',
 		  //controller: 'ApplicationsListCtrl',
 		  controllerAs: 'vm'
@@ -29,10 +32,10 @@ angular.module('appsadmin', [
 	$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 	
 	// translation configuration
-	// translation configuration
 	//$translateProvider.useSanitizeValueStrategy('escape');
 	$translateProvider.useSanitizeValueStrategy('escapeParameters');
-    $translateProvider.translations('en', bmauth_translations.en);
+	$translateProvider.translations('en', bmauth_translations.en);
+    $translateProvider.translations('en', appsadmin_translations.en);
 
 	$translateProvider.preferredLanguage('en');
 	$translateProvider.fallbackLanguage('en');

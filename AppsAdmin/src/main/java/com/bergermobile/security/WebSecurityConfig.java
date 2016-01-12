@@ -27,13 +27,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 			.antMatchers(HttpMethod.GET, "/", "/fonts/**", "/webjars/**", "/messageBundle/**",
-					"/fragments/**","/bmauth/**")
+					"/fragments/**","/login","/bmauth/**", "/rest/**")
 				.permitAll()
-			.antMatchers(HttpMethod.POST, "/bmauth/bmauth/users","/bmauth/bmauth/users/facebook","/bmauth/bmauth/users/google")
-				.permitAll()
+			// this module wont allow new user creation
+			//.antMatchers(HttpMethod.POST, "/bmauth/bmauth/users","/bmauth/bmauth/users/facebook","/bmauth/bmauth/users/google")
+			//	.permitAll()
 			.antMatchers(HttpMethod.POST, "/bmauth/**")
 				.hasRole("ADMIN")
-			.antMatchers(HttpMethod.GET, "/home/**")
+			.antMatchers(HttpMethod.GET, "/admin/**")
 				.hasRole("ADMIN")
 			.anyRequest()
 				.authenticated()

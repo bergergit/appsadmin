@@ -8,6 +8,7 @@
 		<js>webjar:angularjs/${angular.version}/angular.min.js</js>
     	<js>webjar:angularjs/${angular.version}/angular-route.min.js</js>
     	<js>webjar:angularjs/${angular.version}/angular-resource.min.js</js>
+    	<js>webjar:angularjs/${angular.version}/angular-cookies.min.js</js>
     	<js>webjar:angularjs/${angular.version}/angular-animate.min.js</js>
     	<js>webjar:underscorejs/${underscore.version}/underscore-min.js</js>
     	<js>webjar:angular-translate/${angular-translate.version}/angular-translate.min.js</js>

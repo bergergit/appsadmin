@@ -21,7 +21,7 @@ public class SiteController {
 	 * Matches to forwards to the single page angular application, so that we
 	 * can use natural routes.
 	 */
-	@RequestMapping(value = { "", "login", "logout", "home" })
+	@RequestMapping(value = { "", "login", "logout", "home", "admin" })
 	public String redirect() {
 		// Forward to home page so that route is preserved.
 		return "forward:/";
