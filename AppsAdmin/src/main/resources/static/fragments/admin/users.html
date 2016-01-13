@@ -5,10 +5,13 @@
 			<th>Aplicações</th>
 		</tr>
 		<tr ng-repeat="user in vm.users">
-			<td>{{user.name}}</td>
+			<td>
+				{{user.name}}
+				<input type="hidden" ng-model="vm.applications.applicationUsers.userId[$index]"/> 
+			</td>
 			<td>
 				<div ng-repeat="application in vm.applications">
-					<input type="checkbox" /> {{application.name}}
+					<input type="checkbox" ng-model="vm.applications.applicationUsers.applicationId[$index]"/> {{application.name}}
 					<br/>
 				</div>
 			</td>

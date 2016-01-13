@@ -22,6 +22,8 @@ angular.module('appsadmin.admin', ['datatables', 'datatables.bootstrap', 'ngReso
 	 */
 	vm.saveApplicationUsers = function() {
 		console.debug("Saving application users");
+		console.debug('vm.applications', vm.applications)
+		console.debug('vm.users', vm.users)
 	}
 	
 }]);
