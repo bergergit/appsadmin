@@ -7,6 +7,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import lombok.Data;
 
@@ -14,6 +19,7 @@ import lombok.Data;
  * Relationship with BMAuth users with AppsAdmin created applications
  * 
  */
+@Table(uniqueConstraints=@UniqueConstraint(columnNames={"userId","application_applicationId"}))
 @Entity
 @Data
 public class ApplicationUser implements Serializable {
@@ -23,9 +29,11 @@ public class ApplicationUser implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer applicationUserId;
 	
+	@NotNull
 	private Integer userId;
 	
 	@ManyToOne
+	@RestResource(exported=false)
 	private Application application;
 	
 }

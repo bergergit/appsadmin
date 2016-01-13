@@ -1,11 +1,10 @@
 package com.bergermobile.persistence.domain.projection;
 
-import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.rest.core.config.Projection;
 
 import com.bergermobile.persistence.domain.Application;
-import com.bergermobile.persistence.domain.ApplicationUser;
 
 @Projection(name="applicationProjection", types = {Application.class})
 public interface ApplicationProjection {
@@ -16,6 +15,6 @@ public interface ApplicationProjection {
 
 	public String getRestName();
 	
-	public List<ApplicationUser> getApplicationUsers();
+	public Map<Integer, Boolean> getApplicationUserIds();
 
 }

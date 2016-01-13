@@ -12,6 +12,29 @@ angular.module('appsadmin', [
   'appsadmin.navigation',
   'appsadmin.admin'
  ])
+ 
+ /**
+ * This will intercept ajax calls for unauthenticated users in case of 401
+ */
+.factory('authHttpResponseInterceptor',['$q','$injector',function($q, $injector){
+    return {
+        response: function(response){
+            if (response.status === 401) {
+                //console.log("Response 401");
+            }
+            return response || $q.when(response);
+        },
+        responseError: function(rejection) {
+            if (rejection.status === 401) {
+                //console.log("Response Error 401",rejection);
+                var auth = $injector.get('auth');
+                auth.clear();
+                auth.showFlash = true;
+            }
+            return $q.reject(rejection);
+        }
+    }
+}])
 
 .config(['$routeProvider', '$translateProvider', '$locationProvider', '$httpProvider',
          function($routeProvider, $translateProvider, $locationProvider, $httpProvider) {
@@ -35,6 +58,7 @@ angular.module('appsadmin', [
 	.otherwise({redirectTo: '/'});
 	
 	$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+	$httpProvider.interceptors.push('authHttpResponseInterceptor');
 	
 	// translation configuration
 	//$translateProvider.useSanitizeValueStrategy('escape');
@@ -49,33 +73,6 @@ angular.module('appsadmin', [
 	$locationProvider.html5Mode(true);
 }])
 
-/**
- * This will intercept ajax calls for unauthenticated users in case of 401
- */
-.factory('authHttpResponseInterceptor',['$q','$injector',function($q, $injector){
-    return {
-        response: function(response){
-            if (response.status === 401) {
-                console.log("Response 401");
-            }
-            return response || $q.when(response);
-        },
-        responseError: function(rejection) {
-            if (rejection.status === 401) {
-                console.log("Response Error 401",rejection);
-                var auth = $injector.get('auth');
-                auth.clear();
-            }
-            return $q.reject(rejection);
-        }
-    }
-}])
-
-.config(['$httpProvider',function($httpProvider) {
-    //Http Intercpetor to check auth failures for xhr requests
-    $httpProvider.interceptors.push('authHttpResponseInterceptor');
-}])
-  
 .run(['DTDefaultOptions','$translate','$rootScope','auth', function(DTDefaultOptions, $translate, $rootScope, auth) {
     $rootScope.authContext='bmauth/';	// for reverse proxy
     $rootScope.appname = 'appsadmin';

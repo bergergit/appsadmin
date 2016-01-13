@@ -24,11 +24,10 @@ angular.module('appsadmin.navigation', [])
 	vm.logout = function() {
 		auth.clear();
 	}
-	
+
 	vm.isAnonymous = auth.isAnonymous;
 	vm.hasRole = auth.hasRole;
+	vm.showFlash = auth.showFlash;
 	
-	
-	////////
-	console.debug("auth.data", auth.data);
+	//console.debug("auth.data", auth.data);
 }]);
