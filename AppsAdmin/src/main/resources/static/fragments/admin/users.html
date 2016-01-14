@@ -10,8 +10,8 @@
 <form class="form-horizontal" role="form" ng-submit="vm.saveApplicationUsers()">
 	<table class="table table-striped">
 		<tr>
-			<th>Nome</th>
-			<th>Aplicações</th>
+			<th>{{ 'users.header.user' | translate }}</th>
+			<th>{{ 'users.header.applications' | translate }}</th>
 		</tr>
 		<tr ng-repeat="user in vm.users">
 			<td>

@@ -41,7 +41,6 @@ angular.module('appsadmin.admin', ['datatables', 'datatables.bootstrap', 'ngReso
 					var lineObj = {};
 					lineObj.userId = parseInt(j);
 					lineObj.application = {applicationId: vm.applications[k].applicationId};
-					//lineObj.application_applicationId = vm.applications[k].applicationId;
 					applicationUsers.push(lineObj);
 				}
 			}
@@ -52,7 +51,7 @@ angular.module('appsadmin.admin', ['datatables', 'datatables.bootstrap', 'ngReso
 		/**
 		 * Save the entries
 		 */
-		applicationUserService.save(applicationUsers[0],
+		applicationUserService.save(applicationUsers,
 			function(response) {
 				// display flash message and hides it after all 
 				vm.saved = true;

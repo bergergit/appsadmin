@@ -28,6 +28,8 @@ appsadmin_translations.en = {
 	},
 	
 	"users": {
+		"header.user": "Usuário",
+		"header.applications": "Aplicações",
 		"saved": "Alterações gravadas!",
 		"error": "Erro ao gravar alterações"
 			 
