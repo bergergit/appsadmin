@@ -1,3 +1,12 @@
+<div class="alert alert-success alert-dismissible" role="alert" ng-show="vm.saved">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  {{ 'users.saved' | translate}}
+</div>
+<div class="alert alert-danger alert-dismissible" role="alert" ng-show="vm.error">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  {{ 'users.error' | translate}}
+</div>
+
 <form class="form-horizontal" role="form" ng-submit="vm.saveApplicationUsers()">
 	<table class="table table-striped">
 		<tr>

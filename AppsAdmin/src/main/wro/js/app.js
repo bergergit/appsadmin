@@ -19,13 +19,13 @@ angular.module('appsadmin', [
 .factory('authHttpResponseInterceptor',['$q','$injector',function($q, $injector){
     return {
         response: function(response){
-            if (response.status === 401) {
+            if (response.status === 401 || response.status === 403) {
                 //console.log("Response 401");
             }
             return response || $q.when(response);
         },
         responseError: function(rejection) {
-            if (rejection.status === 401) {
+            if (rejection.status === 401 || rejection.status === 403) {
                 //console.log("Response Error 401",rejection);
                 var auth = $injector.get('auth');
                 auth.clear();

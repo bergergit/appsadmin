@@ -25,6 +25,12 @@ appsadmin_translations.en = {
 		"admin": "Administração",
 		"exit": "Sair",
 		"toggle": "Ativar navegação"
+	},
+	
+	"users": {
+		"saved": "Alterações gravadas!",
+		"error": "Erro ao gravar alterações"
+			 
 	}
 
 	
