@@ -31,8 +31,7 @@ angular.module('appsadmin.admin', ['datatables', 'datatables.bootstrap', 'ngReso
 	 */
 	vm.saveApplicationUsers = function() {
 		console.debug("Saving application users");
-		console.debug('vm.applications', vm.applications);
-		
+
 		// building a list of userId + aplicationId pairs
 		var applicationUsers = [];
 		for (var k in vm.applications) {
@@ -45,8 +44,6 @@ angular.module('appsadmin.admin', ['datatables', 'datatables.bootstrap', 'ngReso
 				}
 			}
 		}
-		
-		console.debug('applicationUsers', applicationUsers)
 
 		/**
 		 * Save the entries
