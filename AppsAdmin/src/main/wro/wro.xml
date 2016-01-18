@@ -4,7 +4,6 @@
 		<css>webjar:bootstrap/${bootstrap.version}/less/bootstrap.less</css>
 		<css>webjar:font-awesome/${font-awesome.version}/less/font-awesome.less</css>
 		<js>webjar:jquery/${jquery.version}/jquery.min.js</js>
-		<js>webjar:datatables/${datatables.version}/js/jquery.dataTables.min.js</js>
 		<js minimize="false">webjar:angularjs/${angular.version}/angular.js</js>
     	<js>webjar:angularjs/${angular.version}/angular-route.min.js</js>
     	<js>webjar:angularjs/${angular.version}/angular-resource.min.js</js>
@@ -13,8 +12,6 @@
     	<js>webjar:underscorejs/${underscore.version}/underscore-min.js</js>
     	<js>webjar:angular-translate/${angular-translate.version}/angular-translate.min.js</js>
     	<js>webjar:angular-translate-loader-url/${angular-translate-loader-url}/angular-translate-loader-url.min.js</js>
-    	<js>webjar:angular-datatables/${angular-datatables.version}/dist/angular-datatables.js</js>
-    	<js>webjar:angular-datatables/${angular-datatables.version}/dist/plugins/bootstrap/angular-datatables.bootstrap.min.js</js>
     	<js>webjar:bootstrap/${bootstrap.version}/js/bootstrap.min.js</js>
     	<js>webjar:angular-ui-bootstrap/${angular-ui-bootstrap.version}/ui-bootstrap-tpls.min.js</js>
 	</group>

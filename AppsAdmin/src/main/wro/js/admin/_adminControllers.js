@@ -1,4 +1,4 @@
-angular.module('appsadmin.admin', ['datatables', 'datatables.bootstrap', 'ngResource','ui.bootstrap'])
+angular.module('appsadmin.admin', ['ngResource','ui.bootstrap'])
 
 /**
  * Controller for Appsadmin Administration Screen

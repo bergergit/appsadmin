@@ -5,10 +5,7 @@ angular.module('appsadmin', [
   'pascalprecht.translate',
   'googleplus',
   'facebook',
-  'bmauth.authentication',
   'bmauth.main',
-  'bmauth.users',
-  'bmauth.common',
   'appsadmin.navigation',
   'appsadmin.admin'
  ])
@@ -73,7 +70,7 @@ angular.module('appsadmin', [
 	$locationProvider.html5Mode(true);
 }])
 
-.run(['DTDefaultOptions','$translate','$rootScope','auth', function(DTDefaultOptions, $translate, $rootScope, auth) {
+.run(['$translate','$rootScope','auth', function($translate, $rootScope, auth) {
     $rootScope.authContext='bmauth/';	// for reverse proxy
     $rootScope.appname = 'appsadmin';
     
