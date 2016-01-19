@@ -3,7 +3,9 @@
 	<group name="libs" abstract="true">
 		<css>webjar:bootstrap/${bootstrap.version}/less/bootstrap.less</css>
 		<css>webjar:font-awesome/${font-awesome.version}/less/font-awesome.less</css>
+		<!-- <css>webjar:jquery-ui/${jquery-ui.version}/jquery-ui.min.css</css>-->
 		<js>webjar:jquery/${jquery.version}/jquery.min.js</js>
+		
 		<js minimize="false">webjar:angularjs/${angular.version}/angular.js</js>
     	<js>webjar:angularjs/${angular.version}/angular-route.min.js</js>
     	<js>webjar:angularjs/${angular.version}/angular-resource.min.js</js>
@@ -18,6 +20,8 @@
  
 	<group name="main" abstract="true">
 		<css>/less/main.less</css>
+		<css>/css/**.css</css>
+		<js minimize="false">webjar:jquery-ui/${jquery-ui.version}/jquery-ui.js</js>
 		<js minimize="false">/js/**.js</js>
 	</group>
 

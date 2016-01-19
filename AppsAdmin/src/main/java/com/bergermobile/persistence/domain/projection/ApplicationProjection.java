@@ -15,6 +15,12 @@ public interface ApplicationProjection {
 
 	public String getRestName();
 	
+	public String getDescription();
+	
+	public String getMainLocale();
+	
+	public String getSupportedLocales();
+	
 	public Map<Integer, Boolean> getApplicationUserIds();
 
 }

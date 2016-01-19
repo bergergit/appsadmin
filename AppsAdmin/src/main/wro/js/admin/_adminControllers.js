@@ -1,11 +1,13 @@
-angular.module('appsadmin.admin', ['ngResource','ui.bootstrap'])
+angular.module('appsadmin.admin', ['ngResource','ui.bootstrap','appsadmin.adminjs'])
 
 /**
  * Controller for Appsadmin Administration Screen
  */
-.controller('AdminCtrl', [ '$rootScope', function($rootScope) {
+.controller('AdminCtrl', [ '$rootScope','adminjs','supportedLocales', function($rootScope, adminjs, supportedLocales) {
 	
 	var vm = this;
+	vm.supportedLocales = supportedLocales;
+	adminjs();
 	
 }])
 

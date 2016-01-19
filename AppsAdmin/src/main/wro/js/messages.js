@@ -33,6 +33,31 @@ appsadmin_translations.en = {
 		"saved": "Alterações gravadas!",
 		"error": "Erro ao gravar alterações"
 			 
+	}, 
+	
+	"admin": {
+		"button.addApp": "Adicionar Aplicativo",
+		"button.addMenu": "Adicionar Menu",
+		"label.apps": "Aplicativos",
+		"label.menu": "Menu",
+		"applications.button.edit": "Editar Menus e Campos do Aplicativo",
+		"dialog.title.remove": "Remover?",
+		"dialog.removeApp1": "Tem certeza que deseja remover este Aplicativo?",
+		"dialog.removeApp2": "Atenção: todos os conteúdos deste Aplicativo serão excluídos!!!",
+		"dialog.removeMenu": "Tem certeza que deseja remover este Menu?",
+		"dialog.removeField": "Tem certeza que deseja remover este Campo?",
+		"dialog.application.title": "Aplicativo",
+		"dialog.application.label.restName": "Rest Name",
+		"dialog.application.label.name": "Nome",
+		"dialog.application.label.description": "Descrição",
+		"dialog.application.label.mainLocale": "Idioma Principal",
+		"dialog.application.label.supportedLocales": "Idiomas Suportados",
+		"dialog.menu.title": "Menu",
+		
+		
+		"dialog.menu.label.restName": "Rest Name"
+			
+			
 	}
 
 	

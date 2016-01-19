@@ -1,0 +1,188 @@
+/**
+Fixing bootstrap and jqueryui coexistence
+**/
+.ui-widget {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+#main {
+	font-size: 90%;
+}
+
+/** jqGrid arrow alignment fix **/
+.ui-jqgrid .ui-icon-desc {
+	/*margin-left: -1px;*/
+	right: 4px;
+}
+
+/** jqQrid header size **/
+.ui-jqgrid div {
+	/*font-size: 1.05em !important;*/	
+}
+.ui-jqgrid th {
+	height: 24px !important; 
+	/**font-weight: bold !important;*/	
+}
+.ui-jqgrid td a {
+	font-size: 1.3em;
+}
+.level-icon.ui-icon {
+	position: absolute;
+}
+.wrapper {
+	margin-left: 20px;
+}
+.sortable-accordion .ui-jqgrid .ui-jqgrid-bdiv {
+	overflow: hidden;
+}
+
+/** Form styles **/
+.dialog-form input.text, .dialog-form textarea, .dialog-form select, .dialog-form input.text { 
+	margin-bottom:8px; width:95%; padding: .4em; 
+}
+.dialog-form input.date { 
+	margin-bottom:8px; width:100px; padding: .4em; 
+}
+.dialog-form select {
+	/*width: 98%;*/
+}
+.dialog-form audio, .dialog-form video, .dialog-form label div { 
+	margin-bottom:8px;
+}
+.small-select select {
+	width: auto;
+	display: block;
+}
+.dialog-form #supported_locales {
+	/*width: 75%;*/
+	float: left;
+}
+.dialog-form label { 
+}
+
+.dialog-form input.input-datepicker  { 
+	display:block; 
+}
+.dialog-form textarea { 
+	height: 100px; resize: none; background: none; 
+	/*background-color: #FAF8F7*/
+}
+.dialog-form fieldset { 
+	padding:0; border:0; margin-top:15px; 
+}
+.dialog-form .scroll-pane {
+	margin-top: 3px; 
+	margin-bottom: 10px;
+}
+.dialog-form .scroll-content {
+	margin-bottom:3px; float: left; width: 100%;
+}
+.dialog-form .scroll-content div {
+	float: left; padding: .4em; 
+}
+.dialog-form input.inline-input {
+	display: inline;
+	width:75%;
+}
+.dialog-form div.inline-div {
+	display: inline;
+	margin-right: 3px;
+}
+.dialog-form .margin {
+	margin: auto 6px;
+}
+
+/** hidden input file **/
+.dialog-form .fileinput-button {
+  position: relative;
+  overflow: hidden;
+  display: table;
+}	
+	
+.dialog-form .fileinput-button input {
+  position: absolute;
+  left: -125px;
+  width: 250px;
+  margin: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  transform: translate(-300px, 0) scale(4);
+  font-size: 11px;
+  direction: ltr;
+  cursor: pointer;
+}
+
+.dialog-form .file-preview {
+	vertical-align: middle;
+}	
+
+.dynamic-dialog {
+	max-height: 620px;
+	overflow: auto;
+}
+
+
+/** UI Messagess **/
+.ui-dialog .ui-state-error { padding: .3em; }
+.validateTips { border: 1px solid transparent; padding: 0.3em; }
+span.maintitle {
+	text-transform: uppercase;
+}
+
+
+/** Scroll pane **/
+.scroll-pane {
+    height: 110px;
+    overflow-y: auto;
+}
+.remove-locale {
+	 margin: 7px;
+	 cursor: pointer;
+}
+#main-content {
+	/*max-height: 400px;*/
+}
+
+/** Custom accordion **/
+#accordion {
+	width: 450px;
+	min-height: 100px;
+}
+#accordion.big-accordion {
+	width: 750px;
+	min-height: 100px;
+}
+.head.ui-accordion-icons a {
+	/*padding-left: 2.2em;*/
+	display: inline-block;
+	font-size: 1.1em;		
+}
+.head.ui-accordion-icons a.editMenu:hover {
+	text-decoration: underline;	
+}
+
+
+/** accordion button **/
+.head .accordion-button {
+	float: right;
+	font-size: .9em;
+	margin: -4px 3px;
+}
+.head .accordion-button span {
+	left: 1.1em !important;
+}
+ 
+
+/** Icons masks **/
+.button-icon {
+	width: 1.80em;
+	height: 1.80em;	
+	-webkit-mask-size: 1.80em;
+	border: none !important;			
+	margin: 0 auto !important;
+	cursor: pointer;
+}	
+
+.button-icon.delete {
+	-webkit-mask-image: url('../images/delete.png');
+}
