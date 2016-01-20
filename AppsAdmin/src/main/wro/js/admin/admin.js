@@ -1,9 +1,9 @@
 /**
  * Old javascript, simply converted to an angular module
  */
-angular.module('appsadmin.adminjs', [])
+angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 
-.factory('adminjs', ['$translate', function($translate) { return function() {	
+.factory('adminjs', ['$translate','utils', function($translate, utils) { return function() {	
 	
 /**************************************
 * Script to control Applications View *
@@ -101,7 +101,7 @@ jQuery(function() {
 					//data: jQuery("#editForm").serialize(),  
 					success: function() {
 						ajaxCurrentTry = 0;
-						updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_DELETED' ) ?>", jQuery( "#messageText"))
+						utils.updateTipsFixed($translate.instant('msg.registry.deleted'), jQuery( "#messageText"))
 						jQuery('#mobileApplications_list').jqGrid('setGridParam', {datatype:'json'});
 						jQuery('#mobileApplications_list').trigger('reloadGrid');												
 						jQuery( "#dialog-confirm" ).dialog( "close" );
@@ -114,7 +114,7 @@ jQuery(function() {
 				                return;
 				        	}
 				       }
-				       updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DELETE' ) ?>", jQuery( "#dialog-form .validateTips"))
+				       utils.updateTipsError($translate.instant('msg.registry.delete.error'), jQuery( "#dialog-form .validateTips"))
 			        }
 				});
             },
@@ -141,7 +141,7 @@ jQuery(function() {
 					url: '<?php echo $this->restPrefix ?>/menus/d/appid/' + mainID + '/menuid/' + menuID,					  
 					success: function() {
 						ajaxCurrentTry = 0;
-						updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_DELETED' ) ?>", jQuery( "#messageText"));
+						utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_DELETED' ) ?>", jQuery( "#messageText"));
 						rebuildMenus();
 						jQuery( "#dialog-confirm-menu" ).dialog( "close" );
 					},
@@ -153,7 +153,7 @@ jQuery(function() {
 				                return;
 				        	}
 				       }
-				       updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DELETE' ) ?>", jQuery( "#dialog-form-menu .validateTips"));
+				       utils.updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DELETE' ) ?>", jQuery( "#dialog-form-menu .validateTips"));
 			        }  
 				});
             },
@@ -180,7 +180,7 @@ jQuery(function() {
 					url: '<?php echo $this->restPrefix ?>/fields/d/' + fieldID,					  
 					success: function() {
 						ajaxCurrentTry=0;
-						updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_DELETED' ) ?>", jQuery( "#messageText"))
+						utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_DELETED' ) ?>", jQuery( "#messageText"))
 						rebuildFieldGrid();						
 						jQuery( "#dialog-confirm-field" ).dialog( "close" );
 					},
@@ -192,7 +192,7 @@ jQuery(function() {
 				                return;
 				        	}
 				       }
-				       updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DELETE' ) ?>", jQuery( "#dialog-form-field .validateTips"))
+				       utils.updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DELETE' ) ?>", jQuery( "#dialog-form-field .validateTips"))
 			        } 
 				});
             },
@@ -220,7 +220,7 @@ jQuery(function() {
    			},
             autoOpen: false,
             resizable: false,
-            height: 680,
+            height: 500,
             width: 450,
             modal: true,
             buttons: [{
@@ -229,9 +229,9 @@ jQuery(function() {
                     var bValid = true;
                     allFields.removeClass( "ui-state-error" );
  
-                    bValid = bValid && checkLength( restName, "<?php echo JText::sprintf( 'MOBILEAPPS_ERROR_FORM_LENGTH', JText::_( 'MOBILEAPPS_VIEW_MOBILEAPPLICATIONS_FORM_LABEL_ID' ), 2, 40 )?>", 2, 40 );
-                    bValid = bValid && checkLength( name, "<?php echo JText::sprintf( 'MOBILEAPPS_ERROR_FORM_LENGTH', JText::_( 'MOBILEAPPS_VIEW_MOBILEAPPLICATIONS_FORM_LABEL_NAME' ), 2, 40 )?>", 2, 40 );
-                    bValid = bValid && checkEmpty( mainLocale, "<?php echo JText::sprintf( 'MOBILEAPPS_ERROR_FORM_EMPTY', JText::_( 'MOBILEAPPS_VIEW_MOBILEAPPLICATIONS_FORM_LABEL_MAIN_LOCALE' ))?>" );
+                    bValid = bValid && utils.checkLength( restName, $translate.instant('form.error.length', {name: $translate.instant('admin.dialog.application.label.restName'), min: 2, max: 40}), 2, 40 );
+                    bValid = bValid && utils.checkLength( name, $translate.instant('form.error.length', {name: $translate.instant('admin.dialog.application.label.name'), min: 2, max: 40}), 2, 40 );
+                    bValid = bValid && utils.checkEmpty( mainLocale, $translate.instant('form.error.empty', {name: $translate.instant('admin.dialog.application.label.mainLocale')}));
                                        
  					if ( bValid ) {
  						// builds the hidden supported_locales field
@@ -253,23 +253,26 @@ jQuery(function() {
 								jQuery(".messageTips").show();
 								// if it's an insert, display created message, else display updated message
 								if (applicationId.val() != "") {
-									updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_UPDATED' ) ?>", jQuery( "#messageText"));
+									utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_UPDATED' ) ?>", jQuery( "#messageText"));
 								} else {
-									updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_CREATED' ) ?>", jQuery( "#messageText"));
+									utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_CREATED' ) ?>", jQuery( "#messageText"));
 								}
 								jQuery('#mobileApplications_list').jqGrid('setGridParam', {datatype:'json'});
 								jQuery('#mobileApplications_list').trigger('reloadGrid');												
 								jQuery( "#dialog-form" ).dialog( "close" );
 							},
 							error: function(xhr, textStatus, errorThrown) {
-						    	if (xhr.statusText == "error" || xhr.statusText == "timeout") {
+								if (xhr.statusText == "error" || xhr.statusText == "timeout") {
 						        	if (ajaxCurrentTry++ < AJAX_MAX_TRIES) {
 						        		//try again
 						                jQuery.ajax(this);
 						                return;
 						        	}
-						       }
-						       updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DUPLICATE' ) ?>", jQuery( "#dialog-form .validateTips"))
+								} else if (xhr.status == 409) {	// conflict
+									utils.updateTipsError($translate.instant('admin.msg.registry.duplicate.error'), jQuery( "#dialog-form .validateTips"))
+								} else { // generic error
+									utils.updateTipsError($translate.instant('admin.msg.registry.create.error'), jQuery( "#dialog-form .validateTips"))
+								}
 					        }
 						});
   					}
@@ -340,9 +343,9 @@ jQuery(function() {
 								jQuery(".messageTips").show();
 								// if it's an insert, display created message, else display updated message
 								if (menuId.val() != "") {
-									updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_UPDATED' ) ?>", jQuery( "#messageText"));
+									utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_UPDATED' ) ?>", jQuery( "#messageText"));
 								} else {
-									updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_CREATED' ) ?>", jQuery( "#messageText"));
+									utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_CREATED' ) ?>", jQuery( "#messageText"));
 								}
 								rebuildMenus();											
 								jQuery( "#dialog-form-menu" ).dialog( "close" );
@@ -355,7 +358,7 @@ jQuery(function() {
 						                return;
 						        	}
 						       }
-						       updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DUPLICATE' ) ?>", jQuery( "#dialog-form-menu .validateTips"))
+						       utils.updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DUPLICATE' ) ?>", jQuery( "#dialog-form-menu .validateTips"))
 					        }							
 						});
   					}
@@ -428,9 +431,9 @@ jQuery(function() {
 								jQuery(".messageTips").show();
 								// if it's an insert, display created message, else display updated message
 								if (fieldId.val() != "") {
-									updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_UPDATED' ) ?>", jQuery( "#messageText"));
+									utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_UPDATED' ) ?>", jQuery( "#messageText"));
 								} else {
-									updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_CREATED' ) ?>", jQuery( "#messageText"));
+									utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_CREATED' ) ?>", jQuery( "#messageText"));
 								}
 								//rebuildMenus();
 								rebuildFieldGrid();									
@@ -444,7 +447,7 @@ jQuery(function() {
 						                return;
 						        	}
 						       }
-						       updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DUPLICATE' ) ?>", jQuery( "#dialog-form-field .validateTips"));
+						    	utils.updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DUPLICATE' ) ?>", jQuery( "#dialog-form-field .validateTips"));
 					        }	 
 						});
   					}
@@ -509,11 +512,16 @@ function addSupportedLocale(locale) {
 	// appending to main locale
 	jQuery("#main_locale").append(jQuery("#supported_locales option:selected").clone());
 	
+	var removeNode = jQuery('<span class="ui-icon ui-icon-closethick remove-locale" title="Remover"></span>')
+		.click(function() {
+			 removeLocale(this);
+		});
+	
 	// adding to supported locales list
-	var supportedNode = jQuery('<div class="scroll-content"><div class="ui-widget-content" style="width: 90%">' + 
-			jQuery("#supported_locales option:selected").text() +
-			'</div><span class="ui-icon ui-icon-closethick remove-locale" title="Remover" onclick="removeLocale(this)"></span></div>')
-			.data("locale", jQuery("#supported_locales").val());
+	var supportedNode = jQuery('<div class="scroll-content">')
+		.append('<div class="ui-widget-content" style="width: 90%">' + jQuery("#supported_locales option:selected").text()) 
+		.append(removeNode)
+		.data("locale", jQuery("#supported_locales").val());
 	jQuery(".scroll-pane").append(supportedNode);
 		
 	// removing from supported locales select
@@ -1005,14 +1013,14 @@ function editFormatter(cellvalue, options, rowObject) {
  * Formats the Clone icon 
  */
 function cloneFormatter(cellvalue, options, rowObject) {
-	return "<button class=\"clone\" onclick=\"openRemoveDialog('" + rowObject.mobileapps_application_id + "')\"><?php echo JText::_( 'MOBILEAPPS_VIEW_MOBILEAPPLICATIONS_IMAGE_TITLE_CLONE_APP' ) ?></button>";
+	return "<button class=\"clone\" onclick=\"openRemoveDialog('" + rowObject.applicationId + "')\">" + $translate.instant('admin.applications.button.clone') + "</button>";
 }
 
 /**
  * Formats the Delete icon 
  */
 function deleteFormatter(cellvalue, options, rowObject) {
-	return "<button class=\"delete\" onclick=\"openRemoveDialog('" + rowObject.mobileapps_application_id + "')\"><?php echo JText::_( 'MOBILEAPPS_IMAGE_TITLE_DELETE' ) ?></button>";
+	return "<button class=\"delete\" onclick=\"openRemoveDialog('" + rowObject.mobileapps_application_id + "')\">" + $translate.instant('btn.delete') + "</button>";
 }
 
 /**

@@ -55,7 +55,7 @@
 		
 		</div>   
 		<select name="supported_locales" id="supported_locales">
-			<option ng-repeat="locale in vm.supportedLocales" value="{{locale}}">{{locale}}</option>
+			<option ng-repeat="locale in vm.supportedLocales" value="{{locale}}">{{ 'locales.' + locale | translate }} [{{locale}}]</option>
         </select>
         <button id="addLocale" style="float: right">ADD_LOCALE</button>
         

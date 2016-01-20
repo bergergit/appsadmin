@@ -2,6 +2,20 @@ var appsadmin_translations = {};
 
 appsadmin_translations.en = {
 		
+	"locales": {
+		"en": "Inglês",
+		"pt-br": "Portugês (Brasil)",
+		"ar": "Árabe",
+		"zh-cn": "Chinês (simplificado)",
+		"zh-tw": "Chinês",
+		"fr": "Francês",
+		"de": "Alemão",
+		"it": "Italiano",
+		"ko-kr": "Coreano",
+		"ru": "Russo",
+		"es": "Espanhol"
+	},	
+		
 	"error": {
 		"session.expired": "Sua sessão expirou. Faça login novamente"
 	},
@@ -35,12 +49,26 @@ appsadmin_translations.en = {
 			 
 	}, 
 	
+	"form": {
+		"error": {
+			"length": "O campo {{name}} deve ter no mínimo {{min}} e no máximo {{max}} caracteres.",
+			"empty": "O campo {{name}} não pode estar vazio."
+		}
+	},
+	
 	"admin": {
 		"button.addApp": "Adicionar Aplicativo",
 		"button.addMenu": "Adicionar Menu",
 		"label.apps": "Aplicativos",
 		"label.menu": "Menu",
+		"msg.registry.deleted": "Registro removido com sucesso.",
+		"msg.registry.updated": "Registro atualizado com sucesso!",
+		"msg.registry.created": "Registro criado com sucesso!",
+		"msg.registry.delete.error": "Erro ao remover o registro.",
+		"msg.registry.create.error": "Erro ao gravar o registro.",
+		"msg.registry.duplicate.error": "Rest name ja existe.",
 		"applications.button.edit": "Editar Menus e Campos do Aplicativo",
+		"applications.button.clone": "Clonar Aplicativo",
 		"dialog.title.remove": "Remover?",
 		"dialog.removeApp1": "Tem certeza que deseja remover este Aplicativo?",
 		"dialog.removeApp2": "Atenção: todos os conteúdos deste Aplicativo serão excluídos!!!",

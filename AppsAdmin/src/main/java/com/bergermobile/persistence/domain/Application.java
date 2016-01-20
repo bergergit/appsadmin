@@ -5,15 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.springframework.data.rest.core.annotation.RestResource;
-
 import lombok.Data;
+
+import org.springframework.data.rest.core.annotation.RestResource;
 
 /**
  * The persistent class for the application database table.
@@ -35,6 +36,7 @@ public class Application implements Serializable {
 
 	private String name;
 
+	@Column(unique=true)
 	private String restName;
 
 	private String supportedLocales;

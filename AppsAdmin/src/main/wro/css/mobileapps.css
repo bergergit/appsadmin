@@ -12,17 +12,22 @@ Fixing bootstrap and jqueryui coexistence
 /** jqGrid arrow alignment fix **/
 .ui-jqgrid .ui-icon-desc {
 	/*margin-left: -1px;*/
-	right: 4px;
+	/*right: 4px;*/
 }
 
-/** jqQrid header size **/
-.ui-jqgrid div {
-	/*font-size: 1.05em !important;*/	
+/** Header size **/
+.ui-jqgrid .ui-jqgrid-htable thead th div {
+    font-size: 1.4em;
+    line-height: 1.4em;
+    height: 21px;
 }
-.ui-jqgrid th {
-	height: 24px !important; 
-	/**font-weight: bold !important;*/	
+
+/** TD padding **/
+.ui-jqgrid .ui-jqgrid-btable tbody tr.jqgrow td {
+	padding: 3px;
 }
+
+/** Internal jqgrid texts size **/
 .ui-jqgrid td a {
 	font-size: 1.3em;
 }
@@ -44,7 +49,7 @@ Fixing bootstrap and jqueryui coexistence
 	margin-bottom:8px; width:100px; padding: .4em; 
 }
 .dialog-form select {
-	/*width: 98%;*/
+	background-size: 50% 50%;
 }
 .dialog-form audio, .dialog-form video, .dialog-form label div { 
 	margin-bottom:8px;
@@ -160,7 +165,6 @@ span.maintitle {
 .head.ui-accordion-icons a.editMenu:hover {
 	text-decoration: underline;	
 }
-
 
 /** accordion button **/
 .head .accordion-button {
