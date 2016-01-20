@@ -42,25 +42,24 @@
     <form id="editForm">
     <fieldset>
         <label for="restName">{{ 'admin.dialog.application.label.restName' | translate }}</label>
-        <input type="text" name="mobileApplication[rest_name]" id="restName" maxlength="20" class="text ui-widget-content ui-corner-all" />
+        <input type="text" name="restName" id="restName" maxlength="20" class="text ui-widget-content ui-corner-all" />
         <label for="name">{{ 'admin.dialog.application.label.name' | translate }}</label>
-        <input type="text" name="mobileApplication[name]" id="name" maxlength="100" class="text ui-widget-content ui-corner-all" />
+        <input type="text" name="name" id="name" maxlength="100" class="text ui-widget-content ui-corner-all" />
         <label for="description">{{ 'admin.dialog.application.label.description' | translate }}</label>        
-        <textarea name="mobileApplication[description]" id="description" maxlength="500" class="ui-widget ui-widget-content ui-corner-all"></textarea>
+        <textarea name="description" id="description" maxlength="500" class="ui-widget ui-widget-content ui-corner-all"></textarea>
         <label for="main_locale">{{ 'admin.dialog.application.label.mainLocale' | translate }}</label>
-        <select name="mobileApplication[main_locale]" id="main_locale">        	
+        <select name="mainLocale" id="main_locale">        	
         </select>
         <label for="supported_locales">{{ 'admin.dialog.application.label.supportedLocales' | translate }}</label>               
 		<div class="scroll-pane">
-		
 		</div>   
 		<select name="supported_locales" id="supported_locales">
 			<option ng-repeat="locale in vm.supportedLocales" value="{{locale}}">{{ 'locales.' + locale | translate }} [{{locale}}]</option>
         </select>
         <button id="addLocale" style="float: right">ADD_LOCALE</button>
         
-        <input type="hidden" name="mobileApplication[supported_locales]" id="h_supported_locales" />	
-        <input type="hidden" name="mobileApplication[mobileapps_application_id]" id="mobileApplicationId" />
+        <input type="hidden" name="supportedLocales" id="h_supported_locales" />	
+        <input type="hidden" name="applicationId" id="mobileApplicationId" />
     </fieldset>
     </form>
 </div>

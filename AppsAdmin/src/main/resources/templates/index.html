@@ -8,6 +8,8 @@
     <meta name="description" content="Appsadmin application"/>
     <meta name="author" content="Berger Mobile"/>
     <link rel="shortcut icon" href="../../assets/ico/favicon.ico"/>
+    <meta name="_csrf" content="_csrf" th:content="${_csrf.token}"/>
+	<meta name="_csrf_header" content="_csrf_header" th:content="${_csrf.headerName}"/>
 
     <title>Apps Admin</title>
 

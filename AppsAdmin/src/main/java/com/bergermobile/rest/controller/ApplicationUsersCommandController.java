@@ -31,7 +31,7 @@ public class ApplicationUsersCommandController {
 	
 	@RequestMapping(value = "/applicationUsers", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	@Transactional
+	//@Transactional
 	public void saveUser(@Valid @RequestBody List<ApplicationUser> applicationUsers, BindingResult result, HttpServletRequest request) {
 		LOG.debug("Saving list of users");
 		// this one is simple, so no service layer needed

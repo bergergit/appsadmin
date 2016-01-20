@@ -17,9 +17,17 @@ var menuIsBuilt = false,
 	menuID, 
 	fieldID;	
 
+
+/** Including CSRF token in all ajax requests **/
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+$(document).ajaxSend(function(e, xhr, options) {
+	xhr.setRequestHeader(header, token);
+});
+
 /** jqGrid table **/
 jQuery("#mobileApplications_list").jqGrid({
-   	url:'rest/applications',
+   	url: utils.restPrefix + '/applications',
 	datatype: "json",
 	jsonReader : {
 		root: "_embedded.applications",
@@ -216,7 +224,7 @@ jQuery(function() {
 		 	closeOnEscape: true,
 		 	title: $translate.instant('admin.dialog.application.title'),
    			open: function(event, ui) {   				 
-   				jQuery( "#dialog-form .validateTips").text('');   				
+   				jQuery( "#dialog-form .validateTips").text('').removeClass("ui-state-error");   				
    			},
             autoOpen: false,
             resizable: false,
@@ -244,10 +252,11 @@ jQuery(function() {
  						
  						// submits for data via POST
  						jQuery.ajax({  
+							url: utils.restPrefix + '/applications',
  							timeout: AJAX_TIMEOUT,
 							type: 'POST',  
-							url: '<?php echo $this->restPrefix ?>/mobileApplications', 
-							data: jQuery("#editForm").serialize(),  
+							contentType: "application/json",
+							data: jQuery("#editForm").serializeJSON(),  
 							success: function() {
 								ajaxCurrentTry = 0;
 								jQuery(".messageTips").show();
@@ -477,7 +486,7 @@ jQuery(function() {
     	}); 
     	
     // button - add locale  
-	jQuery( "#addLocale" ).button({ label: $translate.instant('btn.add')})		
+	jQuery( "#addLocale" ).button({ label: $translate.instant('btn.add')}).off()		
 		.click(function(event) {
 			event.preventDefault();
 			addSupportedLocale();							        	

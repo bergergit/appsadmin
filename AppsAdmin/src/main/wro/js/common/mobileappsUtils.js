@@ -10,6 +10,7 @@ var utils = {
 	/**
 	 * Basic Javascript functions for Mobile Apps component
 	 */
+	restPrefix: 'rest',
 	mainID: null,
 	
 	/**

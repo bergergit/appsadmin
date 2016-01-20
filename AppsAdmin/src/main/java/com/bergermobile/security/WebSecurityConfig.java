@@ -2,6 +2,7 @@ package com.bergermobile.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.csrf.CsrfFilter;
@@ -16,6 +17,7 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
  *
  */
 @Configuration
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) 
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
@@ -27,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 			.antMatchers(HttpMethod.GET, "/", "/fonts/**", "/webjars/**", "/messageBundle/**",
-					"/fragments/**","/login/**","/bmauth/**", "/rest/**")
+					"/fragments/**","/login/**","/bmauth/**")
 				.permitAll()
 			.antMatchers(HttpMethod.POST, "/bmauth/logout")
 				.permitAll()
