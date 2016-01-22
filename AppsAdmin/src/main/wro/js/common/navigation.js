@@ -3,7 +3,7 @@
 angular.module('appsadmin.navigation', [])
 
 /** Controller that manages navigation actions, related to the navbar */
-.controller('NavigationCtrl', ['$location','auth', function($location, auth) {
+.controller('NavigationCtrl', ['$location','$routeParams','auth', function($location, $routeParams, auth) {
 	var vm = this;
 	//var authenticatedPaths = '/applications*|/users*';
 	var authenticatedPaths = '.*';
@@ -27,7 +27,7 @@ angular.module('appsadmin.navigation', [])
 
 	vm.isAnonymous = auth.isAnonymous;
 	vm.hasRole = auth.hasRole;
-	vm.showFlash = auth.showFlash;
+	vm.showFlash = auth.showFlash || $routeParams.session;
 	
 	//console.debug("auth.data", auth.data);
 }]);

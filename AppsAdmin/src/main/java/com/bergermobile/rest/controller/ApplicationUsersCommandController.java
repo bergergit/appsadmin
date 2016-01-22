@@ -3,7 +3,6 @@ package com.bergermobile.rest.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;

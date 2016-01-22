@@ -17,7 +17,7 @@ appsadmin_translations.en = {
 	},	
 		
 	"error": {
-		"session.expired": "Sua sessão expirou. Faça login novamente"
+		"session.expired": "Sua sessão expirou. Faça login novamente."
 	},
 		
 	"home": {

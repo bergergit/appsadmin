@@ -3,7 +3,7 @@
  */
 angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 
-.factory('adminjs', ['$translate','utils', function($translate, utils) { return function() {	
+.factory('adminjs', ['$translate','utils','auth', function($translate, utils, auth) { return function() {	
 	
 /**************************************
 * Script to control Applications View *
@@ -23,6 +23,15 @@ var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 $(document).ajaxSend(function(e, xhr, options) {
 	xhr.setRequestHeader(header, token);
+});
+
+/** Intercepting 302 redirect - meaning session is out **/
+$(document).ajaxComplete(function(e, xhr, options) {
+	console.debug('ajaxComplete', e, xhr);
+	if (xhr.status === 401 || xhr.status === 403) {
+		auth.clear();
+        auth.showFlash = true;
+	}
 });
 
 /** jqGrid table **/

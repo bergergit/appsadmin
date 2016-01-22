@@ -1,3 +1,7 @@
+<p class="alert alert-danger form-signin" ng-show="vm.showFlash">
+	{{ 'error.session.expired' | translate }}
+</p>
+
 <h2 class="form-signin">{{ 'login.title' | translate }}</h2>
 
 <bm-auth app-name="appsadmin" signed-in-uri="/" show-facebook="false" show-google="false" show-sign-up="false" realm="appsadmin"></bm-auth>

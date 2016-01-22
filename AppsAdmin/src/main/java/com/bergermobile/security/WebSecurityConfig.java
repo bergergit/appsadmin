@@ -1,6 +1,7 @@
 package com.bergermobile.security;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,41 +19,73 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
  */
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) 
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 	
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		//http.csrf().disable();
-		http.httpBasic().disable();
-		
-		// @formatter:off
-		http
-			.authorizeRequests()
-			.antMatchers(HttpMethod.GET, "/", "/fonts/**", "/webjars/**", "/messageBundle/**",
-					"/fragments/**","/login/**","/bmauth/**")
-				.permitAll()
-			.antMatchers(HttpMethod.POST, "/bmauth/logout")
-				.permitAll()
-			.antMatchers(HttpMethod.POST, "/bmauth/**")
-				.hasRole("ADMIN")
-			.antMatchers(HttpMethod.GET, "/admin","/users")
-				.hasRole("ADMIN")
-			.anyRequest()
-				.authenticated()
-			.and()
-				.formLogin()
-				.loginPage("/")
-				.permitAll()
-			.and()
-            	.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
-            	.csrf().csrfTokenRepository(csrfTokenRepository());
-		// @formatter:on
+	/**
+	 * Used for form login security for the rest api
+	 * @author fabioberger
+	 *
+	 */
+	@Configuration
+    @Order(1)                                                        
+    public static class RestWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+		protected void configure(HttpSecurity http) throws Exception {
+			// @formatter:off
+            http.antMatcher("/rest/**")                               
+                .authorizeRequests()
+                    .anyRequest().hasRole("ADMIN")
+                    .and()
+                .httpBasic();
+         // @formatter:on
+        }
 	}
 	
-	private CsrfTokenRepository csrfTokenRepository() {
-		HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-		repository.setHeaderName("X-XSRF-TOKEN");
-		return repository;
+	/**
+	 * Used for form login security for the screens
+	 * @author fabioberger
+	 *
+	 */
+	@Configuration                                                   
+    public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			//http.csrf().disable();
+			
+			// @formatter:off
+			http
+				.authorizeRequests()
+				.antMatchers(HttpMethod.GET, "/", "/fonts/**", "/webjars/**", "/messageBundle/**",
+						"/fragments/**","/login/**","/bmauth/**")
+					.permitAll()
+				.antMatchers(HttpMethod.POST, "/bmauth/logout")
+					.permitAll()
+				.antMatchers(HttpMethod.POST, "/rest/content")
+					.hasRole("USER")
+				.antMatchers(HttpMethod.GET, "/admin","/users","/rest/content")
+					.hasRole("USER")
+				//.antMatchers(HttpMethod.POST, "/bmauth/**")
+				//	.hasRole("ADMIN")
+				.antMatchers(HttpMethod.GET, "/admin","/users")
+					.hasRole("ADMIN")
+				.anyRequest()
+					.authenticated()
+				.and()
+					.logout().logoutUrl("/logout")
+				.and()
+					.formLogin()
+					.loginPage("/login")
+				.and()
+	            	.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
+	            	.csrf().csrfTokenRepository(csrfTokenRepository());
+			// @formatter:on
+		}
+		
+		private CsrfTokenRepository csrfTokenRepository() {
+			HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+			repository.setHeaderName("X-XSRF-TOKEN");
+			return repository;
+		}
 	}
 	
 }
