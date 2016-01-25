@@ -30,6 +30,7 @@ public class WebSecurityConfig {
     @Order(1)                                                        
     public static class RestWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 		protected void configure(HttpSecurity http) throws Exception {
+			//http.csrf().disable();
 			// @formatter:off
             http.antMatcher("/rest/**")                               
                 .authorizeRequests()
@@ -45,7 +46,7 @@ public class WebSecurityConfig {
 	 * @author fabioberger
 	 *
 	 */
-	@Configuration                                                   
+	@Configuration 
     public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
 		@Override

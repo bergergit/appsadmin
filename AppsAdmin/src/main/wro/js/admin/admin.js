@@ -3,7 +3,7 @@
  */
 angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 
-.factory('adminjs', ['$translate','utils','auth', function($translate, utils, auth) { return function() {	
+.factory('adminjs', ['$translate','$cookies','utils','auth', function($translate, $cookies, utils, auth) { return function() {	
 	
 /**************************************
 * Script to control Applications View *
@@ -22,6 +22,12 @@ var menuIsBuilt = false,
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 $(document).ajaxSend(function(e, xhr, options) {
+	// reseting csrf header
+	console.debug('$cookies.get(header)', $cookies.get("XSRF-TOKEN"));
+	if ($cookies.get(header)) {
+		$("meta[name='_csrf']").attr("content", $cookies.get("XSRF-TOKEN"));
+		token = $("meta[name='_csrf']").attr("content");
+	}
 	xhr.setRequestHeader(header, token);
 });
 
