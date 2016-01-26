@@ -25,8 +25,8 @@ angular.module('appsadmin', [
             if (rejection.status === 401 || rejection.status === 403) {
                 //console.log("Response Error 401",rejection);
                 var auth = $injector.get('auth');
-                auth.clear();
                 auth.showFlash = true;
+                auth.clear();
             }
             return $q.reject(rejection);
         }

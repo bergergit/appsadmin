@@ -35,8 +35,8 @@ $(document).ajaxSend(function(e, xhr, options) {
 $(document).ajaxComplete(function(e, xhr, options) {
 	console.debug('ajaxComplete', e, xhr);
 	if (xhr.status === 401 || xhr.status === 403) {
+		auth.showFlash = true;
 		auth.clear();
-        auth.showFlash = true;
 	}
 });
 
