@@ -8,6 +8,11 @@ angular.module('appsadmin.navigation', [])
 	//var authenticatedPaths = '/applications*|/users*';
 	var authenticatedPaths = '.*';
 	
+	if ($routeParams.reset) {
+		auth.clear(true);
+		$location.search('reset', null);
+	}
+	
 	vm.showNavBar = function() {
 		// show navbar if in administration screens
 		if ($location.path().match(authenticatedPaths)) {

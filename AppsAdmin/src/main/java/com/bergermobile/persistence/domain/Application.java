@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -46,7 +47,7 @@ public class Application implements Serializable {
 	private List<Menu> menus;
 	
 	//bi-directional many-to-one association to Menu
-	@OneToMany(mappedBy="application")
+	@OneToMany(mappedBy="application", cascade={ CascadeType.REMOVE }, orphanRemoval=true)
 	private List<ApplicationUser> applicationUsers;
 	
 	public Map<Integer, Boolean> getApplicationUserIds() {

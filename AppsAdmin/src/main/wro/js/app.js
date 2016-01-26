@@ -42,7 +42,7 @@ angular.module('appsadmin', [
 		  controllerAs: 'vm'
 	}).when('/login', { 
 		  templateUrl: 'fragments/home/login.html',
-		  //controller: 'NavigationCtrl',
+		  controller: 'NavigationCtrl',
 		  controllerAs: 'vm'
 	}).when('/users', { 
 		  templateUrl: 'fragments/admin/users.html',

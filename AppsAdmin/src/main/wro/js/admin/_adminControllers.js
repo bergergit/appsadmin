@@ -7,8 +7,8 @@ angular.module('appsadmin.admin', ['ngResource','ui.bootstrap','appsadmin.adminj
 	
 	var vm = this;
 	vm.supportedLocales = supportedLocales;
-	adminjs();
 	
+	adminjs();
 }])
 
 .controller('UsersCtrl', [ '$rootScope', '$timeout', 'userService', 'applicationService','applicationUserService', 

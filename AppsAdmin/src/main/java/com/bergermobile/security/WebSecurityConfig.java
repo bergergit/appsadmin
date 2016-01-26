@@ -72,10 +72,10 @@ public class WebSecurityConfig {
 				.anyRequest()
 					.authenticated()
 				.and()
-					.logout().logoutUrl("/logout")
-				.and()
 					.formLogin()
-					.loginPage("/login")
+					.loginPage("/login?reset")
+				.and()
+					.logout().logoutUrl("/logout")
 				.and()
 	            	.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
 	            	.csrf().csrfTokenRepository(csrfTokenRepository());
