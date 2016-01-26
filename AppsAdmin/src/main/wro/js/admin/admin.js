@@ -82,7 +82,9 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 				icons: {
 		        	primary: "ui-icon-pencil"
 		    	}, 	text: false    
-			});
+			}).off().click(function() {
+				editMenus(jQuery(this).data('id'));
+			});;
 			
 			// buttons - clone   
 			jQuery( ".clone" ).button({
@@ -707,7 +709,8 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 			});	
 			jQuery.ajax({
 		        type: 'GET',
-		        url: '<?php echo $this->restPrefix ?>/menus/appid/' + appid + '/withfields',
+		        //url: '<?php echo $this->restPrefix ?>/menus/appid/' + appid + '/withfields',
+		        url: utils.restPrefix + '/applications/' + appid + '/menus',
 		        dataType: "json",
 		        timeout: AJAX_TIMEOUT,
 		        success: function(data) {
@@ -755,31 +758,31 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	 */
 	function buildAccordion(data) {	
 		// builds the accordion structure
-		jQuery.each(data.response, function(index, row) {
+		jQuery.each(data._embedded.menus, function(index, row) {
 			var node = getAccordionNode();
 			
 			// adding menu_id and parent_id data
 			node.data({
-				"menu_id": row.mobileapps_menu_id,
-				"rest_name": row.rest_name,
-				"menu_parent_id": row.mobileapps_menu_parent_id,
+				"menuId": row.mobileapps_menu_id,
+				"restName": row.rest_name,
+				"menuParentId": row.mobileapps_menu_parent_id,
 				"name": row.name,
 				"description": row.description,
-				"order": row.order,
+				"menuOrder": row.order,
 				"expanded": false
 			})		
 				
-			node.attr("id", "menu_" + row.mobileapps_menu_id);
-			jQuery("#title", node).text(row.name + " (" + row.rest_name + ")");
+			node.attr("id", "menu_" + row.menuId);
+			jQuery("#title", node).text(row.name + " (" + row.restName + ")");
 			jQuery("#accordion").append(node);
 			buildFieldGrid(row);
 		});		
 	
 		// rearange submenus	
-		jQuery.each(data.response, function(index, row) {	
-			if (row.mobileapps_menu_parent_id != null) {
-				node = jQuery("#menu_" + row.mobileapps_menu_id + ".sortable-accordion");			
-				contentWrapper = jQuery("#menu_" + row.mobileapps_menu_parent_id + ".sortable-accordion").children(".wrapper");			
+		jQuery.each(data._embedded.menus, function(index, row) {	
+			if (row.menuParentId != null) {
+				node = jQuery("#menu_" + row.menuId + ".sortable-accordion");			
+				contentWrapper = jQuery("#menu_" + row.menuParentId + ".sortable-accordion").children(".wrapper");			
 				
 				// if no children, indent
 				if (contentWrapper.find("h3").length == 0) {
@@ -896,11 +899,12 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	   jQuery.ajax({  
 			timeout: AJAX_TIMEOUT,
 			type: 'GET',  
-			url: '<?php echo $this->restPrefix ?>/types', 
+			url: utils.restPrefix + '/types', 
 			success: function(data) {
 				ajaxCurrentTry=0;
 				var options = [];
-				jQuery.each(data.response, function(index, val) {
+				//jQuery.each(data.response, function(index, val) {
+				jQuery.each(data, function(index, val) {
 					options.push('<option value="' + val.mobileapps_type_id + '">' + val.mobileapps_type_id + '</option>');
 				});
 				jQuery("#fieldType").html(options);
@@ -1039,7 +1043,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	 * Formats the Edit icon 
 	 */
 	function editFormatter(cellvalue, options, rowObject) {
-		return "<button class=\"edit\" onclick=\"editMenus('" + rowObject.applicationId + "')\">" + $translate.instant('admin.applications.button.edit') + "</button>";
+		return "<button class=\"edit\" data-id=\"" + rowObject.applicationId + "\">" + $translate.instant('admin.applications.button.edit') + "</button>";
 	}
 	
 	/**

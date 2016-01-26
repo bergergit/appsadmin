@@ -81,7 +81,8 @@ appsadmin_translations.en = {
 		"dialog.application.label.mainLocale": "Idioma Principal",
 		"dialog.application.label.supportedLocales": "Idiomas Suportados",
 		"dialog.menu.title": "Menu",
-		
+		"dialog.menu.label.name": "Nome",
+		"dialog.menu.label.description": "Descrição",
 		
 		"dialog.menu.label.restName": "Rest Name"
 			

@@ -51,5 +51,16 @@ public class Menu implements Serializable {
 	//bi-directional many-to-one association to Menu
 	@OneToMany(mappedBy="parentMenu")
 	private List<Menu> menus;
+	
+	/**
+	 * Retrieves the ID of te parent menu, if exists
+	 * @return
+	 */
+	public Integer getMenuParentId() {
+		if (getParentMenu() != null) {
+			return getParentMenu().getMenuId();
+		}
+		return null;
+	}
 
 }
