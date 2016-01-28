@@ -28,7 +28,6 @@ public class Application implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@RestResource(exported=true)
 	private Integer applicationId;
 
 	private String description;

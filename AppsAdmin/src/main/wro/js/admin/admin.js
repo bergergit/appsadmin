@@ -133,7 +133,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 						//data: jQuery("#editForm").serialize(),  
 						success: function() {
 							ajaxCurrentTry = 0;
-							utils.updateTipsFixed($translate.instant('msg.registry.deleted'), jQuery( "#messageText"))
+							utils.updateTipsFixed($translate.instant('admin.msg.registry.deleted'), jQuery( "#messageText"))
 							jQuery('#mobileApplications_list').jqGrid('setGridParam', {datatype:'json'});
 							jQuery('#mobileApplications_list').trigger('reloadGrid');												
 							jQuery( "#dialog-confirm" ).dialog( "close" );
@@ -166,16 +166,20 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	        modal: true,
 	        autoOpen: false,
 	        draggable: false,
-	        buttons: {
-	            "<?php echo JText::_( 'MOBILEAPPS_BUTTON_LABEL_DELETE' ) ?>": function() {            	
+	        title: $translate.instant('admin.dialog.title.remove'),
+	        buttons: [{
+	        	text: $translate.instant('btn.delete'),
+	        	click: function() {            	
 	                // deletes for data via DELETE
 					jQuery.ajax({  
 						timeout: AJAX_TIMEOUT,
-						type: 'POST',  
-						url: '<?php echo $this->restPrefix ?>/menus/d/appid/' + mainID + '/menuid/' + menuID,					  
+						type: 'DELETE',  
+						url: utils.restPrefix + '/menus/' + menuID,
+						//type: 'POST',  
+						//url: '<?php echo $this->restPrefix ?>/menus/d/appid/' + mainID + '/menuid/' + menuID,					  
 						success: function() {
 							ajaxCurrentTry = 0;
-							utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_DELETED' ) ?>", jQuery( "#messageText"));
+							utils.updateTipsFixed($translate.instant('admin.msg.registry.deleted'), jQuery( "#messageText"))
 							rebuildMenus();
 							jQuery( "#dialog-confirm-menu" ).dialog( "close" );
 						},
@@ -187,14 +191,17 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 					                return;
 					        	}
 					       }
-					       utils.updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DELETE' ) ?>", jQuery( "#dialog-form-menu .validateTips"));
+					       //utils.updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DELETE' ) ?>", jQuery( "#dialog-form-menu .validateTips"));
+					       utils.updateTipsError($translate.instant('msg.registry.delete.error'), jQuery( "#dialog-form-menu .validateTips"))
 				        }  
 					});
 	            },
-	            "<?php echo JText::_( 'MOBILEAPPS_BUTTON_LABEL_CANCEL' ) ?>": function() {
+	        },{
+	        	text: $translate.instant('btn.cancel'),
+	            click: function() {
 	                jQuery( this ).dialog( "close" );
 	            }
-	        }
+	        }]
 		});
 		
 		// dialog - remove field
@@ -288,9 +295,9 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 									jQuery(".messageTips").show();
 									// if it's an insert, display created message, else display updated message
 									if (applicationId.val() != "") {
-										utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_UPDATED' ) ?>", jQuery( "#messageText"));
+										utils.updateTipsFixed($translate.instant('admin.msg.registry.updated'), jQuery( "#messageText"));
 									} else {
-										utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_CREATED' ) ?>", jQuery( "#messageText"));
+										utils.updateTipsFixed($translate.instant('admin.msg.registry.created'), jQuery( "#messageText"));
 									}
 									jQuery('#mobileApplications_list').jqGrid('setGridParam', {datatype:'json'});
 									jQuery('#mobileApplications_list').trigger('reloadGrid');												
@@ -340,14 +347,12 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 			 	closeOnEscape: true,
 			 	title: $translate.instant('admin.dialog.menu.title'),
 	   			open: function(event, ui) {   				 
-	   				jQuery( "#dialog-form-menu .validateTips").text('');   	
+	   				jQuery( "#dialog-form-menu .validateTips").text('').removeClass("ui-state-error");   	
 	   				if (menuParentId.val() == "") {			
-	   					jQuery( "#dialog-form-menu" ).dialog("option", "title", "<?php echo JText::_( 'MOBILEAPPS_VIEW_MENUS_FORM_LABEL_NAME' ) ?>");
+	   					jQuery( "#dialog-form-menu" ).dialog("option", "title", $translate.instant('admin.dialog.menu.title'));
 	   				} else {
 	   					parentDataNode = jQuery("#menu_" + menuParentId.val() + ".sortable-accordion");	
-	   					jQuery( "#dialog-form-menu" ).dialog("option", "title", "<?php echo JText::_( 'MOBILEAPPS_VIEW_MENUS_FORM_LABEL_NAME_SUBMENU' ) ?>" + 
-	   						" " + parentDataNode.data("name"));
-	   					
+	   					jQuery( "#dialog-form-menu" ).dialog("option", "title", $translate.instant('admin.dialog.subMenu.title', {menu: parentDataNode.data("name")}));  
 	   				}
 	   			},
 	            autoOpen: false,
@@ -355,32 +360,35 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	            height: 420,
 	            width: 450,
 	            modal: true,
-	            buttons: {
-	                "<?php echo JText::_( 'MOBILEAPPS_BUTTON_LABEL_SAVE' ) ?>": function() {
+	            buttons: [{
+	            	text: $translate.instant('btn.save'),
+	                click: function() {
 	                    var bValid = true;
 	                    allMenuFields.removeClass( "ui-state-error" );
 	 
-	                    bValid = bValid && checkLength( menuRestName, "<?php echo JText::sprintf( 'MOBILEAPPS_ERROR_FORM_LENGTH', JText::_( 'MOBILEAPPS_VIEW_MOBILEAPPLICATIONS_FORM_LABEL_ID' ), 2, 40 )?>", 2, 40 );
-	                    bValid = bValid && checkLength( menuName, "<?php echo JText::sprintf( 'MOBILEAPPS_ERROR_FORM_LENGTH', JText::_( 'MOBILEAPPS_VIEW_MOBILEAPPLICATIONS_FORM_LABEL_NAME' ), 2, 40 )?>", 2, 40 );
+	                    bValid = bValid && utils.checkLength( menuRestName, $translate.instant('form.error.length', {name: $translate.instant('admin.dialog.menu.label.restName'), min: 2, max: 40}), 2, 40 );
+	                    bValid = bValid && utils.checkLength( menuName, $translate.instant('form.error.length', {name: $translate.instant('admin.dialog.menu.label.name'), min: 2, max: 40}), 2, 40 );
 	                                                           
 	 					if ( bValid ) {
 	 						// builds the hidden application ID, parent and order fields
-	 						menuAppId.val(mainID);	
+	 						//menuAppId.val(mainID);
+	 						menuAppId.val(utils.restPrefix + '/applications/' + mainID);
 	 						
 	 						// submits for data via POST
 	 						jQuery.ajax({  
 	 							timeout: AJAX_TIMEOUT,
 								type: 'POST',  
-								url: '<?php echo $this->restPrefix ?>/menus', 
-								data: jQuery("#editFormMenu").serialize(),  
+								url: utils.restPrefix + '/menus', 
+								contentType: "application/json",
+								data: jQuery("#editFormMenu").serializeJSON(),  
 								success: function() {
 									ajaxCurrentTry = 0;
 									jQuery(".messageTips").show();
 									// if it's an insert, display created message, else display updated message
 									if (menuId.val() != "") {
-										utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_UPDATED' ) ?>", jQuery( "#messageText"));
+										utils.updateTipsFixed($translate.instant('admin.msg.registry.updated'), jQuery( "#messageText"));
 									} else {
-										utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_CREATED' ) ?>", jQuery( "#messageText"));
+										utils.updateTipsFixed($translate.instant('admin.msg.registry.created'), jQuery( "#messageText"));
 									}
 									rebuildMenus();											
 									jQuery( "#dialog-form-menu" ).dialog( "close" );
@@ -392,16 +400,21 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 							                jQuery.ajax(this);
 							                return;
 							        	}
+							       } else if (xhr.status == 409) {	// conflict
+										utils.updateTipsError($translate.instant('admin.msg.registry.duplicate.error'), jQuery( "#dialog-form-menu .validateTips"))
+							       } else { // generic error
+										utils.updateTipsError($translate.instant('admin.msg.registry.create.error'), jQuery( "#dialog-form-menu .validateTips"))
 							       }
-							       utils.updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DUPLICATE' ) ?>", jQuery( "#dialog-form-menu .validateTips"))
 						        }							
 							});
 	  					}
-	                },
-	                "<?php echo JText::_( 'MOBILEAPPS_BUTTON_LABEL_CANCEL' ) ?>": function() {
+	                }
+	            },{
+	            	text: $translate.instant('btn.cancel'),
+	                click: function() {
 	                    jQuery( this ).dialog( "close" );
 	                }
-	            },
+	            }],
 	            close: function() {
 	                allMenuFields.val("").removeClass( "ui-state-error" );
 	                
@@ -438,7 +451,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	    jQuery( "#dialog-form-field" ).dialog({
 			 	closeOnEscape: true,
 	   			open: function(event, ui) {   				 
-	   				jQuery( "#dialog-form-field .validateTips").text('');   
+	   				jQuery( "#dialog-form-field .validateTips").text('').removeClass("ui-state-error");   
 	   				//menuID = fieldMenuId.val();	
 	   			},
 	            autoOpen: false,
@@ -521,7 +534,8 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 		// button - add menu
 		jQuery( "#addMenuButton" )
 			.button({
-				icons: { primary: "ui-icon-plusthick" }
+				icons: { primary: "ui-icon-plusthick" },
+				label: $translate.instant('admin.button.addMenu')
 			})
 			.click(function() {	
 				//menuId.prop('readonly', false);
@@ -615,14 +629,15 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	function openAndPopulateFormMenu(obj) {
 		var dataNode = obj.parents(".sortable-accordion");
 		
-		jQuery("#menuId").val(dataNode.data("menu_id"));
-		jQuery("#menuParentId").val(dataNode.data("menu_parent_id"));
+		//jQuery("#menuAppId").val(dataNode.data("application"));
+		jQuery("#menuId").val(dataNode.data("menuId"));
+		jQuery("#menuParentId").val(dataNode.data("menuParentId"));
 		
-		jQuery("#menuRestName").val(dataNode.data("rest_name"));
+		jQuery("#menuRestName").val(dataNode.data("restName"));
 			
 		jQuery("#menuName").val(dataNode.data("name"));
 		jQuery("#menuDescription").val(dataNode.data("description"));
-		jQuery("#menuOrder").val(dataNode.data("order"));
+		jQuery("#menuOrder").val(dataNode.data("menuOrder"));
 		
 		jQuery( "#dialog-form-menu" ).dialog( "open" );
 	}
@@ -732,7 +747,9 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 		//}
 		
 		populateType();
+		jQuery('#editApplications').off().click(editApplications);
 		jQuery("#menus").show();	
+		
 	}
 	
 	/**
@@ -763,12 +780,13 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 			
 			// adding menu_id and parent_id data
 			node.data({
-				"menuId": row.mobileapps_menu_id,
-				"restName": row.rest_name,
-				"menuParentId": row.mobileapps_menu_parent_id,
+				//"application": row._links.application.href,
+				"menuId": row.menuId,
+				"restName": row.restName,
+				"menuParentId": row.menuParentId,
 				"name": row.name,
 				"description": row.description,
-				"menuOrder": row.order,
+				"menuOrder": row.menuOrder,
 				"expanded": false
 			})		
 				
@@ -800,7 +818,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 		});	
 		    	
 	    // Accordion function
-	    makeAccordion(jQuery('#accordion .head'));
+	    utils.makeAccordion(jQuery('#accordion .head'));
 	   		
 		// Sortable function
 		makeSortable(jQuery('#accordion'));
@@ -819,7 +837,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 				icons: { primary: "ui-icon-trash" }, text: false
 			})
 			.click(function(event) {
-				menuID = jQuery(event.target).parents(".sortable-accordion").data("menu_id");		
+				menuID = jQuery(event.target).parents(".sortable-accordion").data("menuId");		
 	        	jQuery( "#dialog-confirm-menu" ).dialog( "open" );        	
 	    	}); 
 		
@@ -921,12 +939,8 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 		});
 	}
 	
-	function canToggle(event) {
-		return jQuery(event.target).parent()[0].tagName != "BUTTON" && jQuery(event.target)[0].tagName != "A";
-	}
-	
 	function buildFieldGrid(data) {
-		if (data.fieldSet.length > 0) {	
+		if (data.fields.length > 0) {	
 			// removes empty word if exists
 			jQuery("#menu_" + data.mobileapps_menu_id + " .wrapper .emptyMessage").first().remove();
 			

@@ -1,4 +1,11 @@
-<!--  <?php include JPATH_COMPONENT_ADMINISTRATOR.DS."views".DS."templates".DS."message_tips.html.php"; ?> -->
+<div class="ui-widget messageTips">
+	<div class="ui-state-highlight ui-corner-all" style="margin-bottom: 10px; padding: 0 .7em;">
+		<p><span class="ui-icon ui-icon-check" style="float: left; margin-right: .3em; margin-top: .7em"></span>
+			<div id="messageText">&nbsp;</div>
+		</p>
+	</div>
+</div>
+
 
 <!-- === MAIN APLICATION SECTION == -->
 <div id="main">
@@ -9,14 +16,14 @@
 
 <!-- === MENUS AND FIELDS SECTION == -->
 <div id="menus">
-	<a href="#" onclick="editApplications();">{{ 'admin.label.apps' | translate }}</a> &gt; {{ 'admin.label.menu' | translate }}
+	<a href="#" id="editApplications">{{ 'admin.label.apps' | translate }}</a> &gt; {{ 'admin.label.menu' | translate }}
 	<br/><br/>	
 	
 	<div id="accordion" class="ui-accordion ui-widget ui-helper-reset ui-corner-all" role="tablist">		 
 	</div>	
 	
 	<br/>
-	<button id="addMenuButton">{{ 'admin.button.addMenu' | translate }}</button>
+	<button id="addMenuButton">ADD_MENU</button>
 </div>
 
 <!-- CONFIRMATION DIALOG -->
@@ -26,7 +33,7 @@
 </div>
 
 <!-- MENU CONFIRMATION DIALOG -->
-<div id="dialog-confirm-menu" class="dialog" title="{{ 'admin.dialog.title.remove' | translate }}">
+<div id="dialog-confirm-menu" class="dialog">
    	<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>{{ 'admin.dialog.removeMenu' | translate }}</p>
 </div>
 
@@ -70,17 +77,17 @@
 	
     <form id="editFormMenu">
     <fieldset>
-        <label for="menuRestName">{{ 'dialog.menu.label.id' | translate }}</label>
-        <input type="text" name="menu[rest_name]" id="menuRestName" maxlength="20" class="text ui-widget-content ui-corner-all" />
+        <label for="menuRestName">{{ 'admin.dialog.menu.label.restName' | translate }}</label>
+        <input type="text" name="restName" id="menuRestName" maxlength="20" class="text ui-widget-content ui-corner-all" />
         <label for="menuName">{{ 'admin.dialog.application.label.name' | translate }}</label>
-        <input type="text" name="menu[name]" id="menuName" maxlength="100" class="text ui-widget-content ui-corner-all" />
+        <input type="text" name="name" id="menuName" maxlength="100" class="text ui-widget-content ui-corner-all" />
         <label for="menuDescription">{{ 'admin.dialog.application.label.description' | translate }}</label>
-        <textarea name="menu[description]" id="menuDescription" maxlength="500" class="ui-widget ui-widget-content ui-corner-all"></textarea>    
+        <textarea name="description" id="menuDescription" maxlength="500" class="ui-widget ui-widget-content ui-corner-all"></textarea>    
         
-        <input type="hidden" name="menu[mobileapps_application_application_id]" id="menuAppId"/>
-        <input type="hidden" name="menu[mobileapps_menu_parent_id]" id="menuParentId"/>
-        <input type="hidden" name="menu[mobileapps_menu_id]" id="menuId"/>
-        <input type="hidden" name="menu[order]" id="menuOrder"/>    
+        <input type="hidden" name="application" id="menuAppId"/>
+        <input type="hidden" name="menuParentId" id="menuParentId"/>
+        <input type="hidden" name="menuId" id="menuId"/>
+        <input type="hidden" name="menuOrder" id="menuOrder"/>    
     </fieldset>
     </form>
 </div>

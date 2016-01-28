@@ -130,7 +130,7 @@ var utils = {
 	
 	makeAccordion: function(obj) {
 		obj.click(function(event) {   		
-	   		if (canToggle(event)) {
+	   		if (utils.canToggle(event)) {
 				jQuery(this).next().toggle("normal");
 				if (jQuery(this).data("expanded")) {
 					jQuery("span", this).removeClass("ui-icon-triangle-1-s").addClass("ui-icon-triangle-1-e");
@@ -149,6 +149,11 @@ var utils = {
 	
 	addEmptyMessage: function(msg) {
 		jQuery('.sortable-accordion .wrapper:empty').html("<div class='emptyMessage'>" + msg + "</div>");
+	},
+	
+	
+	canToggle: function(event) {
+		return jQuery(event.target).parent()[0].tagName != "BUTTON" && jQuery(event.target)[0].tagName != "A";
 	}
 	
 }

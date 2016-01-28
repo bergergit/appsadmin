@@ -3,6 +3,7 @@ package com.bergermobile.persistence.domain;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import lombok.Data;
+
+import org.springframework.data.rest.core.annotation.RestResource;
 
 
 /**
@@ -41,6 +44,7 @@ public class Menu implements Serializable {
 
 	//bi-directional many-to-one association to Application
 	@ManyToOne
+	//@RestResource(exported = false)
 	private Application application;
 
 	//bi-directional many-to-one association to Menu
@@ -49,7 +53,7 @@ public class Menu implements Serializable {
 	private Menu parentMenu;
 
 	//bi-directional many-to-one association to Menu
-	@OneToMany(mappedBy="parentMenu")
+	@OneToMany(mappedBy="parentMenu", cascade={ CascadeType.REMOVE })
 	private List<Menu> menus;
 	
 	/**
@@ -62,5 +66,4 @@ public class Menu implements Serializable {
 		}
 		return null;
 	}
-
 }
