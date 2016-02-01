@@ -8,6 +8,6 @@ import com.bergermobile.persistence.domain.Type;
 
 @RepositoryRestResource
 @PreAuthorize("hasRole('ROLE_ADMIN')")
-public interface TypeRepository extends CrudRepository<Type, Integer> {
+public interface TypeRepository extends CrudRepository<Type, String> {
 
 }

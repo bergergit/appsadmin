@@ -3,7 +3,7 @@
  */
 angular.module('appsadmin.utils', [])
 
-.factory('utils', ['$translate', function($translate) { 
+.factory('utils', ['$translate','$cookies','auth', function($translate, $cookies, auth) { 
 
 var utils = {
 
@@ -12,6 +12,29 @@ var utils = {
 	 */
 	restPrefix: 'rest',
 	mainID: null,
+	
+	includeCsrf: function() {
+		/** Including CSRF token in all ajax requests **/
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		$(document).ajaxSend(function(e, xhr, options) {
+			// reseting csrf header
+			if ($cookies.get(header)) {
+				$("meta[name='_csrf']").attr("content", $cookies.get("XSRF-TOKEN"));
+				token = $("meta[name='_csrf']").attr("content");
+			}
+			xhr.setRequestHeader(header, token);
+		});
+		
+		/** Intercepting 302 redirect - meaning session is out **/
+		$(document).ajaxComplete(function(e, xhr, options) {
+			//console.debug('ajax complete', e, xhr, options);
+			if (xhr.status === 401 || xhr.status === 403) {
+				auth.showFlash = true;
+				auth.clear();
+			}
+		});
+	},
 	
 	/**
 	 * Update tips fields with the highlight message

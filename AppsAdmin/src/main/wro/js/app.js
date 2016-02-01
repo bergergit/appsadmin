@@ -52,6 +52,10 @@ angular.module('appsadmin', [
 		  templateUrl: 'fragments/admin/admin.html',
 		  controller: 'AdminCtrl',
 		  controllerAs: 'vm'
+	}).when('/types', { 
+		  templateUrl: 'fragments/admin/types.html',
+		  controller: 'TypesCtrl',
+		  controllerAs: 'vm'
 	})
 	.otherwise({redirectTo: '/'});
 	

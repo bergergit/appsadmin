@@ -14,8 +14,6 @@ import javax.persistence.OneToMany;
 
 import lombok.Data;
 
-import org.springframework.data.rest.core.annotation.RestResource;
-
 
 /**
  * The persistent class for the menu database table.

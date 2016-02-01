@@ -37,6 +37,7 @@ appsadmin_translations.en = {
 	"navigation": {
 		"users": "Usuários",
 		"admin": "Administração",
+		"types": "Tipos",
 		"exit": "Sair",
 		"toggle": "Ativar navegação"
 	},
@@ -59,6 +60,7 @@ appsadmin_translations.en = {
 	"admin": {
 		"button.addApp": "Adicionar Aplicativo",
 		"button.addMenu": "Adicionar Menu",
+		"button.addType": "Adicionar Tipo",
 		"label.apps": "Aplicativos",
 		"label.menu": "Menu",
 		"msg.registry.deleted": "Registro removido com sucesso.",
@@ -74,6 +76,7 @@ appsadmin_translations.en = {
 		"dialog.removeApp2": "Atenção: todos os conteúdos deste Aplicativo serão excluídos!!!",
 		"dialog.removeMenu": "Tem certeza que deseja remover este Menu?",
 		"dialog.removeField": "Tem certeza que deseja remover este Campo?",
+		"dialog.removeType": "Tem certeza que deseja remover este Tipo?",
 		"dialog.application.title": "Aplicativo",
 		"dialog.application.label.restName": "Rest Name",
 		"dialog.application.label.name": "Nome",
@@ -85,10 +88,13 @@ appsadmin_translations.en = {
 		"dialog.menu.label.restName": "Rest Name",
 		"dialog.menu.label.name": "Nome",
 		"dialog.menu.label.description": "Descrição",
+		"dialog.menu.label.restName": "Rest Name",
+		"dialog.type.title": "Tipo",
+		"dialog.type.label.type": "Tipo",
+		"dialog.type.label.mimeType": "Mime/Type",
+		"dialog.type.label.input": "Código do input",
+		"dialog.type.label.description": "Descrição",
 		
-		"dialog.menu.label.restName": "Rest Name"
-			
-			
 	}
 
 	

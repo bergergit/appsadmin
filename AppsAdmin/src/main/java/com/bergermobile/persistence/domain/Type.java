@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 /**
@@ -19,12 +19,13 @@ import lombok.Data;
  */
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Type implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer typeId;
+	private String typeId;
 
 	private String description;
 
@@ -33,7 +34,7 @@ public class Type implements Serializable {
 
 	private String mimeType;
 
-	private byte removable;
+	private Boolean removable;
 
 	//bi-directional many-to-one association to Field
 	@OneToMany(mappedBy="type")

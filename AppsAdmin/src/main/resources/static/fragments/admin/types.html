@@ -1,0 +1,30 @@
+<div ng-include="'fragments/admin/tips.html'"></div>
+
+<table id="types_list" class="mobileapps-grid"></table>
+
+<br/>
+<button id="addButton">ADD_BTN</button>
+
+<div id="dialog-confirm" class="dialog">
+    <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>{{ 'admin.dialog.removeType' | translate }}</p>
+	<p class="validateTips" style="display: none"></p>
+</div>
+
+<div id="dialog-form" class="dialog-form">
+	<p class="validateTips"></p>
+	
+    <form id="editForm">
+    <fieldset>
+        <label for="type">{{ 'admin.dialog.type.label.type' | translate }}</label>
+        <input type="text" name="typeId" id="type" maxlength="40" class="text ui-widget-content ui-corner-all" />
+        <label for="mime_type">{{ 'admin.dialog.type.label.mimeType' | translate }}</label>
+        <input type="text" name="mimeType" id="mime_type" maxlength="40" class="text ui-widget-content ui-corner-all" />
+        <label for="input">{{ 'admin.dialog.type.label.input' | translate }}</label>
+        <textarea name="input" id="input" maxlength="5000" class="ui-widget ui-widget-content ui-corner-all"></textarea>
+        <label for="description">{{ 'admin.dialog.type.label.description' | translate }}</label>
+        <textarea name="description" id="description" maxlength="500" class="ui-widget ui-widget-content ui-corner-all"></textarea>
+        
+         <input type="hidden" name="removable" id="removable"/>            
+    </fieldset>
+    </form>
+</div>

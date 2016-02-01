@@ -1,14 +1,22 @@
-angular.module('appsadmin.admin', ['ngResource','ui.bootstrap','appsadmin.adminjs'])
+angular.module('appsadmin.admin', ['ngResource','ui.bootstrap','appsadmin.adminjs','appsadmin.typesjs'])
 
 /**
  * Controller for Appsadmin Administration Screen
  */
-.controller('AdminCtrl', [ '$rootScope','adminjs','supportedLocales', function($rootScope, adminjs, supportedLocales) {
-	
+.controller('AdminCtrl', ['adminjs','supportedLocales', function(adminjs, supportedLocales) {
 	var vm = this;
 	vm.supportedLocales = supportedLocales;
 	
 	adminjs();
+}])
+
+/**
+ * Controller for Appsadmin Types Screen
+ */
+.controller('TypesCtrl', ['typesjs', function(typesjs) {
+	var vm = this;
+	
+	typesjs();
 }])
 
 .controller('UsersCtrl', [ '$rootScope', '$timeout', 'userService', 'applicationService','applicationUserService', 
@@ -21,12 +29,10 @@ angular.module('appsadmin.admin', ['ngResource','ui.bootstrap','appsadmin.adminj
 	vm.users = userService.query({ appname: $rootScope.appname });
 	var queryApplications = function() {
 		var applications = applicationService.query(function() {
-			vm.applications = new applicationService(applications._embedded['applications']);
+			vm.applications = new applicationService(applications._embedded ? applications._embedded['applications'] : {});
 		});
 	}
 	queryApplications();
-	
-	
 	
 	/**
 	 * Associates users with the applications

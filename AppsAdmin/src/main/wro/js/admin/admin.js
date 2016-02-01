@@ -18,26 +18,8 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 		menuID, 
 		fieldID;	
 	
+	utils.includeCsrf();
 	
-	/** Including CSRF token in all ajax requests **/
-	var token = $("meta[name='_csrf']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
-	$(document).ajaxSend(function(e, xhr, options) {
-		// reseting csrf header
-		if ($cookies.get(header)) {
-			$("meta[name='_csrf']").attr("content", $cookies.get("XSRF-TOKEN"));
-			token = $("meta[name='_csrf']").attr("content");
-		}
-		xhr.setRequestHeader(header, token);
-	});
-	
-	/** Intercepting 302 redirect - meaning session is out **/
-	$(document).ajaxComplete(function(e, xhr, options) {
-		if (xhr.status === 401 || xhr.status === 403) {
-			auth.showFlash = true;
-			auth.clear();
-		}
-	});
 	
 	/** jqGrid table **/
 	jQuery("#mobileApplications_list").jqGrid({
@@ -146,7 +128,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 					                return;
 					        	}
 					       }
-					       utils.updateTipsError($translate.instant('msg.registry.delete.error'), jQuery( "#dialog-form .validateTips"))
+					       utils.updateTipsError($translate.instant('admin.msg.registry.delete.error'), jQuery( "#dialog-confirm .validateTips"))
 				        }
 					});
 	            }
@@ -192,7 +174,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 					        	}
 					       }
 					       //utils.updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DELETE' ) ?>", jQuery( "#dialog-form-menu .validateTips"));
-					       utils.updateTipsError($translate.instant('msg.registry.delete.error'), jQuery( "#dialog-form-menu .validateTips"))
+					       utils.updateTipsError($translate.instant('admin.msg.registry.delete.error'), jQuery( "#dialog-form-menu .validateTips"))
 				        }  
 					});
 	            },
@@ -774,48 +756,50 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	 *Builds the entire DOM of accordion based on the received data 
 	 */
 	function buildAccordion(data) {	
-		// builds the accordion structure
-		jQuery.each(data._embedded.menus, function(index, row) {
-			var node = getAccordionNode();
-			
-			// adding menu_id and parent_id data
-			node.data({
-				//"application": row._links.application.href,
-				"menuId": row.menuId,
-				"restName": row.restName,
-				"menuParentId": row.menuParentId,
-				"name": row.name,
-				"description": row.description,
-				"menuOrder": row.menuOrder,
-				"expanded": false
-			})		
+		if (data._embedded && data._embedded.menus) {
+			// builds the accordion structure
+			jQuery.each(data._embedded.menus, function(index, row) {
+				var node = getAccordionNode();
 				
-			node.attr("id", "menu_" + row.menuId);
-			jQuery("#title", node).text(row.name + " (" + row.restName + ")");
-			jQuery("#accordion").append(node);
-			buildFieldGrid(row);
-		});		
-	
-		// rearange submenus	
-		jQuery.each(data._embedded.menus, function(index, row) {	
-			if (row.menuParentId != null) {
-				node = jQuery("#menu_" + row.menuId + ".sortable-accordion");			
-				contentWrapper = jQuery("#menu_" + row.menuParentId + ".sortable-accordion").children(".wrapper");			
-				
-				// if no children, indent
-				if (contentWrapper.find("h3").length == 0) {
-					var indent = contentWrapper.data("indent") == null ? 20 : contentWrapper.data("indent") + 20;
-					contentWrapper.data("indent", indent)				
-					contentWrapper.css("margin-left", indent + "px");
-				}			
-	
-				// appends menu to other menu (submenu)
-				contentWrapper.append(node);			
-				makeSortable(contentWrapper);
-			} else {
-				maxMenuOrder++;
-			}
-		});	
+				// adding menu_id and parent_id data
+				node.data({
+					//"application": row._links.application.href,
+					"menuId": row.menuId,
+					"restName": row.restName,
+					"menuParentId": row.menuParentId,
+					"name": row.name,
+					"description": row.description,
+					"menuOrder": row.menuOrder,
+					"expanded": false
+				})		
+					
+				node.attr("id", "menu_" + row.menuId);
+				jQuery("#title", node).text(row.name + " (" + row.restName + ")");
+				jQuery("#accordion").append(node);
+				buildFieldGrid(row);
+			});		
+		
+			// rearange submenus	
+			jQuery.each(data._embedded.menus, function(index, row) {	
+				if (row.menuParentId != null) {
+					node = jQuery("#menu_" + row.menuId + ".sortable-accordion");			
+					contentWrapper = jQuery("#menu_" + row.menuParentId + ".sortable-accordion").children(".wrapper");			
+					
+					// if no children, indent
+					if (contentWrapper.find("h3").length == 0) {
+						var indent = contentWrapper.data("indent") == null ? 20 : contentWrapper.data("indent") + 20;
+						contentWrapper.data("indent", indent)				
+						contentWrapper.css("margin-left", indent + "px");
+					}			
+		
+					// appends menu to other menu (submenu)
+					contentWrapper.append(node);			
+					makeSortable(contentWrapper);
+				} else {
+					maxMenuOrder++;
+				}
+			});	
+		}
 		    	
 	    // Accordion function
 	    utils.makeAccordion(jQuery('#accordion .head'));
