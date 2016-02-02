@@ -878,7 +878,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 				// updates order of each element
 				var delimiter = "", menuIds = "", menuOrders = "";
 				jQuery(ui.item.parent().children(".sortable-accordion")).each(function(index) {
-					jQuery(this).data("order", index);
+					jQuery(this).data("menuOrder", index);
 					
 					menuIds += delimiter + jQuery(this).data("menuId");
 					menuOrders += delimiter + jQuery(this).data("menuOrder");
@@ -886,8 +886,8 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 				});					
 				
 				// send order update to server
-				jQuery.ajax("<?php echo $this->restPrefix ?>/menus/updateorder/" + menuIds + "/orders/" + menuOrders,
-					{type: 'PUT'}
+				jQuery.ajax(utils.restPrefix + "/menus/updateorder/" + menuIds + "/orders/" + menuOrders,
+					{type: 'POST'}
 				);			
 			},
 		});
@@ -1006,15 +1006,16 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 					thisMenuId = ui.item.parents(".sortable-accordion").data("menuId");
 					thisGrid = jQuery(".fieldGrid#grid_field_" + thisMenuId);
 					
-					thisGrid.jqGrid('getDataIDs').each(function(row, index) {
-						fieldIds += delimiter + thisGrid.jqGrid('getRowData', row).mobileapps_field_id;
+					//thisGrid.jqGrid('getDataIDs').each(function(row, index) {
+					jQuery.each(thisGrid.jqGrid('getDataIDs'), function(index, row) {
+						fieldIds += delimiter + thisGrid.jqGrid('getRowData', row).fieldId;
 						fieldOrders += delimiter + index;
 						delimiter = ",";
 					});	
 					
 					// sends order update to server
-					jQuery.ajax("<?php echo $this->restPrefix ?>/fields/updateorder/" + fieldIds + "/orders/" + fieldOrders,
-						{type: 'PUT'}
+					jQuery.ajax(utils.restPrefix + "/fields/updateorder/" + fieldIds + "/orders/" + fieldOrders,
+						{type: 'POST'}
 					);	        	
 		        }
 			});
