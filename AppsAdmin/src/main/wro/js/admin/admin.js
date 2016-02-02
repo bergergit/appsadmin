@@ -188,22 +188,26 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 		
 		// dialog - remove field
 	    jQuery( "#dialog-confirm-field" ).dialog({
+	    	title:  $translate.instant('admin.dialog.title.remove'),
 	        resizable: false,
 	        height:150,
 	        width: 360,
 	        modal: true,
 	        autoOpen: false,
 	        draggable: false,
-	        buttons: {
-	            "<?php echo JText::_( 'MOBILEAPPS_BUTTON_LABEL_DELETE' ) ?>": function() {            	
+	        buttons: [{
+	        	text: $translate.instant('btn.delete'),
+	            click: function() {            	
 	                // deletes for data via DELETE
 					jQuery.ajax({  
 						timeout: AJAX_TIMEOUT,
-						type: 'POST',  
-						url: '<?php echo $this->restPrefix ?>/fields/d/' + fieldID,					  
+						type: 'DELETE',  
+						//url: '<?php echo $this->restPrefix ?>/fields/d/' + fieldID,
+						url: utils.restPrefix + '/fields/' + fieldID,
 						success: function() {
 							ajaxCurrentTry=0;
-							utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_DELETED' ) ?>", jQuery( "#messageText"))
+							//utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_DELETED' ) ?>", jQuery( "#messageText"))
+							utils.updateTipsFixed($translate.instant('admin.msg.registry.deleted'), jQuery( "#messageText"))
 							rebuildFieldGrid();						
 							jQuery( "#dialog-confirm-field" ).dialog( "close" );
 						},
@@ -215,14 +219,17 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 					                return;
 					        	}
 					       }
-					       utils.updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DELETE' ) ?>", jQuery( "#dialog-form-field .validateTips"))
+					       //utils.updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DELETE' ) ?>", jQuery( "#dialog-form-field .validateTips"))
+					    	utils.updateTipsError($translate.instant('admin.msg.registry.delete.error'), jQuery( "#dialog-form-field .validateTips"))
 				        } 
 					});
-	            },
-	            "<?php echo JText::_( 'MOBILEAPPS_BUTTON_LABEL_CANCEL' ) ?>": function() {
+	            }
+	        },{
+	            text: $translate.instant('btn.cancel'),
+	        	click: function() {
 	                jQuery( this ).dialog( "close" );
 	            }
-	        }
+	        }]
 		});
 		
 		// application form fields
@@ -431,6 +438,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	    
 	    //dialog - new Field    
 	    jQuery( "#dialog-form-field" ).dialog({
+	    		title: $translate.instant('admin.dialog.field.title'),
 			 	closeOnEscape: true,
 	   			open: function(event, ui) {   				 
 	   				jQuery( "#dialog-form-field .validateTips").text('').removeClass("ui-state-error");   
@@ -438,32 +446,37 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	   			},
 	            autoOpen: false,
 	            resizable: false,
-	            height: 650,
+	            height: 500,
 	            width: 450,
 	            modal: true,
-	            buttons: {
-	                "<?php echo JText::_( 'MOBILEAPPS_BUTTON_LABEL_SAVE' ) ?>": function() {
+	            buttons: [{
+	            	text:  $translate.instant('btn.save'),
+	                click: function() {
 	                    var bValid = true;
 	                    allMenuFields.removeClass( "ui-state-error" );
 	 
-	                    bValid = bValid && checkLength( fieldRestName, "<?php echo JText::sprintf( 'MOBILEAPPS_ERROR_FORM_LENGTH', JText::_( 'MOBILEAPPS_VIEW_MOBILEAPPLICATIONS_FORM_LABEL_ID' ), 2, 40 )?>", 2, 40 );
-	                    bValid = bValid && checkLength( fieldName, "<?php echo JText::sprintf( 'MOBILEAPPS_ERROR_FORM_LENGTH', JText::_( 'MOBILEAPPS_VIEW_MOBILEAPPLICATIONS_FORM_LABEL_NAME' ), 2, 40 )?>", 2, 40 );
+	                    //bValid = bValid && checkLength( fieldRestName, "<?php echo JText::sprintf( 'MOBILEAPPS_ERROR_FORM_LENGTH', JText::_( 'MOBILEAPPS_VIEW_MOBILEAPPLICATIONS_FORM_LABEL_ID' ), 2, 40 )?>", 2, 40 );
+	                    bValid = bValid && utils.checkLength( fieldRestName, $translate.instant('form.error.length', {name: $translate.instant('admin.dialog.field.label.restName'), min: 2, max: 40}), 2, 40 );
+	                    
+	                    //bValid = bValid && checkLength( fieldName, "<?php echo JText::sprintf( 'MOBILEAPPS_ERROR_FORM_LENGTH', JText::_( 'MOBILEAPPS_VIEW_MOBILEAPPLICATIONS_FORM_LABEL_NAME' ), 2, 40 )?>", 2, 40 );
+	                    bValid = bValid && utils.checkLength( fieldName, $translate.instant('form.error.length', {name: $translate.instant('admin.dialog.field.label.name'), min: 2, max: 40}), 2, 40 );
 	                                                           
 	 					if ( bValid ) {
 	 						// submits for data via POST
 	 						jQuery.ajax({  
 	 							timeout: AJAX_TIMEOUT,
+	 							url: utils.restPrefix + '/fields',
+								contentType: "application/json",
+								data: jQuery("#editFormField").serializeJSON(),  
 								type: 'POST',  
-								url: '<?php echo $this->restPrefix ?>/fields', 
-								data: jQuery("#editFormField").serialize(),  
 								success: function() {
 									ajaxCurrentTry=0;
 									jQuery(".messageTips").show();
 									// if it's an insert, display created message, else display updated message
 									if (fieldId.val() != "") {
-										utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_UPDATED' ) ?>", jQuery( "#messageText"));
+										utils.updateTipsFixed($translate.instant('admin.msg.registry.updated'), jQuery( "#messageText"));
 									} else {
-										utils.updateTipsFixed("<?php echo JText::_( 'MOBILESAPPS_SUCCESS_REGISTRY_CREATED' ) ?>", jQuery( "#messageText"));
+										utils.updateTipsFixed($translate.instant('admin.msg.registry.created'), jQuery( "#messageText"));
 									}
 									//rebuildMenus();
 									rebuildFieldGrid();									
@@ -476,16 +489,22 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 							                jQuery.ajax(this);
 							                return;
 							        	}
+							       } else if (xhr.status == 409) {	// conflict
+										utils.updateTipsError($translate.instant('admin.msg.registry.duplicate.error'), jQuery( "#dialog-form-field .validateTips"))
+							       } else { // generic error
+										utils.updateTipsError($translate.instant('admin.msg.registry.create.error'), jQuery( "#dialog-form-field .validateTips"))
 							       }
-							    	utils.updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DUPLICATE' ) ?>", jQuery( "#dialog-form-field .validateTips"));
+							    	//utils.updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_DUPLICATE' ) ?>", jQuery( "#dialog-form-field .validateTips"));
 						        }	 
 							});
 	  					}
 	                },
-	                "<?php echo JText::_( 'MOBILEAPPS_BUTTON_LABEL_CANCEL' ) ?>": function() {
+	            },{
+	                text: $translate.instant('btn.cancel'),
+	            	click: function() {
 	                    jQuery( this ).dialog( "close" );
 	                }
-	            },
+	            }],
 	            close: function() {
 	                allMenuFields.val( "" ).removeClass( "ui-state-error" );                               
 	            }
@@ -624,21 +643,21 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 		jQuery( "#dialog-form-menu" ).dialog( "open" );
 	}
 	
-	function openAndPopulateFormField(index, menu_id) {		
-		var row = jQuery(".fieldGrid#grid_" + menu_id).jqGrid('getGridParam', 'data')[index];
-		menuID = menu_id;
+	function openAndPopulateFormField(index, menuId) {		
+		var row = jQuery(".fieldGrid#grid_field_" + menuId).jqGrid('getGridParam', 'data')[index];
+		menuID = menuId;
 		
-		//node = jQuery("#menu_" + menu_id + ".sortable-accordion");	
+		//node = jQuery("#menu_" + menuId + ".sortable-accordion");	
 		//addField(node);
 		
-		setMaxFieldLevel(jQuery("#grid_" + row.mobileapps_menu_menu_id), jQuery("#fieldLevel"));
+		setMaxFieldLevel(jQuery("#grid_" + row.menuId), jQuery("#fieldLevel"));
 		
-		jQuery("#fieldId").val(row.mobileapps_field_id);
-		jQuery("#fieldMenuId").val(row.mobileapps_menu_menu_id);
-		jQuery("#fieldType").val(row.mobileapps_type_type_id);	
+		jQuery("#fieldId").val(row.fieldId);
+		jQuery("#fieldMenuId").val(row.menu.menuId);
+		jQuery("#fieldType").val(row.type.typeId);	
 		jQuery("#fieldName").val(row.name);
-		jQuery("#fieldRestName").val(row.rest_name);
-		jQuery("#fieldOrder").val(row.order);	
+		jQuery("#fieldRestName").val(row.restName);
+		jQuery("#fieldOrder").val(row.fieldOrder);	
 		jQuery("#fieldLevel").val(row.level);
 		jQuery("#fieldFrontpage").prop('checked', row.frontpage);	
 		jQuery("#fieldFrontpage").val('true');
@@ -651,12 +670,12 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	
 	function addField(obj) {
 		var dataNode = obj.parents(".sortable-accordion");	
-		menuID = dataNode.data("menu_id");
-		var fieldGrid = jQuery("#grid_" + dataNode.data("menu_id"));
+		menuID = dataNode.data("menuId");
+		var fieldGrid = jQuery("#grid_field_" + dataNode.data("menuId"));
 		
 		setMaxFieldLevel(fieldGrid, jQuery("#fieldLevel"));
 		
-		jQuery("#fieldMenuId").val(dataNode.data("menu_id"));
+		jQuery("#fieldMenuId").val(dataNode.data("menuId"));
 		jQuery("#fieldOrder").val(fieldGrid.jqGrid('getGridParam', 'records'));
 		jQuery("#fieldFrontpage").prop('checked', true);
 		jQuery("#fieldFrontpage").val('true');
@@ -671,7 +690,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	function setMaxFieldLevel(grid, obj) {
 		var maxLevel = -1;
 		obj.html("").append('<option value="0">0</option>');
-		grid.getDataIDs().each(function (value, index) {		
+		jQuery.each(grid.getDataIDs(), function (index, value) {		
 			var level = grid.jqGrid('getGridParam', 'data')[index].level;
 			if (level > maxLevel) {
 				maxLevel = level;
@@ -683,7 +702,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	function addSubmenu(obj) {
 		//openAndPopulateFormMenu(obj);
 		var dataNode = obj.parents(".sortable-accordion");
-		jQuery("#menuParentId").val(dataNode.data("menu_id"));
+		jQuery("#menuParentId").val(dataNode.data("menuId"));
 		jQuery("#menuOrder").val(dataNode.children(".wrapper").children(".sortable-accordion").length);
 		
 		jQuery( "#dialog-form-menu" ).dialog( "open" );
@@ -861,8 +880,8 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 				jQuery(ui.item.parent().children(".sortable-accordion")).each(function(index) {
 					jQuery(this).data("order", index);
 					
-					menuIds += delimiter + jQuery(this).data("menu_id");
-					menuOrders += delimiter + jQuery(this).data("order");
+					menuIds += delimiter + jQuery(this).data("menuId");
+					menuOrders += delimiter + jQuery(this).data("menuOrder");
 					delimiter = ",";
 				});					
 				
@@ -906,9 +925,11 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 				ajaxCurrentTry=0;
 				var options = [];
 				//jQuery.each(data.response, function(index, val) {
-				jQuery.each(data, function(index, val) {
-					options.push('<option value="' + val.mobileapps_type_id + '">' + val.mobileapps_type_id + '</option>');
-				});
+				if (data._embedded) {
+					jQuery.each(data._embedded.types, function(index, val) {
+						options.push('<option value="' + val.typeId + '">' + val.typeId + '</option>');
+					});
+				}
 				jQuery("#fieldType").html(options);
 			},
 			error: function(xhr, textStatus, errorThrown) {
@@ -926,24 +947,24 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	function buildFieldGrid(data) {
 		if (data.fields.length > 0) {	
 			// removes empty word if exists
-			jQuery("#menu_" + data.mobileapps_menu_id + " .wrapper .emptyMessage").first().remove();
+			jQuery("#menu_" + data.menuId + " .wrapper .emptyMessage").first().remove();
 			
 			/** jqGrid fields table **/
-			var tableGrid = jQuery("<table class='fieldGrid' id=grid_" + data.mobileapps_menu_id + "></table>");
-			jQuery("#menu_" + data.mobileapps_menu_id + " .wrapper").first().prepend(tableGrid);
-			jQuery(".fieldGrid#grid_" + data.mobileapps_menu_id)
+			var tableGrid = jQuery("<table class='fieldGrid' id=grid_field_" + data.menuId + "></table>");
+			jQuery("#menu_" + data.menuId + " .wrapper").first().prepend(tableGrid);
+			jQuery(".fieldGrid#grid_field_" + data.menuId)
 			.jqGrid({	   	
 				datatype: "local",		
-				data: data.fieldSet,
+				data: data.fields,
 			   	//colNames:['Nome',' '],
 			   	colModel:[
 			   		{name:'name', index:'name', width:350, align:'left', resizable: false, sortable:true, formatter:editFieldFormatter},		   		
 			   		{name:'deleteField', width:35, resizable: false, sortable: false, fixed: true, align:'center', formatter:deleteFieldFormatter},
-			   		{name:'mobileapps_field_id', hidden: true},
-			   		{name:'mobileapps_menu_menu_id', hidden: true},
-			   		{name:'rest_name', hidden: true},
+			   		{name:'fieldId', hidden: true},
+			   		{name:'menu.menuId', hidden: true},
+			   		{name:'restName', hidden: true},
 			   		{name:'level', hidden: true},
-			   		{name:'order', hidden: true},
+			   		{name:'fieldOrder', hidden: true},
 			   		{name:'frontpage', hidden: true},
 			   		{name:'extras', hidden: true},
 			   		{name:'description', hidden: true}
@@ -965,26 +986,31 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 						icons: {
 				        	primary: "ui-icon-trash"
 				    	}, 	text: false    
+					}).off().click(function (){
+						openRemoveFieldDialog(jQuery(this).data('fieldid'), jQuery(this).data('menuid'));
 					});	
-					jQuery(this).jqGrid('setGridHeight', jQuery(this).height());				
+					jQuery(this).jqGrid('setGridHeight', jQuery(this).height());
+					
+					jQuery( ".editField" ).off().click(function() {
+						openAndPopulateFormField(jQuery(this).data('id'), jQuery(this).data('menuid'));
+					});
+					//onclick="openAndPopulateFormField(' + (options.rowId - 1) + ',' + rowObject.menu.menuId + ')"
 				}			
 			});
 			
-			jQuery(".fieldGrid#grid_" + data.mobileapps_menu_id).sortableRows({
+			jQuery(".fieldGrid#grid_field_" + data.menuId).sortableRows({
 				delay: 50,
 				update: function(event, ui) {
 					// updates order of each element
 					var delimiter = "", fieldIds = "", fieldOrders = "";
-					thisMenuId = ui.item.parents(".sortable-accordion").data("menu_id");
-					thisGrid = jQuery(".fieldGrid#grid_" + thisMenuId);
+					thisMenuId = ui.item.parents(".sortable-accordion").data("menuId");
+					thisGrid = jQuery(".fieldGrid#grid_field_" + thisMenuId);
 					
 					thisGrid.jqGrid('getDataIDs').each(function(row, index) {
 						fieldIds += delimiter + thisGrid.jqGrid('getRowData', row).mobileapps_field_id;
 						fieldOrders += delimiter + index;
 						delimiter = ",";
 					});	
-					
-					//console.debug("fieldIds", fieldIds)
 					
 					// sends order update to server
 					jQuery.ajax("<?php echo $this->restPrefix ?>/fields/updateorder/" + fieldIds + "/orders/" + fieldOrders,
@@ -1002,12 +1028,16 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	   jQuery.ajax({  
 			timeout: AJAX_TIMEOUT,
 			type: 'GET',  
-			url: '<?php echo $this->restPrefix ?>/menus/' + menuID, 
+			//url: '<?php echo $this->restPrefix ?>/menus/' + menuID,
+			url: utils.restPrefix + '/menus/' + menuID + '?projection=menuProjection',
 			success: function(data) {
 				ajaxCurrentTry=0;
-				jQuery(".fieldGrid#grid_" + data.response.mobileapps_menu_id).jqGrid('GridDestroy');
-				addEmptyMessage("<?php echo JText::_( 'MOBILESAPPS_INFO_EMPTY' ) ?>");		
-				buildFieldGrid(data.response);
+				//jQuery(".fieldGrid#grid_field_" + data.menuId).jqGrid('GridDestroy');
+				try {
+					jQuery.jgrid.gridDestroy("grid_field_" + data.menuId);
+				} catch (e) {}
+				addEmptyMessage($translate.instant('admin.label.empty'));		
+				buildFieldGrid(data);
 			},
 			error: function(xhr, textStatus, errorThrown) {
 		    	if (xhr.statusText == "error" || xhr.statusText == "timeout") {
@@ -1024,9 +1054,9 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	/**
 	 * Opens delete field dialog
 	 */
-	function openRemoveFieldDialog(field_id, menu_id) {
-		fieldID = field_id;
-		menuID = menu_id;		
+	function openRemoveFieldDialog(fieldId, menuId) {
+		fieldID = fieldId;
+		menuID = menuId;		
 		jQuery("#dialog-confirm-field").show().dialog("open");
 	}
 	
@@ -1062,7 +1092,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	 * Formats the Delete Field Icon 
 	 */
 	function deleteFieldFormatter(cellvalue, options, rowObject) {
-		return "<button class=\"deleteField\" onclick=\"openRemoveFieldDialog('" + rowObject.mobileapps_field_id + "','" + rowObject.mobileapps_menu_menu_id + "')\"><?php echo JText::_( 'MOBILEAPPS_VIEW_FIELD_IMAGE_TITLE_REMOVE_FIELD' ) ?></button>";
+		return "<button class=\"deleteField\" data-fieldid=\"" + rowObject.fieldId + "\" data-menuid=\"" + rowObject.menu.menuId + "\">" + $translate.instant('admin.dialog.field.remove') + "</button>";
 	}
 	
 	/**
@@ -1071,9 +1101,9 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	function editFieldFormatter(cellvalue, options, rowObject) {
 		editFieldLink = "";
 		if (rowObject.level > 0) {
-			editFieldLink += '<span class="level-icon ui-icon ui-icon-arrowreturn-1-e"  style="margin-left: ' + ((rowObject.level - 1)* 20) + 'px"></span>';
+			editFieldLink += '<span class="level-icon ui-icon ui-icon-arrowreturn-1-e"  style="margin-left: ' + ((rowObject.fieldLevel - 1)* 20) + 'px"></span>';
 		}	
-		editFieldLink += '<a href="#" onclick="openAndPopulateFormField(' + (options.rowId - 1) + ',' + rowObject.mobileapps_menu_menu_id + ')" style="display: block; margin-left: ' + (rowObject.level * 20) + 'px">' + cellvalue + ' (' + rowObject.rest_name + ')</a>';
+		editFieldLink += '<a href="#" class="editField" data-id="' + (options.rowId - 1) + '" data-menuid="' + rowObject.menu.menuId + '" style="display: block; margin-left: ' + (rowObject.level * 20) + 'px">' + cellvalue + ' (' + rowObject.restName + ')</a>';
 		return editFieldLink;
 	}
 

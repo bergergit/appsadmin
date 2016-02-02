@@ -63,6 +63,7 @@ appsadmin_translations.en = {
 		"button.addType": "Adicionar Tipo",
 		"label.apps": "Aplicativos",
 		"label.menu": "Menu",
+		"label.empty": "(vazio)",
 		"msg.registry.deleted": "Registro removido com sucesso.",
 		"msg.registry.updated": "Registro atualizado com sucesso!",
 		"msg.registry.created": "Registro criado com sucesso!",
@@ -84,7 +85,7 @@ appsadmin_translations.en = {
 		"dialog.application.label.mainLocale": "Idioma Principal",
 		"dialog.application.label.supportedLocales": "Idiomas Suportados",
 		"dialog.menu.title": "Menu",
-		"admin.dialog.subMenu.title": "Submenu de {{menu}}",
+		"dialog.subMenu.title": "Submenu de {{menu}}",
 		"dialog.menu.label.restName": "Rest Name",
 		"dialog.menu.label.name": "Nome",
 		"dialog.menu.label.description": "Descrição",
@@ -94,6 +95,14 @@ appsadmin_translations.en = {
 		"dialog.type.label.mimeType": "Mime/Type",
 		"dialog.type.label.input": "Código do input",
 		"dialog.type.label.description": "Descrição",
+		"dialog.field.title": "Campo",
+		"dialog.field.label.restName": "Rest Name",
+		"dialog.field.label.name": "Nome",
+		"dialog.field.label.frontpage": "Frontpage",
+		"dialog.field.label.level": "Nível",
+		"dialog.field.label.description": "Descrição",
+		"dialog.field.label.extras": "Extras",
+		"dialog.field.remove": "Remover Campo"
 		
 	}
 

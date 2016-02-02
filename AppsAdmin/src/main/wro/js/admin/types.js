@@ -73,7 +73,7 @@ angular.module('appsadmin.typesjs', ['appsadmin.utils'])
  	
  	// dialog - remove
  	jQuery( ".dialog" ).hide();	
-     jQuery( "#dialog-confirm" ).dialog({
+     jQuery( "#dialog-confirm-type" ).dialog({
     	 title: $translate.instant('admin.dialog.title.remove'),
          resizable: false,
          height:200,
@@ -88,15 +88,15 @@ angular.module('appsadmin.typesjs', ['appsadmin.utils'])
  				jQuery.ajax({  
  					type: 'DELETE',  
 					url: utils.restPrefix + '/types/' + mainID, 
- 					//data: jQuery("#editForm").serialize(),  
+ 					//data: jQuery("#editFormType").serialize(),  
  					success: function() {
  						utils.updateTipsFixed($translate.instant('admin.msg.registry.deleted'), jQuery( "#messageText"))
  						jQuery('#types_list').jqGrid('setGridParam', {datatype:'json'});
  						jQuery('#types_list').trigger('reloadGrid');												
- 						jQuery( "#dialog-confirm" ).dialog( "close" );
+ 						jQuery( "#dialog-confirm-type" ).dialog( "close" );
  					},
  					error: function(errorObj) {
- 						utils.updateTipsError($translate.instant('admin.msg.registry.delete.error'), jQuery( "#dialog-confirm .validateTips"))
+ 						utils.updateTipsError($translate.instant('admin.msg.registry.delete.error'), jQuery( "#dialog-confirm-type .validateTips"))
  					}  
  				});
              }
@@ -109,11 +109,11 @@ angular.module('appsadmin.typesjs', ['appsadmin.utils'])
  	});
  	
  	// dialog - add new type
- 	jQuery( "#dialog-form" ).dialog({
+ 	jQuery( "#dialog-form-type" ).dialog({
  		 	closeOnEscape: false,
 			open: function(event, ui) { 
 				//jQuery(".ui-dialog-titlebar-close", ui.dialog || ui).hide(); 
-				jQuery( "#dialog-form .validateTips").text('').removeClass("ui-state-error");;
+				jQuery( "#dialog-form-type .validateTips").text('').removeClass("ui-state-error");;
 			},
     		 title: $translate.instant('admin.dialog.type.title'),
              autoOpen: false,
@@ -136,7 +136,7 @@ angular.module('appsadmin.typesjs', ['appsadmin.utils'])
  							type: 'POST',  
  							url: utils.restPrefix + '/types',
  							contentType: "application/json",
- 							data: jQuery("#editForm").serializeJSON(),  
+ 							data: jQuery("#editFormType").serializeJSON(),  
  							success: function() {
  								jQuery(".messageTips").show();
  								// if it's an insert, display created message, else display updated message
@@ -148,13 +148,13 @@ angular.module('appsadmin.typesjs', ['appsadmin.utils'])
  								
  								jQuery('#types_list').jqGrid('setGridParam', {datatype:'json'});
  								jQuery('#types_list').trigger('reloadGrid');												
- 								jQuery( "#dialog-form" ).dialog( "close" );
+ 								jQuery( "#dialog-form-type" ).dialog( "close" );
  							},
  							error: function(errorObj) {
  								if (xhr.status == 409) {	// conflict
-									utils.updateTipsError($translate.instant('admin.msg.registry.duplicate.error'), jQuery( "#dialog-form .validateTips"))
+									utils.updateTipsError($translate.instant('admin.msg.registry.duplicate.error'), jQuery( "#dialog-form-type .validateTips"))
 								} else { // generic error
-									utils.updateTipsError($translate.instant('admin.msg.registry.create.error'), jQuery( "#dialog-form .validateTips"))
+									utils.updateTipsError($translate.instant('admin.msg.registry.create.error'), jQuery( "#dialog-form-type .validateTips"))
 								}
  							}  
  						});
@@ -174,7 +174,7 @@ angular.module('appsadmin.typesjs', ['appsadmin.utils'])
          });
     
  	// button - add new type	
- 	jQuery( "#addButton" )
+ 	jQuery( "#addButtonType" )
  		.button({
  			label: $translate.instant('admin.button.addType'),
  			icons: { primary: "ui-icon-plusthick" }
@@ -183,7 +183,7 @@ angular.module('appsadmin.typesjs', ['appsadmin.utils'])
  			type.prop('readonly', false);
  			type.removeClass('ui-state-disabled');
  			removable.val(true);
-         	jQuery( "#dialog-form" ).dialog( "open" );        	
+         	jQuery( "#dialog-form-type" ).dialog( "open" );        	
      	});    	
    
  });
@@ -200,7 +200,7 @@ angular.module('appsadmin.typesjs', ['appsadmin.utils'])
  	jQuery("#description").val(row.description);
  	jQuery("#removable").val(row.removable);
  	
- 	jQuery( "#dialog-form" ).dialog( "open" );
+ 	jQuery( "#dialog-form-type" ).dialog( "open" );
  }
 
 

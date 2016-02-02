@@ -31,7 +31,7 @@
 </div>
 
 <!-- FIELD CONFIRMATION DIALOG -->
-<div id="dialog-confirm-field" class="dialog" title="{{ 'admin.dialog.title.remove' | translate }}">
+<div id="dialog-confirm-field" class="dialog">
    	<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>{{ 'admin.dialog.removeField' | translate }}</p>
 </div>
 
@@ -86,29 +86,29 @@
 </div>
 
 <!-- EDIT FIELD DIALOG -->
-<div id="dialog-form-field" class="dialog-form small-select" title="'MOBILEAPPS_VIEW_FIELD_TITLE'">
+<div id="dialog-form-field" class="dialog-form small-select">
 	<p class="validateTips"></p>
 	
     <form id="editFormField">
     <fieldset>
-        <label for="fieldRestName">'MOBILEAPPS_VIEW_MOBILEAPPLICATIONS_FORM_LABEL_ID'</label>
-        <input type="text" name="field[rest_name]" id="fieldRestName" maxlength="20" class="text ui-widget-content ui-corner-all" />
-        <label for="fieldName">'MOBILEAPPS_VIEW_MOBILEAPPLICATIONS_FORM_LABEL_NAME'</label>
-        <input type="text" name="field[name]" id="fieldName" maxlength="100" class="text ui-widget-content ui-corner-all" />
-        <label for="fieldFrontpage" style="display: inline">'MOBILEAPPS_VIEW_FIELDS_FORM_LABEL_FRONTPAGE'</label>
-        <input type="checkbox" name="field[frontpage]" id="fieldFrontpage" value="true" style="display: inline"></input>
-        <label for="fieldLevel" style="margin: 10px 0 2px 0; display: block">'MOBILEAPPS_VIEW_FIELDS_FORM_LABEL_LEVEL'</label>
-        <select name="field[level]" id="fieldLevel"></select> 
-        <label for="fieldType">'MOBILEAPPS_VIEW_TYPES_FORM_LABEL_TYPE'</label>
-        <select name="field[mobileapps_type_type_id]" id="fieldType"></select>
-        <label for="fieldDescription" style="margin: 10px 0 2px 0;">'MOBILEAPPS_VIEW_TYPES_FORM_LABEL_DESCRIPTION'</label>
-        <textarea name="field[description]" id="fieldDescription" maxlength="500" class="ui-widget ui-widget-content ui-corner-all"></textarea>    
-        <label for="fieldExtras" style="margin: 10px 0 2px 0;">'MOBILEAPPS_VIEW_FIELDS_FORM_LABEL_EXTRAS'</label>
-        <textarea name="field[extras]" id="fieldExtras" maxlength="5000" class="ui-widget ui-widget-content ui-corner-all"></textarea>    
+        <label for="fieldRestName">{{ 'admin.dialog.field.label.restName' | translate }}</label>
+        <input type="text" name="restName" id="fieldRestName" maxlength="20" class="text ui-widget-content ui-corner-all" />
+        <label for="fieldName">{{ 'admin.dialog.field.label.name' | translate }}</label>
+        <input type="text" name="name" id="fieldName" maxlength="100" class="text ui-widget-content ui-corner-all" />
+        <label for="fieldFrontpage" style="display: inline">{{ 'admin.dialog.field.label.frontpage' | translate }}</label>
+        <input type="checkbox" name="frontpage" id="fieldFrontpage" value="true" style="display: inline"></input>
+        <label for="fieldLevel" style="margin: 10px 0 2px 0; display: block">{{ 'admin.dialog.field.label.level' | translate }}</label>
+        <select name="level" id="fieldLevel"></select> 
+        <label for="fieldType">{{ 'admin.dialog.type.label.type' | translate }}</label>
+        <select name="type[typeId]" id="fieldType"></select>
+        <label for="fieldDescription" style="margin: 10px 0 2px 0;">{{ 'admin.dialog.field.label.description' | translate }}</label>
+        <textarea name="description" id="fieldDescription" maxlength="500" class="ui-widget ui-widget-content ui-corner-all"></textarea>    
+        <label for="fieldExtras" style="margin: 10px 0 2px 0;">{{ 'admin.dialog.field.label.extras' | translate }}</label>
+        <textarea name="extras" id="fieldExtras" maxlength="5000" class="ui-widget ui-widget-content ui-corner-all"></textarea>    
         
-        <input type="hidden" name="field[mobileapps_menu_menu_id]" id="fieldMenuId"/>
-        <input type="hidden" name="field[mobileapps_field_id]" id="fieldId"/>
-        <input type="hidden" name="field[order]" id="fieldOrder"/>    
+        <input type="hidden" name="menu[menuId]" id="fieldMenuId"/>
+        <input type="hidden" name="fieldId" id="fieldId"/>
+        <input type="hidden" name="fieldOrder" id="fieldOrder"/>    
     </fieldset>
     </form>
 </div>

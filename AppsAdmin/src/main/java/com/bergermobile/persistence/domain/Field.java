@@ -11,8 +11,9 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import lombok.Data;
+import org.springframework.data.rest.core.annotation.RestResource;
 
+import lombok.Data;
 
 /**
  * The persistent class for the field database table.
@@ -24,7 +25,7 @@ public class Field implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer fieldId;
 
 	private String description;
@@ -32,7 +33,7 @@ public class Field implements Serializable {
 	@Lob
 	private String extras;
 
-	private byte frontpage;
+	private Boolean frontpage;
 
 	private int level;
 
@@ -42,18 +43,18 @@ public class Field implements Serializable {
 
 	private String restName;
 
-	//bi-directional many-to-one association to Content
-	@OneToMany(mappedBy="field")
+	// bi-directional many-to-one association to Content
+	@OneToMany(mappedBy = "field")
 	private List<Content> contents;
 
-	//bi-directional many-to-one association to Type
+	// bi-directional many-to-one association to Type
 	@ManyToOne
+	@RestResource(exported=false)
 	private Type type;
 
-	//bi-directional many-to-one association to Menu
+	// bi-directional many-to-one association to Menu
 	@ManyToOne
+	@RestResource(exported=false)
 	private Menu menu;
-
-	
 
 }

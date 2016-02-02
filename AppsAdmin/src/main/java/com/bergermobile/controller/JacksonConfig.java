@@ -4,6 +4,8 @@ import org.springframework.boot.autoconfigure.data.rest.SpringBootRepositoryRest
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 
+import com.bergermobile.persistence.domain.Field;
+import com.bergermobile.persistence.domain.Menu;
 import com.bergermobile.persistence.domain.Type;
 
 @Configuration
@@ -13,6 +15,8 @@ public class JacksonConfig extends SpringBootRepositoryRestMvcConfiguration {
 	 */
     @Override
     protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
+    	config.exposeIdsFor(Menu.class);
         config.exposeIdsFor(Type.class);
+        config.exposeIdsFor(Field.class);
     }
 }
