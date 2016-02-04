@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * The persistent class for the field database table.
@@ -21,6 +22,7 @@ import lombok.Data;
  */
 @Entity
 @Data
+@EqualsAndHashCode(of={"fieldId"})
 public class Field implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -13,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 
 /**
@@ -21,6 +22,7 @@ import lombok.Data;
  */
 @Entity
 @Data
+@EqualsAndHashCode(of={"contentId"})
 public class Content implements Serializable {
 	private static final long serialVersionUID = 1L;
 

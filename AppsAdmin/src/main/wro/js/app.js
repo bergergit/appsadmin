@@ -7,7 +7,8 @@ angular.module('appsadmin', [
   'facebook',
   'bmauth.main',
   'appsadmin.navigation',
-  'appsadmin.admin'
+  'appsadmin.admin',
+  'appsadmin.frontend'
  ])
  
  /**
@@ -38,11 +39,11 @@ angular.module('appsadmin', [
 	// routes configuration
 	$routeProvider.when('/', { 
 		  templateUrl: 'fragments/home/home.html',
-		  controller: 'NavigationCtrl',
+		  controller: 'HomeCtrl',
 		  controllerAs: 'vm'
 	}).when('/login', { 
 		  templateUrl: 'fragments/home/login.html',
-		  controller: 'NavigationCtrl',
+		  controller: 'HomeCtrl',
 		  controllerAs: 'vm'
 	}).when('/users', { 
 		  templateUrl: 'fragments/admin/users.html',
@@ -55,6 +56,10 @@ angular.module('appsadmin', [
 	}).when('/types', { 
 		  templateUrl: 'fragments/admin/types.html',
 		  controller: 'TypesCtrl',
+		  controllerAs: 'vm'
+	}).when('/frontend/:applicationId', { 
+		  templateUrl: 'fragments/frontend/content.html',
+		  controller: 'FrontendCtrl',
 		  controllerAs: 'vm'
 	})
 	.otherwise({redirectTo: '/'});

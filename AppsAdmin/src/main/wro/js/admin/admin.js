@@ -23,7 +23,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	
 	/** jqGrid table **/
 	jQuery("#mobileApplications_list").jqGrid({
-	   	url: utils.restPrefix + '/applications',
+	   	url: utils.restPrefix + '/applications?projection=applicationProjection',
 		datatype: "json",
 		jsonReader : {
 			root: "_embedded.applications",

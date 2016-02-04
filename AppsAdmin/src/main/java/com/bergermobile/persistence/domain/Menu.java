@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 
 /**
@@ -22,6 +23,7 @@ import lombok.Data;
  */
 @Entity
 @Data
+@EqualsAndHashCode(of={"menuId"})
 public class Menu implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -3,15 +3,20 @@
 angular.module('appsadmin.navigation', [])
 
 /** Controller that manages navigation actions, related to the navbar */
-.controller('NavigationCtrl', ['$location','$routeParams','auth', function($location, $routeParams, auth) {
+.controller('NavigationCtrl', ['$location','$routeParams','auth','navigationService', function($location, $routeParams, auth, navigationService) {
 	var vm = this;
 	//var authenticatedPaths = '/applications*|/users*';
 	var authenticatedPaths = '.*';
 	
-	if ($routeParams.reset) {
-		auth.clear(true);
-		$location.search('reset', null);
+	// fetch applications belonging to this user
+	if (auth.authenticated) {
+		//vm.applications = navigationService.query({ userId: auth.data.id });
+		var applications = navigationService.query({userId: auth.data.id, projection: 'simple'}, function() {
+			vm.applications = new navigationService(applications._embedded ? applications._embedded['applications'] : {});
+		});
 	}
+	
+
 	
 	vm.showNavBar = function() {
 		// show navbar if in administration screens

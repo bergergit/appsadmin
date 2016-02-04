@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Relationship with BMAuth users with AppsAdmin created applications
@@ -22,6 +23,7 @@ import lombok.Data;
 @Table(uniqueConstraints=@UniqueConstraint(columnNames={"userId","application_applicationId"}))
 @Entity
 @Data
+@EqualsAndHashCode(of={"applicationUserId"})
 public class ApplicationUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
