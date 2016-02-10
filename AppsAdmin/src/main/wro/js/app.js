@@ -57,7 +57,7 @@ angular.module('appsadmin', [
 		  templateUrl: 'fragments/admin/types.html',
 		  controller: 'TypesCtrl',
 		  controllerAs: 'vm'
-	}).when('/frontend/:applicationId', { 
+	}).when('/edit/:applicationId', { 
 		  templateUrl: 'fragments/frontend/content.html',
 		  controller: 'FrontendCtrl',
 		  controllerAs: 'vm'

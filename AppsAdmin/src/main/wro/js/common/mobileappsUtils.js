@@ -16,11 +16,12 @@ var utils = {
 	includeCsrf: function() {
 		/** Including CSRF token in all ajax requests **/
 		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
+		//var header = $("meta[name='_csrf_header']").attr("content");
+		var header = "X-XSRF-TOKEN", cookieID = "XSRF-TOKEN";;
 		$(document).ajaxSend(function(e, xhr, options) {
 			// reseting csrf header
-			if ($cookies.get(header)) {
-				$("meta[name='_csrf']").attr("content", $cookies.get("XSRF-TOKEN"));
+			if ($cookies.get(cookieID)) {
+				$("meta[name='_csrf']").attr("content", $cookies.get(cookieID));
 				token = $("meta[name='_csrf']").attr("content");
 			}
 			xhr.setRequestHeader(header, token);

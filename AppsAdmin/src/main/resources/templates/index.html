@@ -47,6 +47,9 @@
 	          	<li ng-class="vm.activeClass('users')" ng-show="vm.hasRole('ROLE_ADMIN')"><a href="users"><strong>{{ 'navigation.users' | translate }}</strong></a></li>
 	          	<li ng-class="vm.activeClass('admin')" ng-show="vm.hasRole('ROLE_ADMIN')"><a href="admin"><strong>{{ 'navigation.admin' | translate }}</strong></a></li>
 	          	<li ng-class="vm.activeClass('types')" ng-show="vm.hasRole('ROLE_ADMIN')"><a href="types"><strong>{{ 'navigation.types' | translate }}</strong></a></li>
+	          	<li ng-repeat="application in vm.applications" ng-class="vm.activeClass({{application.applicationId}})">
+	          		<a href="edit/{{application.applicationId}}"><strong>{{ application.name }}</strong></a>
+	          	</li>
 	          </ul>
 			  <ul class="nav navbar-nav navbar-right">
 					<li ng-show="!vm.isAnonymous()"><a href="" title="{{ 'exit' | translate }}" ng-click="vm.logout()"><span class="glyphicon glyphicon-log-out"></span></a></li>

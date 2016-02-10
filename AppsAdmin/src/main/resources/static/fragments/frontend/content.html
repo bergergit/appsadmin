@@ -1,1 +1,36 @@
-Content admin!
+<div ng-include="'fragments/admin/tips.html'"></div>
+
+<span class="h1_azul maintitle"></span>
+
+<!-- === MENUS AND CONTENTS == -->
+<div id="main-content">
+	<div id="accordion" class="big-accordion ui-accordion ui-widget ui-helper-reset ui-corner-all" role="tablist">		 
+	</div>	
+</div>
+
+<!-- CONTENT DIALOG -->
+<div id="dialog-form" class="dialog-form dynamic-dialog" title="<?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_TITLE' ) ?>">
+	<div id="progressbar"></div>
+	<p class="validateTips"></p>
+	
+    <form id="editForm" enctype="multipart/form-data">
+		<div id="tabs">					   
+		</div> 
+		
+		<input type="hidden" name="content[locales]" id="h_locales" />   	
+		<input type="hidden" name="content[field_ids]" id="h_fields" />
+		<input type="hidden" name="content[content_ids]" id="h_contents" />
+		<input type="hidden" name="content[menu_id]" id="h_menu_id" />
+		<input type="hidden" name="content[uniqueId]" id="h_uniqueId" />
+		<input type="hidden" name="content[ftd]" id="h_ftd" />
+    </form>
+</div>
+
+<div id="dialog-confirm" class="dialog" title="<?php echo JText::_( 'MOBILEAPPS_DIALOG_LABEL_DELETE' ) ?>">
+    <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span><?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_REMOVE_MSG' ) ?></p>
+	<p class="validateTips" style="display: none"></p>
+</div>
+
+<!-- SPINNER -->
+<div id="spinner"></div>
+

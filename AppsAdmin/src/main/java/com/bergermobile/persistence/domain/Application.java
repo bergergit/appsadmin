@@ -17,8 +17,6 @@ import javax.persistence.OrderBy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import org.springframework.data.rest.core.annotation.RestResource;
-
 /**
  * The persistent class for the application database table.
  * 
@@ -47,7 +45,7 @@ public class Application implements Serializable {
 	//bi-directional many-to-one association to Menu
 	@OneToMany(mappedBy="application")
 	@OrderBy("menuOrder")
-	@RestResource(exported=false)
+	//@RestResource(exported=false)
 	private List<Menu> menus;
 	
 	//bi-directional many-to-one association to Menu

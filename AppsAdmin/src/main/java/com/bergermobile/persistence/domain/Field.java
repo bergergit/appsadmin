@@ -2,6 +2,7 @@ package com.bergermobile.persistence.domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,11 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import org.springframework.data.rest.core.annotation.RestResource;
+import javax.persistence.Transient;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import org.springframework.data.rest.core.annotation.RestResource;
 
 /**
  * The persistent class for the field database table.
@@ -25,6 +27,11 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of={"fieldId"})
 public class Field implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	
+	public Field() {
+		setUniqueId(UUID.randomUUID().toString());
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,6 +51,9 @@ public class Field implements Serializable {
 	private int fieldOrder;
 
 	private String restName;
+	
+	@Transient
+	private String uniqueId;
 
 	// bi-directional many-to-one association to Content
 	@OneToMany(mappedBy = "field")

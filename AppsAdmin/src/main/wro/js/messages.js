@@ -26,8 +26,9 @@ appsadmin_translations.en = {
 		"btn.login": "Login &raquo;"
 	},
 
-	"apps": {
-		
+	"frontend": {
+		"btn.addContent": "Adicionar novo conteúdo a ",
+		"label.empty": "(vazio)"
 	},
 	
 	"login": {

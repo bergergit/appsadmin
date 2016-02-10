@@ -40,5 +40,6 @@ public class Type implements Serializable {
 
 	//bi-directional many-to-one association to Field
 	@OneToMany(mappedBy="type")
+	//@JsonIgnore
 	private List<Field> fields;
 }
