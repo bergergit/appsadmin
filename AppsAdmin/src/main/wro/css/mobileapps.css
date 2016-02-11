@@ -54,6 +54,13 @@ Fixing bootstrap and jqueryui coexistence
 .dialog-form audio, .dialog-form video, .dialog-form label div { 
 	margin-bottom:8px;
 }
+.dialog-form button,
+.dialog-form input,
+.dialog-form optgroup,
+.dialog-form select,
+.dialog-form textarea {
+  font-weight: normal;
+}
 .small-select select {
 	width: auto;
 	display: block;
@@ -63,6 +70,7 @@ Fixing bootstrap and jqueryui coexistence
 	float: left;
 }
 .dialog-form label { 
+	display: block;
 }
 
 .dialog-form input.input-datepicker  { 

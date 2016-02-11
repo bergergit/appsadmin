@@ -326,20 +326,23 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 function contentDialog(data) {
 		 console.debug('contentDialog data', data);
 	 	// creates one tab for each language	
-	 	jQuery("#dialog-form-content #tabs").html("").append("<ul></ul>");
+	 	jQuery("#dialog-form-content #tabs").html('<div id="tab-content" class="tab-content"></div>').prepend('<ul class="nav nav-tabs" role="tablist">');
 	 	jQuery.each(data.supportedLocales.split(","), function(index, value) {
 	 		if (value == data.mainLocale) {
-	 			jQuery("#dialog-form-content #tabs ul").prepend("<li><a href='#tabs-" + value + "'><em>" + $translate.instant('frontend.label.default') + "</em> - " + $translate.instant('locales.' + value) + "</a></li>");
+	 			jQuery("#dialog-form-content #tabs ul").prepend("<li role='presentation' role='tab'><a href='#' data-target='#tabs-" + value + "' data-toggle='tab'>" + $translate.instant('locales.' + value) + " - <em>" + $translate.instant('frontend.label.default') + "</em></a></li>");
 	 			//jQuery("#dialog-form-content #tabs ul").prepend("<li><a  data-target='#tabs-" + value + "'><em>" + $translate.instant('frontend.label.default') + "</em> - " + $translate.instant('locales.' + value) + "</a></li>");
 	 		} else {
-	 			jQuery("#dialog-form-content #tabs ul").append("<li><a href='#tabs-" + value + "'>" + $translate.instant('locales.' + value) + "</a></li>");
+	 			jQuery("#dialog-form-content #tabs ul").append("<li role='presentation' role='tab'><a href='#' data-target='#tabs-" + value + "' data-toggle='tab'>" + $translate.instant('locales.' + value) + "</a></li>");
 	 			//jQuery("#dialog-form-content #tabs ul").append("<li><a data-target='#tabs-" + value + "'>" + $translate.instant('locales.' + value) + "</a></li>");
 	 		}
-	 		jQuery("#dialog-form-content #tabs").append("<div id='tabs-" + value + "'></div>");
+	 		jQuery("#dialog-form-content #tab-content").append("<div role='tabpanel' class='tab-pane fade' id='tabs-" + value + "'></div>");
 	 	});
 	 	
-	 	//jQuery('#dialog-form-content #tabs ul li a').attr('href', '#');
-	 	jQuery(".dialog-form-content #tabs").tabs( {selected: 0});
+	 	//jQuery('#dialog-form #tabs ul li a').attr('href', '#');
+	 	//jQuery(".dialog-form #tabs").tabs( {selected: 0});
+	 	
+	 	jQuery(".dialog-form #tabs li:first").addClass('active');
+	 	jQuery(".dialog-form #tabs .tab-pane:first").addClass('in active');
 	 	
 	 	// dialog - add new content
 	 	jQuery( "#dialog-form-content" ).dialog({
@@ -347,7 +350,11 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 	 	title: $translate.instant('frontend.dialog.content.title'),
 	 		open: function(event, ui) {
 	 			jQuery( "#dialog-form-content .validateTips").text('');			
-	 			jQuery(".dialog-form-content #tabs").tabs( {active: 0});			
+	 			//jQuery(".dialog-form #tabs").tabs( {active: 0});			
+	 			
+	 			//jQuery(".dialog-form #tabs").tab();		
+	 			
+	 			jQuery(".dialog-form #tabs a:first").tab('show')
 	 		},
 	 		show: {
 	 			effect: "scale",
@@ -380,8 +387,10 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 
 	                 			// focus the tab
 	                 			if (!bValid) {            			
-	                            		jQuery("#dialog-form-content #tabs").tabs( { selected: index } );
-	                            	}
+	                            	//jQuery("#dialog-form-content #tabs").tabs( { selected: index } );
+	                 				//jQuery("#dialog-form-content #tabs").tab();
+	                 				jQuery("#dialog-form-content #tabs .tab-pane").first().tab('show');
+	                            }
 	                 			return bValid;     			
 	                 		}
 	                 	});	
@@ -558,7 +567,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 		 					aux = ",";
 		 					aux2 = ",";
 		 					
-		 					var clonedFieldSet = fieldSet.clone(true);					
+		 					var clonedFieldSet = fieldSet.clone(true);		
 		 					jQuery("#dialog-form-content #tabs-" + locale).html("").append(clonedFieldSet);
 		 				});
 		 			});	
@@ -600,11 +609,11 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 	input = "";
 	 	
 	 	// retrieve the input text from DB. Neat!
-	 	if (field.input != null && field.input != "") {
-	 		input = jQuery(field.input);
+	 	if (field.type.input != null && field.type.input != "") {
+	 		input = jQuery(field.type.input);
 	 	} else {
 	 		// fallback in case input text is empty
-	 		switch(field.typeId) {
+	 		switch(field.type.typeId) {
 	 			case "String":			
 	 				input = jQuery('<input type="text" class="text ui-widget-content ui-corner-all"/>');
 	 				break;

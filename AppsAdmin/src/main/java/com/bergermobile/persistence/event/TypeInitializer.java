@@ -37,14 +37,13 @@ class TypeInitializer {
 		if (typeRepository.count() != 0) {
 			return;
 		} 
-		
-		Type string = new Type("String", "text/html", "Textos pequenos como titulos. Sera visualizado como text box.", "<input type=\"text\" class=\"text ui-widget-content ui-corner-all\"/>", false, null);
-		Type bigString = new Type("BigString", "text/html", "Textos grandes como descrições. Será visualizado como TextArea.", "<textarea class=\"ui-widget ui-widget-content ui-corner-all\"></textarea>", false, null);
-		Type image = new Type("Image", "image/jpeg", "Fotos e imagens", "<input type=\"file\" class=\"text ui-widget-content ui-corner-all\"/>", false, null);
-		Type audio = new Type("Audio", "audio/mpeg", "Músicas MP3", null, false, null);
-		Type date = new Type("Date", "text/html", "Data", "<input type=\"text\" maxlength=\"10\" class=\"date ui-widget-content ui-corner-all input-datepicker\"/>", false, null);
-		Type publishedDate = new Type("PublishedDate", "text/html", "Data. Conteúdos com data inferior ao dia de hoje não serão mostrados para o usuário.", "<input type=\"text\" maxlength=\"10\" class=\"date ui-widget-content ui-corner-all input-datepicker\"/>", false, null);
-		Type video = new Type("Video", "video/mpeg", "Vídeos", "<input type=\"file\" class=\"text ui-widget-content ui-corner-all\"/>", false, null);
+		Type string = new Type("String", "Textos pequenos como titulos. Sera visualizado como text box.", "<input type=\"text\" class=\"text ui-widget-content ui-corner-all\"/>", "text/html", false, null);
+		Type bigString = new Type("BigString", "Textos grandes como descrições. Será visualizado como TextArea.", "<textarea class=\"ui-widget ui-widget-content ui-corner-all\"></textarea>", "text/html", false, null);
+		Type image = new Type("Image", "Fotos e imagens", "<input type=\"file\" class=\"text ui-widget-content ui-corner-all\"/>", "image/jpeg", false, null);
+		Type audio = new Type("Audio", "Músicas MP3", null, "audio/mpeg", false, null);
+		Type date = new Type("Date", "Data", "<input type=\"text\" maxlength=\"10\" class=\"date ui-widget-content ui-corner-all input-datepicker\"/>", "text/html", false, null);
+		Type publishedDate = new Type("PublishedDate", "Data. Conteúdos com data inferior ao dia de hoje não serão mostrados para o usuário.", "<input type=\"text\" maxlength=\"10\" class=\"date ui-widget-content ui-corner-all input-datepicker\"/>","text/html",  false, null);
+		Type video = new Type("Video", "Vídeos", "<input type=\"file\" class=\"text ui-widget-content ui-corner-all\"/>",  "video/mpeg", false, null);
 
 		typeRepository.save(Arrays.asList(string, bigString, image, audio, date, publishedDate, video));
 	}
