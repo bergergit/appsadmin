@@ -9,25 +9,25 @@
 </div>
 
 <!-- CONTENT DIALOG -->
-<div id="dialog-form" class="dialog-form dynamic-dialog" title="<?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_TITLE' ) ?>">
+<div id="dialog-form-content" class="dialog-form-content dynamic-dialog">
 	<div id="progressbar"></div>
 	<p class="validateTips"></p>
 	
-    <form id="editForm" enctype="multipart/form-data">
+    <form id="editFormContent" enctype="multipart/form-data">
 		<div id="tabs">					   
 		</div> 
 		
-		<input type="hidden" name="content[locales]" id="h_locales" />   	
-		<input type="hidden" name="content[field_ids]" id="h_fields" />
-		<input type="hidden" name="content[content_ids]" id="h_contents" />
-		<input type="hidden" name="content[menu_id]" id="h_menu_id" />
-		<input type="hidden" name="content[uniqueId]" id="h_uniqueId" />
-		<input type="hidden" name="content[ftd]" id="h_ftd" />
+		<input type="hidden" name="locales" id="h_locales" />   	
+		<input type="hidden" name="fieldIds" id="h_fields" />
+		<input type="hidden" name="contentIds" id="h_contents" />
+		<input type="hidden" name="menuIds" id="h_menu_id" />
+		<input type="hidden" name="uniqueId" id="h_uniqueId" />
+		<input type="hidden" name="ftd" id="h_ftd" />
     </form>
 </div>
 
-<div id="dialog-confirm" class="dialog" title="<?php echo JText::_( 'MOBILEAPPS_DIALOG_LABEL_DELETE' ) ?>">
-    <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span><?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_REMOVE_MSG' ) ?></p>
+<div id="dialog-confirm" class="dialog">
+    <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>{{ 'frontend.dialog.removeContent' | translate }}</p>
 	<p class="validateTips" style="display: none"></p>
 </div>
 

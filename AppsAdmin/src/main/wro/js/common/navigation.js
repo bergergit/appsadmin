@@ -18,6 +18,10 @@ angular.module('appsadmin.navigation', [])
 				vm.applications = new navigationService(applications._embedded ? applications._embedded['applications'] : {});
 			});
 		}
+		if (!auth.authenticated) {
+			vm.applications = {};
+			fetchedApps = false;
+		}
     });
 	
 	vm.showNavBar = function() {

@@ -28,7 +28,11 @@ appsadmin_translations.en = {
 
 	"frontend": {
 		"btn.addContent": "Adicionar novo conteúdo a ",
-		"label.empty": "(vazio)"
+		"dialog.content.title": "Conteúdo",
+		"dialog.content.title.of": "Conteúdo de ",
+		"dialog.removeContent": "Tem certeza que deseja remover este Conteúdo?",
+		"label.empty": "(vazio)",
+		"label.default": "Padrão"
 	},
 	
 	"login": {
