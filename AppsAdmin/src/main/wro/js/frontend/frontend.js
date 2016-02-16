@@ -31,7 +31,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 	//console.debug("Initializing...", appid);
 	 	jQuery("#accordion").html("");
 	 	jQuery("#dialog-form-content").hide();
-	 	jQuery("#dialog-confirm-content").hide();		
+	 	jQuery("#dialog-confirm").hide();		
 	 	jQuery(".messageTips").hide();
 	 	removeDialog(); 
 	 	
@@ -199,7 +199,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 		var hasContent = false;
 	 	jQuery(gridId).jqGrid("clearGridData", true);
 	 	// adding content for each field
-	 	if (data.fields && data.fields.length > 0 && data.fields.contents && data.fields.contents > 0) {
+	 	if (data.fields && data.fields.length > 0) {
 		 	jQuery.each(data.fields, function(index, field) {					
 		 		jQuery.each(field.contents, function(index2, content) {
 		 			datarow = {};		
@@ -355,6 +355,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 			//jQuery(".dialog-form #tabs").tab();		
 	 			
 	 			jQuery(".dialog-form #tabs a:first").tab('show')
+	 			jQuery(".dialog-form #tabs .tab-pane:first").find('input[type=text],textarea,select').filter(':visible:first').focus();
 	 		},
 	 		show: {
 	 			effect: "scale",
@@ -383,13 +384,14 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	                 	jQuery("#dialog-form-content #tabs-" + value + " fieldset").children().each(function(index2) {
 	                 		if (isFieldMandatory(this) && value == data.mainLocale) {
 	                 			// TODO - validar se campo file é vazio de forma diferente.
-	                 			bValid = bValid && checkEmpty( jQuery(this).children("input").first(), "<?php echo JText::_( 'MOBILEAPPS_ERROR_FORM_EMPTY' )?>".replace("%s", jQuery(this).text()));
+	                 			//bValid = bValid && checkEmpty( jQuery(this).children("input").first(), "<?php echo JText::_( 'MOBILEAPPS_ERROR_FORM_EMPTY' )?>".replace("%s", jQuery(this).text()));
+	                 			bValid = bValid && utils.checkEmpty( jQuery(this).children("input").first(), $translate.instant('form.error.empty', {name: jQuery(this).text()}));
 
 	                 			// focus the tab
 	                 			if (!bValid) {            			
 	                            	//jQuery("#dialog-form-content #tabs").tabs( { selected: index } );
 	                 				//jQuery("#dialog-form-content #tabs").tab();
-	                 				jQuery("#dialog-form-content #tabs .tab-pane").first().tab('show');
+	                 				jQuery("#dialog-form-content #tabs .tab-pane:nth-child(" + (index + 1) + ")").tab('show');
 	                            }
 	                 			return bValid;     			
 	                 		}
@@ -439,23 +441,28 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 	} else {
 	 		jQuery.ajax({  
 	 			timeout: AJAX_TIMEOUT,
-	 			type: 'POST',  
-	 			url: '<?php echo $this->restPrefix ?>/contents', 
-	 			data: jQuery("#editFormContent").serialize(),  
+	 			type: 'POST',
+	 			contentType: "application/json",
+	 			//url: '<?php echo $this->restPrefix ?>/contents',
+	 			url: utils.restPrefix + '/contents',
+	 			//data: jQuery("#editFormContent").serialize(),
+	 			data: jQuery("#editFormContent").serializeJSON(),
 	 			success: function(sucessData) {
 	 				ajaxCurrentTry = 0;
 	 				jQuery(".messageTips").show();
 	 				// if it's an insert, display created message, else display updated message
 	 				//console.debug("jQuery(\"#h_contents\").val()", jQuery("#h_contents").val().replace(/,/g, "");
 	 				if (jQuery("#h_contents").val().replace(/,/g, "") == "") {
-	 					updateTipsFixed("<?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_CREATED' ) ?>", jQuery( "#messageText"));
+	 					//updateTipsFixed("<?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_CREATED' ) ?>", jQuery( "#messageText"));
+	 					utils.updateTipsFixed($translate.instant('frontend.msg.content.updated'), jQuery( "#messageText"));
 	 				} else {
-	 					updateTipsFixed("<?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_UPDATED' ) ?>", jQuery( "#messageText"));
+	 					//updateTipsFixed("<?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_UPDATED' ) ?>", jQuery( "#messageText"));
+	 					utils.updateTipsFixed($translate.instant('frontend.msg.content.created'), jQuery( "#messageText"));
 	 				}
 	 				
-	 				buildContentGrid(sucessData.response, ".fieldGrid#grid_" + sucessData.menuId);	
+	 				buildContentGrid(sucessData, ".fieldGrid#grid_" + sucessData.menuId);	
 	 				//jQuery("#h_uniqueId").val(sucessData.response.uniqueId);	
-	 				jsonData.response.uniqueId = sucessData.response.uniqueId;										
+	 				//jsonData.response.uniqueId = sucessData.response.uniqueId;										
 	 				jQuery( "#dialog-form-content" ).dialog( "close" );
 	 			},
 	 			error: function(xhr, textStatus, errorThrown) {
@@ -465,8 +472,11 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 		                jQuery.ajax(this);
 	 		                return;
 	 		        	}
-	 		       }
-	 		       updateTipsError("<?php echo JText::_( 'MOBILEAPPS_ERROR_REGISTRY_CREATE' ) ?>", jQuery( "#dialog-form-content .validateTips"))
+	 		        } else if (xhr.status == 409) {	// conflict
+						utils.updateTipsError($translate.instant('admin.msg.registry.duplicate.error'), jQuery( "#dialog-form-content .validateTips"))
+					} else { // generic error
+						utils.updateTipsError($translate.instant('admin.msg.registry.create.error'), jQuery( "#dialog-form-content .validateTips"))
+					}
 	 	        }
 	 		});
 	 	}
@@ -477,10 +487,10 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	  */
 	 function removeDialog() {
 	 	jQuery( ".dialog" ).hide();	
-	     jQuery( "#dialog-confirm-content" ).dialog({
+	     jQuery( "#dialog-confirm" ).dialog({
 	    	 title: $translate.instant('admin.dialog.title.remove'),
 	         resizable: false,
-	         height:160,
+	         height:180,
 	         width: 380,
 	         modal: true,
 	         autoOpen: false,
@@ -493,27 +503,33 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 			effect: "scale",
 	 			duration: 100
 	 		},
-	         buttons: {
-	             "<?php echo JText::_( 'MOBILEAPPS_BUTTON_LABEL_DELETE' ) ?>": function() {            	
+	         buttons: [{
+	        	 text: $translate.instant('btn.delete'),
+	             click: function() {            	
 	                 // deletes for data via DELETE       
 	 				jQuery.ajax({  
-	 					type: 'POST',  
-	 					url: '<?php echo $this->restPrefix ?>/contents/d/group_id/' + mainID, 
+	 					type: 'DELETE',  
+	 					//url: '<?php echo $this->restPrefix ?>/contents/d/group_id/' + mainID,
+	 					url: utils.restPrefix + '/contents/groupId/' + mainID,
 	 					success: function(sucessData) {
-	 						updateTipsFixed("<?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_SUCCESS_REGISTRY_DELETED' ) ?>", jQuery( "#messageText"))
-	 						buildContentGrid(sucessData.response, ".fieldGrid#grid_" + sucessData.menuId);	
+	 						//updateTipsFixed("<?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_SUCCESS_REGISTRY_DELETED' ) ?>", jQuery( "#messageText"))
+	 						utils.updateTipsFixed($translate.instant('frontend.msg.content.deleted'), jQuery( "#messageText"))
+	 						buildContentGrid(sucessData, ".fieldGrid#grid_" + sucessData.menuId);	
 	 						utils.addEmptyMessage($translate.instant('frontend.label.empty'));											
-	 						jQuery( "#dialog-confirm-content" ).dialog( "close" );
+	 						jQuery( "#dialog-confirm" ).dialog( "close" );
 	 					},
 	 					error: function(errorObj) {
-	 						updateTipsError("<?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_ERROR_REGISTRY_DELETE' ) ?>", jQuery( "#dialog-confirm-content .validateTips"))
+	 						//updateTipsError("<?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_ERROR_REGISTRY_DELETE' ) ?>", jQuery( "#dialog-confirm-content .validateTips"))
+	 						utils.updateTipsError($translate.instant('frontend.msg.content.delete.error'), jQuery( "#dialog-confirm .validateTips"))
 	 					}  
 	 				});
 	             },
-	             "<?php echo JText::_( 'MOBILEAPPS_BUTTON_LABEL_CANCEL' ) ?>": function() {
+	         },{
+	        	 text: $translate.instant('btn.cancel'),
+	             click: function() {
 	                 jQuery( this ).dialog( "close" );
 	             }
-	         }
+	         }]
 	 	});
 	 		
 	 }
@@ -555,7 +571,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 		 						content = editRow[field.restName + "_" + locale];
 		 						contentId = editRow[field.restName + "_" + locale + "@id"];
 		 					} else {
-		 						jQuery("#h_uniqueId").val(data.uniqueId);
+		 						//jQuery("#h_uniqueId").val(data.uniqueId);
 		 						content = "";
 		 						contentId = "";
 		 					}		
@@ -605,7 +621,9 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 	});
 	 	
 	 	inputId = field.restName + '_' + locale;
-	 	inputName = 'content[' + locale + '@' + field.fieldId + '@' + contentId + ']';
+	 	//inputName = 'content[' + locale + '@' + field.fieldId + '@' + contentId + ']';
+	 	//inputName = 'content[' + locale + '_' + field.fieldId + '_' + contentId + ']';
+	 	inputName = 'contents[]';
 	 	input = "";
 	 	
 	 	// retrieve the input text from DB. Neat!
@@ -831,7 +849,9 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 		icons: {
 	         	primary: "ui-icon-trash"
 	     	}, 	text: false    
-	 	});
+	 	}).off().click(function() {
+			utils.openRemoveDialog(jQuery(this).data('id'));
+		});
 	 	jQuery( ".edit" ).button({
 	 		icons: {
 	         	primary: "ui-icon-pencil"
@@ -858,7 +878,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	  * Formats the Delete icon 
 	  */
 	 function deleteFormatter(cellvalue, options, rowObject) {
-	 	return "<button class=\"delete\" onclick=\"openRemoveDialog('" + cellvalue + "')\"><?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_IMAGE_TITLE_REMOVE_CONTENT' ) ?></button>";
+	 	return "<button class=\"delete\" data-id=\"" + cellvalue + "\">" + $translate.instant('btn.delete') + "</button>";
 	 }
 
                     	 

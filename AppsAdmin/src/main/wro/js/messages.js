@@ -32,7 +32,11 @@ appsadmin_translations.en = {
 		"dialog.content.title.of": "Conteúdo de ",
 		"dialog.removeContent": "Tem certeza que deseja remover este Conteúdo?",
 		"label.empty": "(vazio)",
-		"label.default": "Padrão"
+		"label.default": "Padrão",
+		"msg.content.updated": "Conteúdo atualizado!",
+		"msg.content.created": "Conteúdo inserido!",
+		"msg.content.deleted": "Conteúdo removido.",
+		"msg.content.delete.error": "Erro ao remover o conteúdo."
 	},
 	
 	"login": {

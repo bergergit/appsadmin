@@ -62,7 +62,7 @@ public class WebSecurityConfig {
 				.antMatchers(HttpMethod.POST, "/bmauth/logout")
 					.permitAll()
 				.antMatchers(HttpMethod.POST, "/rest/content")
-					.hasRole("USER")
+					.hasAnyRole("USER", "ADMIN")
 				.antMatchers(HttpMethod.GET, "/admin","/users","/rest/content")
 					.hasRole("USER")
 				//.antMatchers(HttpMethod.POST, "/bmauth/**")

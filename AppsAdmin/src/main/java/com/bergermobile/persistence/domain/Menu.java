@@ -16,6 +16,11 @@ import javax.persistence.OrderBy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import org.springframework.data.rest.core.annotation.RestResource;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 /**
  * The persistent class for the menu database table.
@@ -42,6 +47,8 @@ public class Menu implements Serializable {
 	//bi-directional many-to-one association to Field
 	@OneToMany(mappedBy="menu")
 	@OrderBy("fieldOrder")
+	@JsonManagedReference 
+	@RestResource(exported = false)
 	private List<Field> fields;
 
 	//bi-directional many-to-one association to Application
@@ -52,11 +59,13 @@ public class Menu implements Serializable {
 	//bi-directional many-to-one association to Menu
 	@ManyToOne
 	@JoinColumn(name="parent_menu_id")
+	@JsonBackReference
 	private Menu parentMenu;
 
 	//bi-directional many-to-one association to Menu
 	@OneToMany(mappedBy="parentMenu", cascade={ CascadeType.REMOVE })
 	@OrderBy("menuOrder")
+	@JsonManagedReference 
 	private List<Menu> menus;
 	
 	/**
