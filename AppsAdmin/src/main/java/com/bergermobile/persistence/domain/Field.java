@@ -16,9 +16,6 @@ import lombok.EqualsAndHashCode;
 
 import org.springframework.data.rest.core.annotation.RestResource;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 /**
  * The persistent class for the field database table.
  * 
@@ -51,7 +48,6 @@ public class Field implements Serializable {
 	// bi-directional many-to-one association to Content
 	@OneToMany(mappedBy = "field")
 	@RestResource(exported=false)
-	//@JsonManagedReference 
 	private List<Content> contents;
 
 	// bi-directional many-to-one association to Type
@@ -61,8 +57,6 @@ public class Field implements Serializable {
 
 	// bi-directional many-to-one association to Menu
 	@ManyToOne
-	//@RestResource(exported=false)
-	@JsonBackReference
 	private Menu menu;
 
 }

@@ -454,11 +454,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	                click: function() {
 	                    var bValid = true;
 	                    allMenuFields.removeClass( "ui-state-error" );
-	 
-	                    //bValid = bValid && checkLength( fieldRestName, "<?php echo JText::sprintf( 'MOBILEAPPS_ERROR_FORM_LENGTH', JText::_( 'MOBILEAPPS_VIEW_MOBILEAPPLICATIONS_FORM_LABEL_ID' ), 2, 40 )?>", 2, 40 );
 	                    bValid = bValid && utils.checkLength( fieldRestName, $translate.instant('form.error.length', {name: $translate.instant('admin.dialog.field.label.restName'), min: 2, max: 40}), 2, 40 );
-	                    
-	                    //bValid = bValid && checkLength( fieldName, "<?php echo JText::sprintf( 'MOBILEAPPS_ERROR_FORM_LENGTH', JText::_( 'MOBILEAPPS_VIEW_MOBILEAPPLICATIONS_FORM_LABEL_NAME' ), 2, 40 )?>", 2, 40 );
 	                    bValid = bValid && utils.checkLength( fieldName, $translate.instant('form.error.length', {name: $translate.instant('admin.dialog.field.label.name'), min: 2, max: 40}), 2, 40 );
 	                                                           
 	 					if ( bValid ) {
@@ -653,7 +649,8 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 		setMaxFieldLevel(jQuery("#grid_" + row.menuId), jQuery("#fieldLevel"));
 		
 		jQuery("#fieldId").val(row.fieldId);
-		jQuery("#fieldMenuId").val(row.menu.menuId);
+		//jQuery("#fieldMenuId").val(menuId);
+		jQuery("#fieldMenuId").val(utils.restPrefix + '/menus/' + menuId);
 		jQuery("#fieldType").val(row.type.typeId);	
 		jQuery("#fieldName").val(row.name);
 		jQuery("#fieldRestName").val(row.restName);
@@ -675,7 +672,8 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 		
 		setMaxFieldLevel(fieldGrid, jQuery("#fieldLevel"));
 		
-		jQuery("#fieldMenuId").val(dataNode.data("menuId"));
+		//jQuery("#fieldMenuId").val(dataNode.data("menuId"));
+		jQuery("#fieldMenuId").val(utils.restPrefix + '/menus/' + dataNode.data("menuId"));
 		jQuery("#fieldOrder").val(fieldGrid.jqGrid('getGridParam', 'records'));
 		jQuery("#fieldFrontpage").prop('checked', true);
 		jQuery("#fieldFrontpage").val('true');
@@ -827,7 +825,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 		makeSortable(jQuery('#accordion'));
 		
 		// adds empty message to empty nodes
-		addEmptyMessage("<?php echo JText::_( 'MOBILESAPPS_INFO_EMPTY' ) ?>");	
+		addEmptyMessage($translate.instant('admin.label.empty'));	
 		
 		// Accordion link - edit menu
 		jQuery( ".editMenu" ).click(function() {
@@ -987,12 +985,16 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 				        	primary: "ui-icon-trash"
 				    	}, 	text: false    
 					}).off().click(function (){
-						openRemoveFieldDialog(jQuery(this).data('fieldid'), jQuery(this).data('menuid'));
+						//openRemoveFieldDialog(jQuery(this).data('fieldid'), jQuery(this).data('menuid'));
+						openRemoveFieldDialog(jQuery(this).data('fieldid'), jQuery(this).parents('.sortable-accordion').data('menuId'));
 					});	
 					jQuery(this).jqGrid('setGridHeight', jQuery(this).height());
 					
 					jQuery( ".editField" ).off().click(function() {
-						openAndPopulateFormField(jQuery(this).data('id'), jQuery(this).data('menuid'));
+						//openAndPopulateFormField(jQuery(this).data('id'), jQuery(this).parent().data('menuid'));
+						console.debug('parent data', jQuery(this).parents('.sortable-accordion').data());
+						openAndPopulateFormField(jQuery(this).data('id'), jQuery(this).parents('.sortable-accordion').data('menuId'));
+						
 					});
 					//onclick="openAndPopulateFormField(' + (options.rowId - 1) + ',' + rowObject.menu.menuId + ')"
 				}			
@@ -1093,7 +1095,8 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	 * Formats the Delete Field Icon 
 	 */
 	function deleteFieldFormatter(cellvalue, options, rowObject) {
-		return "<button class=\"deleteField\" data-fieldid=\"" + rowObject.fieldId + "\" data-menuid=\"" + rowObject.menu.menuId + "\">" + $translate.instant('admin.dialog.field.remove') + "</button>";
+		//return "<button class=\"deleteField\" data-fieldid=\"" + rowObject.fieldId + "\" data-menuid=\"" + rowObject.menu.menuId + "\">" + $translate.instant('admin.dialog.field.remove') + "</button>";
+		return "<button class=\"deleteField\" data-fieldid=\"" + rowObject.fieldId + "\">" + $translate.instant('admin.dialog.field.remove') + "</button>";
 	}
 	
 	/**
@@ -1104,7 +1107,8 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 		if (rowObject.level > 0) {
 			editFieldLink += '<span class="level-icon ui-icon ui-icon-arrowreturn-1-e"  style="margin-left: ' + ((rowObject.fieldLevel - 1)* 20) + 'px"></span>';
 		}	
-		editFieldLink += '<a href="#" class="editField" data-id="' + (options.rowId - 1) + '" data-menuid="' + rowObject.menu.menuId + '" style="display: block; margin-left: ' + (rowObject.level * 20) + 'px">' + cellvalue + ' (' + rowObject.restName + ')</a>';
+		//editFieldLink += '<a href="#" class="editField" data-id="' + (options.rowId - 1) + '" data-menuid="' + rowObject.menu.menuId + '" style="display: block; margin-left: ' + (rowObject.level * 20) + 'px">' + cellvalue + ' (' + rowObject.restName + ')</a>';
+		editFieldLink += '<a href="#" class="editField" data-id="' + (options.rowId - 1) + '" style="display: block; margin-left: ' + (rowObject.level * 20) + 'px">' + cellvalue + ' (' + rowObject.restName + ')</a>';
 		return editFieldLink;
 	}
 
