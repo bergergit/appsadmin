@@ -12,14 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.bergermobile.persistence.domain.Content;
 import com.bergermobile.persistence.domain.Menu;
@@ -51,15 +49,17 @@ public class ContentController {
 	}
 	
 	@RequestMapping(value = "/contents", method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody Menu save(@RequestBody ContentRest contentRest) {
+	ResponseEntity<?>  save(@RequestBody ContentRest contentRest) {
 		contentService.save(contentRest);
-		//return menuRepository.findOne(content.getField().getMenu().getMenuId());
-		return contentService.getMenuFromContent(contentRest);
+		Menu menu = contentService.getMenuFromContent(contentRest);
+		
+		Resource<Menu> resource = new Resource<>(menu);
+		resource.add(linkTo(methodOn(ContentController.class).save(contentRest)).withSelfRel());
+		
+		return ResponseEntity.ok(resource);
 	}
 	
 	@RequestMapping(value = "/contents/groupId/{groupId}", method = RequestMethod.DELETE)
-	//@ResponseStatus(HttpStatus.OK)
 	ResponseEntity<?> deleteByGroupId(@PathVariable String groupId) {
 		Menu menu = contentService.getMenuFromGroupId(groupId);
 		
@@ -68,11 +68,7 @@ public class ContentController {
 		
 		contentService.deleteByGroupId(groupId);
 		return ResponseEntity.ok(resource);
-		//return null;
-		
-		//Menu menu = menuRepository.findOne(contentRepository.findByGroupId(groupId).get(0).getField().getMenu().getMenuId());
-		//contentRepository.deleteByGroupId(groupId);
-		//return menu;
+
 	}
 
 }

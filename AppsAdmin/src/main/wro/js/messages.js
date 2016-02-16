@@ -28,6 +28,7 @@ appsadmin_translations.en = {
 
 	"frontend": {
 		"btn.addContent": "Adicionar novo conteúdo a ",
+		"btn.editContent": "Editar conteúdo",
 		"dialog.content.title": "Conteúdo",
 		"dialog.content.title.of": "Conteúdo de ",
 		"dialog.removeContent": "Tem certeza que deseja remover este Conteúdo?",

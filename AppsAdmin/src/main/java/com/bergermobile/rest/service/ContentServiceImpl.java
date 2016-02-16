@@ -16,7 +16,6 @@ import com.bergermobile.persistence.domain.Menu;
 import com.bergermobile.persistence.repository.ContentRepository;
 import com.bergermobile.persistence.repository.FieldRepository;
 import com.bergermobile.persistence.repository.MenuRepository;
-import com.bergermobile.rest.controller.ContentController;
 import com.bergermobile.rest.domain.ContentRest;
 import com.bergermobile.security.SecurityUser;
 

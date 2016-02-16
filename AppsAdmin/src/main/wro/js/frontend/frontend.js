@@ -142,7 +142,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 			'<h3 class="head ui-accordion-header ui-helper-reset ui-state-default ui-accordion-icons ui-corner-all" role="tab">' +  	
 	 	    	'<span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e"></span>' +	    		
 	 	    	'<a href="#" id="title"></a>' +  
-	 	    	'<button class="addContent accordion-button">'+ $translate.instant('frontend.btn.addContent') + data.name + '\"</button>' +	    	
+	 	    	'<button class="addContent accordion-button">'+ $translate.instant('frontend.btn.addContent') + data.name + '</button>' +	    	
 	 	    	'</h3>' +
 	 	   		'<div class="wrapper"></div></div>');
 	 }
@@ -454,10 +454,10 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 				//console.debug("jQuery(\"#h_contents\").val()", jQuery("#h_contents").val().replace(/,/g, "");
 	 				if (jQuery("#h_contents").val().replace(/,/g, "") == "") {
 	 					//updateTipsFixed("<?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_CREATED' ) ?>", jQuery( "#messageText"));
-	 					utils.updateTipsFixed($translate.instant('frontend.msg.content.updated'), jQuery( "#messageText"));
+	 					utils.updateTipsFixed($translate.instant('frontend.msg.content.created'), jQuery( "#messageText"));
 	 				} else {
 	 					//updateTipsFixed("<?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_UPDATED' ) ?>", jQuery( "#messageText"));
-	 					utils.updateTipsFixed($translate.instant('frontend.msg.content.created'), jQuery( "#messageText"));
+	 					utils.updateTipsFixed($translate.instant('frontend.msg.content.updated'), jQuery( "#messageText"));
 	 				}
 	 				
 	 				buildContentGrid(sucessData, ".fieldGrid#grid_" + sucessData.menuId);	
@@ -856,6 +856,8 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 		icons: {
 	         	primary: "ui-icon-pencil"
 	     	}, 	text: false    
+	 	}).off().click(function() {
+	 		editContent(jQuery(this).data('id'), this);
 	 	});
 	 }
 
@@ -871,7 +873,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	  * Formats the Edit Content icon 
 	  */
 	 function editFormatter(cellvalue, options, rowObject) {
-	 	return "<button class=\"edit\" onclick=\"editContent('" + cellvalue + "', this)\"><?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_IMAGE_TITLE_EDIT_CONTENT' ) ?></button>";
+	 	return "<button class=\"edit\" data-id=\"" + cellvalue + "\">" + $translate.instant('frontend.btn.editContent') + "</button>";
 	 }
 
 	 /**

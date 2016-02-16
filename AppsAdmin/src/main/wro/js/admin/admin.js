@@ -362,6 +362,12 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	 						// builds the hidden application ID, parent and order fields
 	 						//menuAppId.val(mainID);
 	 						menuAppId.val(utils.restPrefix + '/applications/' + mainID);
+	 						if (menuParentId.val() != null && menuParentId.val() != "") {
+	 							menuParentId.val(utils.restPrefix + '/menus/' + menuParentId.val());
+	 							menuParentId.attr('name', 'parentMenu');
+	 						} else {
+	 							menuParentId.attr('name', '');
+	 						}
 	 						
 	 						// submits for data via POST
 	 						jQuery.ajax({  
