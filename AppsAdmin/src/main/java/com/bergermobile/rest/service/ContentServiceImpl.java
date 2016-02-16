@@ -60,8 +60,9 @@ public class ContentServiceImpl implements ContentService {
 					content = new Content(); 
 					content.setField(fieldRepository.findOne(Integer.parseInt(fieldIds[j])));
 					content.setLocale(locales[i]);
-					content.setGroupId(uniqueIdStr);
+					//content.setGroupId(uniqueIdStr);
 				}
+				content.setGroupId(uniqueIdStr);
 				content.setContent(contentRest.getContents().get(contentIndex));
 				setBaseFields(content);
 				contentIndex++;

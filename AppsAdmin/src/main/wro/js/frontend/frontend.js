@@ -47,7 +47,6 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	         dataType: "json",
 	         timeout: AJAX_TIMEOUT,
 	         success: function(data) {
-	        	console.debug('data', data);
 	         	ajaxCurrentTry = 0;
 	         	jsonData = data;
 	         	jQuery("#main-content").spin(false);
@@ -152,7 +151,6 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 }
 
 	 function buildContentGrid(data) {
-		 console.debug('buildContentGrid data', data)
 	 	var gridId = ".fieldGrid#grid_" + data.menuId;
 
 	 	if (data.fields.length > 0 && jQuery(gridId).length == 0) {	
@@ -194,8 +192,6 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	  * The funky function that sets contents into the content grid 
 	  */
 	 function setContentsInGrid(data, gridId) {
-		console.debug('setContentsInGrid data', data);
-	 	
 		var hasContent = false;
 	 	jQuery(gridId).jqGrid("clearGridData", true);
 	 	// adding content for each field
@@ -324,7 +320,6 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	  * Builds the content dialog 
 	  */
 	 function contentDialog(data) {
-		 console.debug('contentDialog data', data);
 	 	// creates one tab for each language	
 	 	jQuery("#dialog-form-content #tabs").html('<div id="tab-content" class="tab-content"></div>').prepend('<ul class="nav nav-tabs" role="tablist">');
 	 	jQuery.each(data.supportedLocales.split(","), function(index, value) {
@@ -541,7 +536,6 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	  * row: the contents of the row (in case of an edit) 
 	  */
 	 function addContent(obj, data, editRow) {	
-		console.debug('addContent data', data);
 	 	var dataNode = obj.parents(".sortable-accordion");	
 	 	jQuery("#dialog-form-content").dialog("option", "title", $translate.instant('frontend.dialog.content.title.of') +  dataNode.data("name"));
 	 	var columns = {};
