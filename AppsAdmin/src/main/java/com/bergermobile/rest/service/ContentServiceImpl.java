@@ -200,7 +200,7 @@ public class ContentServiceImpl implements ContentService {
 				}
                 
                 content.setGroupId(request.getParameter("uniqueId"));
-				content.setContent(newFilenameBase);
+				content.setContent(newFilename);
 				setBaseFields(content);
 				
 				// we wont save empty contents

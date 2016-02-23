@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,14 +39,10 @@ public class FileController {
 	ContentService contentService;
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public @ResponseBody void upload(MultipartHttpServletRequest request, HttpServletResponse response) {
+    public void upload(MultipartHttpServletRequest request, HttpServletResponse response) {
         LOG.debug("uploadPost called");
         
         contentService.saveFile(request);
-        
-        //Map<String, Object> files = new HashMap<>();
-        //files.put("files", list);
-        //return files;
     }
 
 }

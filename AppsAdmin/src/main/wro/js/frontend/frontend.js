@@ -685,15 +685,15 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 	var preview = jQuery('<div class="file-container"/>')
 	 		.attr("id", "file-" + inputId)
 	 		.data("file", content);
-	 	switch(field.typeId) {
+	 	switch(field.type.typeId) {
 	 		case "Image":
 	 			var link = jQuery("<a/>")
-	 				.attr("href", "<?php echo $this->files ?>/" + jsonData.restName + "/" + content)
+	 				.attr("href", utils.filesPrefix + jsonData.restName + "/" + content)
 	 				.attr("rel", "lightbox")
 	 				.appendTo(preview);
 	 		
 	 			jQuery("<img/>")
-	 				.attr("src", "<?php echo $this->files ?>/" + jsonData.restName + "/thumbnail/" + content)
+	 				.attr("src", utils.filesPrefix + jsonData.restName + "/" + removeExtension(content) + "-thumbnail.png")
 	 				.addClass("file-preview")
 	 				.appendTo(link);
 	 			break;
@@ -702,7 +702,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 			jQuery("<audio controls/>")
 	 				.attr("preload", "auto")
 	 				.attr("width", "90%")
-	 				.attr("src", "<?php echo $this->files ?>/" + jsonData.restName + "/" + content)
+	 				.attr("src", utils.filesPrefix + jsonData.restName + "/" + content)
 	 				.addClass("file-preview")
 	 				.appendTo(preview);
 	 			break;
@@ -711,7 +711,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 			jQuery("<video controls/>")
 	 				.attr("preload", "auto")
 	 				.attr("width", "90%")
-	 				.attr("src", "<?php echo $this->files ?>/" + jsonData.restName + "/" + content)
+	 				.attr("src", utils.filesPrefix + jsonData.restName + "/" + content)
 	 				.addClass("file-preview")
 	 				.appendTo(preview);
 	 			break;
@@ -722,6 +722,10 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 	}
 	 	
 	 	return preview;
+	 }
+	 
+	 function removeExtension(fileName) {
+		 return fileName.substr(0, fileName.lastIndexOf('.')) || fileName;
 	 }
 
 	 /**

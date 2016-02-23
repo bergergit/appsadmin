@@ -11,6 +11,7 @@ var utils = {
 	 * Basic Javascript functions for Mobile Apps component
 	 */
 	restPrefix: 'rest',
+	filesPrefix: 'files/',
 	mainID: null,
 	
 	includeCsrf: function() {
