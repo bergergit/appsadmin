@@ -21,5 +21,6 @@ public class ContentRest {
 	private String locales;
 	private String menuIds;
 	private String uniqueId;
+	private String filesPosition;
 
 }

@@ -178,7 +178,15 @@ var utils = {
 	
 	canToggle: function(event) {
 		return jQuery(event.target).parent()[0].tagName != "BUTTON" && jQuery(event.target)[0].tagName != "A";
+	},
+	
+	uniqueId: function(){
+		return new Date().getTime() + '-xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+			var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+			return v.toString(16);
+		})
 	}
+  
 	
 }
 

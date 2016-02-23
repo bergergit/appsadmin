@@ -547,8 +547,9 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 		 			mainID = row.menuId;
 		 			jQuery("#h_contents").val("");
 		 			jQuery("#h_ftd").val("");	
-		 			var aux2 = "";
+		 			var aux2 = "", aux3 = "";
 		 			jQuery("#h_menu_id").val(row.menuId);
+		 			var generalPosition = 0;
 		 			// appending fieldset to each locale tab			
 		 			jQuery.each(data.supportedLocales.split(","), function(index, locale) {
 		 				jQuery("#h_fields").val("");
@@ -566,16 +567,24 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 		 						contentId = editRow[field.restName + "_" + locale + "@id"];
 		 					} else {
 		 						//jQuery("#h_uniqueId").val(data.uniqueId);
+		 						jQuery("#h_uniqueId").val(utils.uniqueId());
 		 						content = "";
 		 						contentId = "";
-		 					}		
-		 					fieldSet.append(buildInput(field, locale, content, contentId));
+		 					}
+		 					var theInput = buildInput(field, locale, content, contentId)
+		 					fieldSet.append(theInput);
 		 					
 		 					// builds the hidden field id and conten id values
 		 					jQuery("#h_contents").val(jQuery("#h_contents").val() + aux2 + contentId);
 		 					jQuery("#h_fields").val(jQuery("#h_fields").val() + aux + field.fieldId);
+		 					if (theInput.find('input').attr('type') == 'file') {
+		 						jQuery("#h_filesPosition").val(jQuery("#h_filesPosition").val() + aux3 + generalPosition);
+		 						aux3 = ",";
+		 					}
+		 					
 		 					aux = ",";
 		 					aux2 = ",";
+		 					generalPosition++;
 		 					
 		 					var clonedFieldSet = fieldSet.clone(true);		
 		 					jQuery("#dialog-form-content #tabs-" + locale).html("").append(clonedFieldSet);
@@ -733,7 +742,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 		
 	 		// creating "add file" button
 	 		var button = jQuery("<button/>")
-	 			.text("<?php echo JText::_( 'MOBILEAPPS_BUTTON_LABEL_ADD' ) ?> " + label.text())
+	 			.text($translate.instant('frontend.btn.addFile', {field: label.text()}))
 	 			.button({icons: { primary: "ui-icon-plusthick" }})
 	 			.click(function(event) {
 	 				event.preventDefault();
@@ -773,7 +782,8 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 		}
 	 		
 	 		jQuery(inputField).fileupload({
-	 	        url: '<?php echo $this->restPrefix ?>/contents/upload/',
+	 	        //url: '<?php echo $this->restPrefix ?>/contents/upload/',
+	 			url: 'upload',
 	 	        dataType: 'json',
 	 	        autoUpload: false,
 	 	        acceptFileTypes: /(\.|\/)(gif|jpe?g|png|mp3|wav?e|wma|flac|ogg|mp4|mpe?g|avi|wmv|mkv)$/i,
@@ -784,7 +794,8 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 	        previewMaxWidth: 100,
 	 	        previewMaxHeight: 100,
 	 	        previewCrop: true,
-	 	        forceIframeTransport: true
+	 	        
+	 	        //forceIframeTransport: true
 	 		}).on('fileuploadadd', function (e, data) {
 	 	    	data.context = jQuery('<div class="file-container"/>').appendTo(label);
 	 	    	jQuery(this).addClass("hasFile");
@@ -830,6 +841,9 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 	        if (data.loaded == data.total) {
 	 	       		hasFile = false;
 	 	        }
+	 		}).on('fileuploadsubmit', function(e, data) {
+	 			//console.debug('fileuploadsubmit');
+	 			//data.formData = jQuery("#editFormContent").serializeJSON();
 	 		});
 	 	});
 	 }

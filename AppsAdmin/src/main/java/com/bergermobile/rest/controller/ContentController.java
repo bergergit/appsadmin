@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.bergermobile.persistence.domain.Content;
 import com.bergermobile.persistence.domain.Menu;
@@ -38,7 +39,7 @@ public class ContentController {
 	 * @param inLocale
 	 */
 	@RequestMapping(value = "/contents/full/app/{appId}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<?> getContentsFull(@PathVariable String appId) {
+	@ResponseBody ResponseEntity<?> getContentsFull(@PathVariable String appId) {
 		LOG.debug("ContentController - full");
 		
 		List<Content> contents = new ArrayList<Content>();
@@ -49,7 +50,7 @@ public class ContentController {
 	}
 	
 	@RequestMapping(value = "/contents", method = RequestMethod.POST)
-	ResponseEntity<?>  save(@RequestBody ContentRest contentRest) {
+	ResponseEntity<?> save(@RequestBody ContentRest contentRest) {
 		contentService.save(contentRest);
 		Menu menu = contentService.getMenuFromContent(contentRest);
 		
