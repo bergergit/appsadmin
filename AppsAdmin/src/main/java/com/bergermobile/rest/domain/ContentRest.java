@@ -22,5 +22,8 @@ public class ContentRest {
 	private String menuIds;
 	private String uniqueId;
 	private String filesPosition;
+	public void addContent(int contentIndex, String string) {
+		contents.add(contentIndex, string);
+	}
 
 }

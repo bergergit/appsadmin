@@ -3,6 +3,7 @@ package com.bergermobile.rest.service;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
@@ -64,6 +65,7 @@ public class ContentServiceImpl implements ContentService {
 		String[] locales = contentRest.getLocales().split(",");
 		String[] fieldIds = contentRest.getFieldIds().split(",");
 		
+		//List<String> filesPosition = new ArrayList<String>(Arrays.asList(contentRest.getFilesPosition().split(",")));
 		List<String> filesPosition = Arrays.asList(contentRest.getFilesPosition().split(","));
 		// iterate over locales
 		for (int i = 0; i < locales.length; i++) {
@@ -71,6 +73,12 @@ public class ContentServiceImpl implements ContentService {
 			for (int j = 0; j < fieldIds.length; j++) {
 				// ignore file fields
 				if (filesPosition.contains("" + contentIndex)) {
+					//filesPosition.remove("" + contentIndex);
+					contentRest.addContent(contentIndex, "");
+					contentIndex++;
+					// adding blank content just to not screw up with the logic
+					
+					
 					continue;
 				}
 				
@@ -196,7 +204,9 @@ public class ContentServiceImpl implements ContentService {
 					
 					content = new Content(); 
 					content.setField(fieldRepository.findOne(Integer.parseInt(fieldIds[normalizedIndex])));
-					content.setLocale(locales[(int)Math.floor(generalPosition / fieldIds.length)]);
+					//content.setLocale(locales[(int)Math.floor(generalPosition / fieldIds.length)]);
+					content.setLocale(request.getParameter("currentLocale"));
+					
 				}
                 
                 content.setGroupId(request.getParameter("uniqueId"));

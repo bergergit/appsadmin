@@ -20,9 +20,7 @@ public class StaticFilesConfiguration extends WebMvcConfigurerAdapter {
     
 	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		System.out.println("*** ADDING RESOURCE HANDLERS ***" + fileUploadDirectory);
         registry.addResourceHandler("/files/**").addResourceLocations("file:" + fileUploadDirectory);
-        //super.addResourceHandlers(registry);
     }
 
 }

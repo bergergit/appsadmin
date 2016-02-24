@@ -150,6 +150,7 @@ var utils = {
 	 */
 	openRemoveDialog: function(id) {
 		mainID = id;	
+		jQuery("#dialog-confirm .validateTips").text('').removeClass("ui-state-error");
 		jQuery("#dialog-confirm").show().dialog("open");
 	},
 	

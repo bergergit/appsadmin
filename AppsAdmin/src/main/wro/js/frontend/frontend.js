@@ -3,8 +3,8 @@
  */
 angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 
-.factory('frontendjs', ['$compile','$translate','$cookies','$routeParams','utils','auth', 
-                     function($compile, $translate, $cookies, $routeParams, utils, auth) { return function() {	
+.factory('frontendjs', ['$compile','$translate','$cookies','$routeParams','utils','auth','supportedLocales' ,
+                     function($compile, $translate, $cookies, $routeParams, utils, auth, supportedLocales) { return function() {	
                     	 
 	 /**************************************
 	 * Script to control Applications User View *
@@ -73,7 +73,8 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	  */
 	 function buildAccordion(data) {	
 	 	MAIN_LOCALE = data.mainLocale,
-	 	SUPPORTED_LOCALES = data.supportedLocales;
+	 	//SUPPORTED_LOCALES = data.supportedLocales;
+	 	SUPPORTED_LOCALES = supportedLocales;
 	 	
 	 	// builds the accordion structure
 	 	if (data._embedded && data._embedded.menus) {
@@ -276,7 +277,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 			colModelsArray.push(colModel);
 	 			
 	 			// hidden columns with content for each language, for update
-	 			jQuery.each(SUPPORTED_LOCALES.split(","), function(index, locale) {
+	 			jQuery.each(SUPPORTED_LOCALES, function(index, locale) {
 	 				colNamesArray.push(" ");
 	 				colModel = {};
 	 				colModel.name = row.restName + "_" + locale;
@@ -344,7 +345,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 	 	closeOnEscape: true,
 	 	 	title: $translate.instant('frontend.dialog.content.title'),
 	 		open: function(event, ui) {
-	 			jQuery( "#dialog-form-content .validateTips").text('');			
+	 			jQuery( "#dialog-form-content .validateTips").text('').removeClass("ui-state-error");   		
 	 			//jQuery(".dialog-form #tabs").tabs( {active: 0});			
 	 			
 	 			//jQuery(".dialog-form #tabs").tab();		
@@ -376,7 +377,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	                 // iterate through tabs
 	                 jQuery.each(data.supportedLocales.split(","), function(index, value) {
 	                 	// iterate through fieldsset
-	                 	jQuery("#dialog-form-content #tabs-" + value + " fieldset").children().each(function(index2) {
+	                 	jQuery("#editFormContent #tabs-" + value + " fieldset").find().each(function(index2) {
 	                 		if (isFieldMandatory(this) && value == data.mainLocale) {
 	                 			// TODO - validar se campo file é vazio de forma diferente.
 	                 			//bValid = bValid && checkEmpty( jQuery(this).children("input").first(), "<?php echo JText::_( 'MOBILEAPPS_ERROR_FORM_EMPTY' )?>".replace("%s", jQuery(this).text()));
@@ -434,46 +435,48 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 			submitContent();
 	 		}, 500);
 	 	} else {
-	 		jQuery.ajax({  
-	 			timeout: AJAX_TIMEOUT,
-	 			type: 'POST',
-	 			contentType: "application/json",
-	 			//url: '<?php echo $this->restPrefix ?>/contents',
-	 			url: utils.restPrefix + '/contents',
-	 			//data: jQuery("#editFormContent").serialize(),
-	 			data: jQuery("#editFormContent").serializeJSON(),
-	 			success: function(sucessData) {
-	 				ajaxCurrentTry = 0;
-	 				jQuery(".messageTips").show();
-	 				// if it's an insert, display created message, else display updated message
-	 				//console.debug("jQuery(\"#h_contents\").val()", jQuery("#h_contents").val().replace(/,/g, "");
-	 				if (jQuery("#h_contents").val().replace(/,/g, "") == "") {
-	 					//updateTipsFixed("<?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_CREATED' ) ?>", jQuery( "#messageText"));
-	 					utils.updateTipsFixed($translate.instant('frontend.msg.content.created'), jQuery( "#messageText"));
-	 				} else {
-	 					//updateTipsFixed("<?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_UPDATED' ) ?>", jQuery( "#messageText"));
-	 					utils.updateTipsFixed($translate.instant('frontend.msg.content.updated'), jQuery( "#messageText"));
-	 				}
-	 				
-	 				buildContentGrid(sucessData, ".fieldGrid#grid_" + sucessData.menuId);	
-	 				//jQuery("#h_uniqueId").val(sucessData.response.uniqueId);	
-	 				//jsonData.response.uniqueId = sucessData.response.uniqueId;										
-	 				jQuery( "#dialog-form-content" ).dialog( "close" );
-	 			},
-	 			error: function(xhr, textStatus, errorThrown) {
-	 		    	if (xhr.statusText == "error" || xhr.statusText == "timeout") {
-	 		        	if (ajaxCurrentTry++ < AJAX_MAX_TRIES) {
-	 		        		//try again
-	 		                jQuery.ajax(this);
-	 		                return;
-	 		        	}
-	 		        } else if (xhr.status == 409) {	// conflict
-						utils.updateTipsError($translate.instant('admin.msg.registry.duplicate.error'), jQuery( "#dialog-form-content .validateTips"))
-					} else { // generic error
-						utils.updateTipsError($translate.instant('admin.msg.registry.create.error'), jQuery( "#dialog-form-content .validateTips"))
-					}
-	 	        }
-	 		});
+	 		setTimeout(function() {
+		 		jQuery.ajax({  
+		 			timeout: AJAX_TIMEOUT,
+		 			type: 'POST',
+		 			contentType: "application/json",
+		 			//url: '<?php echo $this->restPrefix ?>/contents',
+		 			url: utils.restPrefix + '/contents',
+		 			//data: jQuery("#editFormContent").serialize(),
+		 			data: jQuery("#editFormContent").serializeJSON(),
+		 			success: function(sucessData) {
+		 				ajaxCurrentTry = 0;
+		 				jQuery(".messageTips").show();
+		 				// if it's an insert, display created message, else display updated message
+		 				//console.debug("jQuery(\"#h_contents\").val()", jQuery("#h_contents").val().replace(/,/g, "");
+		 				if (jQuery("#h_contents").val().replace(/,/g, "") == "") {
+		 					//updateTipsFixed("<?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_CREATED' ) ?>", jQuery( "#messageText"));
+		 					utils.updateTipsFixed($translate.instant('frontend.msg.content.created'), jQuery( "#messageText"));
+		 				} else {
+		 					//updateTipsFixed("<?php echo JText::_( 'MOBILEAPPS_VIEW_CONTENT_UPDATED' ) ?>", jQuery( "#messageText"));
+		 					utils.updateTipsFixed($translate.instant('frontend.msg.content.updated'), jQuery( "#messageText"));
+		 				}
+		 				
+		 				buildContentGrid(sucessData, ".fieldGrid#grid_" + sucessData.menuId);	
+		 				//jQuery("#h_uniqueId").val(sucessData.response.uniqueId);	
+		 				//jsonData.response.uniqueId = sucessData.response.uniqueId;										
+		 				jQuery( "#dialog-form-content" ).dialog( "close" );
+		 			},
+		 			error: function(xhr, textStatus, errorThrown) {
+		 		    	if (xhr.statusText == "error" || xhr.statusText == "timeout") {
+		 		        	if (ajaxCurrentTry++ < AJAX_MAX_TRIES) {
+		 		        		//try again
+		 		                jQuery.ajax(this);
+		 		                return;
+		 		        	}
+		 		        } else if (xhr.status == 409) {	// conflict
+							utils.updateTipsError($translate.instant('admin.msg.registry.duplicate.error'), jQuery( "#dialog-form-content .validateTips"))
+						} else { // generic error
+							utils.updateTipsError($translate.instant('admin.msg.registry.create.error'), jQuery( "#dialog-form-content .validateTips"))
+						}
+		 	        }
+		 		});
+	 		}, 1000);
 	 	}
 	 }
 
@@ -547,6 +550,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 		 			mainID = row.menuId;
 		 			jQuery("#h_contents").val("");
 		 			jQuery("#h_ftd").val("");	
+		 			jQuery("#h_filesPosition").val("");
 		 			var aux2 = "", aux3 = "";
 		 			jQuery("#h_menu_id").val(row.menuId);
 		 			var generalPosition = 0;
@@ -560,7 +564,6 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 		 				// gets all the fields
 		 				jQuery.each(row.fields, function(index2, field) {
 		 					// pre populate form if Edit
-		 					//console.debug(editRow);
 		 					if (editRow != null) {
 		 						jQuery("#h_uniqueId").val(editRow.groupId);
 		 						content = editRow[field.restName + "_" + locale];
@@ -830,7 +833,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 	            node
 	 	                .append('<br>')
 	 	                .append(file.error);
-	 	                console.debug("File error");
+	 	                console.error("File error");
 	 	        }
 	 	        if (index + 1 === data.files.length) {
 	 	        	hasFile = true;
@@ -846,8 +849,9 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 	       		hasFile = false;
 	 	        }
 	 		}).on('fileuploadsubmit', function(e, data) {
-	 			//console.debug('fileuploadsubmit');
-	 			//data.formData = jQuery("#editFormContent").serializeJSON();
+	 	    	// setting the locale as extra data... so we can retrieve this in server
+	 	    	//data.formData = {currentLocation: jQuery(this).attr('id').substring(jQuery(this).attr('id').lastIndexOf('_') + 1)};
+	 			jQuery('#h_currentLocale').val(jQuery(this).attr('id').substring(jQuery(this).attr('id').lastIndexOf('_') + 1));
 	 		});
 	 	});
 	 }
