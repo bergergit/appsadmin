@@ -17,4 +17,8 @@ public interface ContentService {
 	
 	void saveFile(MultipartHttpServletRequest request);
 
+	void removeFilesToDelete(ContentRest contentRest);
+
+	void removeUnusedFiles();
+
 }

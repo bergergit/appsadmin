@@ -15,4 +15,8 @@ public interface ContentRepository extends CrudRepository<Content, Integer> {
 	public Integer deleteByGroupId(String groupId);
 
 	public List<Content> findByGroupId(String groupId);
+
+	public Integer deleteByContent(String content);
+
+	public Content findByContent(String contentStr);
 }

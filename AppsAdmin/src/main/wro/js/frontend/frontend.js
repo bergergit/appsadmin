@@ -376,8 +376,9 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	                 // since this form is dynamic, it will require only frontpage fields in the main language
 	                 // iterate through tabs
 	                 jQuery.each(data.supportedLocales.split(","), function(index, value) {
+	                 
 	                 	// iterate through fieldsset
-	                 	jQuery("#editFormContent #tabs-" + value + " fieldset").find().each(function(index2) {
+	                 	jQuery("#editFormContent #tabs-" + value + " fieldset").children().each(function(index2) {
 	                 		if (isFieldMandatory(this) && value == data.mainLocale) {
 	                 			// TODO - validar se campo file é vazio de forma diferente.
 	                 			//bValid = bValid && checkEmpty( jQuery(this).children("input").first(), "<?php echo JText::_( 'MOBILEAPPS_ERROR_FORM_EMPTY' )?>".replace("%s", jQuery(this).text()));
@@ -691,8 +692,13 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 	switch(field.type.typeId) {
 	 		case "Image":
 	 			var link = jQuery("<a/>")
-	 				.attr("href", utils.filesPrefix + jsonData.restName + "/" + content)
-	 				.attr("rel", "lightbox")
+	 				.attr("href", "#")
+	 				.attr("data-href", utils.filesPrefix + jsonData.restName + "/" + content)
+	 				.attr("rel", "group")
+	 				.addClass('fancybox')
+	 				.click(function() {
+	 					jQuery.fancybox.open(jQuery(this).data('href'));    
+	 				})
 	 				.appendTo(preview);
 	 		
 	 			jQuery("<img/>")

@@ -51,6 +51,8 @@ public class ContentController {
 	@RequestMapping(value = "/contents", method = RequestMethod.POST)
 	ResponseEntity<?> save(@RequestBody ContentRest contentRest) {
 		contentService.save(contentRest);
+		contentService.removeFilesToDelete(contentRest);
+		
 		Menu menu = contentService.getMenuFromContent(contentRest);
 		
 		Resource<Menu> resource = new Resource<>(menu);
@@ -62,6 +64,9 @@ public class ContentController {
 	@RequestMapping(value = "/contents/groupId/{groupId}", method = RequestMethod.DELETE)
 	ResponseEntity<?> deleteByGroupId(@PathVariable String groupId) {
 		Menu menu = contentService.getMenuFromGroupId(groupId);
+		
+		// invoke an asynchronous method to remove unused files
+		contentService.removeUnusedFiles();
 		
 		Resource<Menu> resource = new Resource<>(menu);
 		resource.add(linkTo(methodOn(ContentController.class).deleteByGroupId(groupId)).withSelfRel()); 

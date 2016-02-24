@@ -3,7 +3,6 @@ package com.bergermobile.rest.service;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
@@ -23,9 +22,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.bergermobile.persistence.domain.Application;
 import com.bergermobile.persistence.domain.Content;
 import com.bergermobile.persistence.domain.Field;
 import com.bergermobile.persistence.domain.Menu;
+import com.bergermobile.persistence.repository.ApplicationRepository;
 import com.bergermobile.persistence.repository.ContentRepository;
 import com.bergermobile.persistence.repository.FieldRepository;
 import com.bergermobile.persistence.repository.MenuRepository;
@@ -48,6 +49,9 @@ public class ContentServiceImpl implements ContentService {
 	
 	@Autowired
 	MenuRepository menuRepository;
+	
+	@Autowired
+	ApplicationRepository applicationRepository;
 
 	/**
 	 * Main save method for Content
@@ -194,7 +198,7 @@ public class ContentServiceImpl implements ContentService {
                 String[] contentIds = request.getParameter("contentIds").split(",", -1);
                 String contentIdStr = contentIds[generalPosition];
                 String[] fieldIds = request.getParameter("fieldIds").split(",");
-                String[] locales = request.getParameter("locales").split(",");
+                //String[] locales = request.getParameter("locales").split(",");
                 
                 if (!contentIdStr.isEmpty()) {
 					content = contentRepository.findOne(Integer.parseInt(contentIdStr));
@@ -264,6 +268,55 @@ public class ContentServiceImpl implements ContentService {
 				field.getType().getTypeId().equals("Video") 
 				);
 	}
+	
+	/**
+	 * Asynchronous method to remove unused / ghost files from the filesystem
+	 */
+	@Override
+	//@Async
+	public void removeUnusedFiles() {
+		for (Application application : applicationRepository.findAll()) {
+			File restFilesDirectory = new File(fileUploadDirectory + "/" + application.getRestName());
+			if (restFilesDirectory.exists()) {
+				for (String fileName : restFilesDirectory.list()) {
+					//if there is no content for this file, remove it
+					LOG.debug("Filename listed is " + fileName);
+					if (fileName.contains("thumbnail")) continue;
+					if (contentRepository.findByContent(fileName) == null) {
+						File fileToRemove = new File(restFilesDirectory.getPath() + "/" + fileName);
+						fileToRemove.delete();
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Remove ftd (Files To Delete)
+	 */
+	@Override
+	@Transactional
+	public void removeFilesToDelete(ContentRest contentRest) {
+		for (String contentStr : contentRest.getFtd().split(",")) {
+			if (!contentStr.isEmpty()) {
+				Content content = contentRepository.findByContent(contentStr);
+				deleteFile(content);
+				contentRepository.deleteByContent(contentStr);
+			}
+		}
+		
+	}
+
+	/**
+	 * Deletes the file physically from the disk
+	 * @param content
+	 */
+	private void deleteFile(Content content) {
+		String storageDirectory = fileUploadDirectory + "/" + content.getField().getMenu().getApplication().getRestName();
+		File fileToRemove = new File(storageDirectory + "/" + content.getContent());
+		fileToRemove.delete();
+	}
+	
 	
 	
 
