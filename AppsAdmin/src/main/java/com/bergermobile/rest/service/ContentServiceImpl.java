@@ -317,6 +317,22 @@ public class ContentServiceImpl implements ContentService {
 		fileToRemove.delete();
 	}
 	
+	/**
+	 * This method checks to see if the logged in user has access to that specific field
+	 */
+	@Override
+	public boolean isAuthorized(ContentRest contentRest) {
+		SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		// loops through each field to save
+		for (String fieldIdStr : contentRest.getFieldIds().split(",")) {
+			// if user id is not associated with this application, créu!
+			if (!fieldRepository.findOne(Integer.parseInt(fieldIdStr)).getMenu().getApplication().getApplicationUserIds().containsKey(securityUser.getUserId())) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	
 	
 

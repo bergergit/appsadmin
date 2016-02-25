@@ -13,6 +13,8 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +39,7 @@ public class ContentController {
 	 * @param appId
 	 * @param inLocale
 	 */
+	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
 	@RequestMapping(value = "/contents/full/app/{appId}", method = RequestMethod.GET)
 	@ResponseBody ResponseEntity<?> getContentsFull(@PathVariable String appId) {
 		LOG.debug("ContentController - full");
@@ -49,7 +52,12 @@ public class ContentController {
 	}
 	
 	@RequestMapping(value = "/contents", method = RequestMethod.POST)
+	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
 	ResponseEntity<?> save(@RequestBody ContentRest contentRest) {
+		if (!contentService.isAuthorized(contentRest)) {
+			throw new AccessDeniedException("User not authorized to save this content");
+		}
+		
 		contentService.save(contentRest);
 		contentService.removeFilesToDelete(contentRest);
 		
@@ -62,6 +70,7 @@ public class ContentController {
 	}
 	
 	@RequestMapping(value = "/contents/groupId/{groupId}", method = RequestMethod.DELETE)
+	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
 	ResponseEntity<?> deleteByGroupId(@PathVariable String groupId) {
 		Menu menu = contentService.getMenuFromGroupId(groupId);
 		

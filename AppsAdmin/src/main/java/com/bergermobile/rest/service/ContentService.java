@@ -21,4 +21,6 @@ public interface ContentService {
 
 	void removeUnusedFiles();
 
+	boolean isAuthorized(ContentRest contentRest);
+
 }
