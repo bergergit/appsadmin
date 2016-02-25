@@ -9,5 +9,8 @@ import com.bergermobile.persistence.domain.Field;
 @RepositoryRestResource
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 public interface FieldRepository extends CrudRepository<Field, Integer> {
+	
+	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+	Field findOne(Integer id);
 
 }

@@ -333,6 +333,20 @@ public class ContentServiceImpl implements ContentService {
 		return true;
 	}
 	
+	/**
+	 * This method checks to see if the logged in user has access to that specific field
+	 */
+	@Override
+	public boolean isAuthorized(String groupId) {
+		SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		for (Content content : contentRepository.findByGroupId(groupId)) {
+			if (!content.getField().getMenu().getApplication().getApplicationUserIds().containsKey(securityUser.getUserId())) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	
 	
 

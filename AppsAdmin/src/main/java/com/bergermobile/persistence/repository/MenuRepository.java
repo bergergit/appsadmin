@@ -10,5 +10,8 @@ import com.bergermobile.persistence.domain.projection.MenuProjection;
 @RepositoryRestResource(excerptProjection=MenuProjection.class)
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 public interface MenuRepository extends CrudRepository<Menu, Integer> {
+	
+	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+	Menu findOne(Integer id);
 
 }

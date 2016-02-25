@@ -23,4 +23,6 @@ public interface ContentService {
 
 	boolean isAuthorized(ContentRest contentRest);
 
+	boolean isAuthorized(String groupId);
+
 }

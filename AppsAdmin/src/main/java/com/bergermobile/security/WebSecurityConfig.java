@@ -34,7 +34,7 @@ public class WebSecurityConfig {
 			// @formatter:off
             http.antMatcher("/rest/**")                               
                 .authorizeRequests()
-                    .anyRequest().hasRole("ADMIN")
+                    .anyRequest().hasAnyRole("ADMIN", "USER")
                     .and()
                 .httpBasic();
          // @formatter:on
@@ -61,9 +61,9 @@ public class WebSecurityConfig {
 					.permitAll()
 				.antMatchers(HttpMethod.POST, "/bmauth/logout")
 					.permitAll()
-				.antMatchers(HttpMethod.POST, "/rest/content")
+				.antMatchers(HttpMethod.POST, "/rest/contents")
 					.hasAnyRole("USER", "ADMIN")
-				.antMatchers(HttpMethod.GET, "/admin","/users","/rest/content")
+				.antMatchers(HttpMethod.GET, "/admin","/users","/rest/contents","/rest/applications/**")
 					.hasRole("USER")
 				//.antMatchers(HttpMethod.POST, "/bmauth/**")
 				//	.hasRole("ADMIN")
