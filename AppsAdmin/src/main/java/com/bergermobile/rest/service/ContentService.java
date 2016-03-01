@@ -1,5 +1,7 @@
 package com.bergermobile.rest.service;
 
+import java.util.Map;
+
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.bergermobile.persistence.domain.Menu;
@@ -24,5 +26,7 @@ public interface ContentService {
 	boolean isAuthorized(ContentRest contentRest);
 
 	boolean isAuthorized(String groupId);
+
+	Map<String, Object> getContents(String appRestName, String menuRestName, String inlocale);
 
 }

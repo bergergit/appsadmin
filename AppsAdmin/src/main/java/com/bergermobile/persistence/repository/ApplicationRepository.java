@@ -32,4 +32,7 @@ public interface ApplicationRepository extends PagingAndSortingRepository<Applic
 	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
 	Application findOne(Integer id);
 
+	@PreAuthorize("permitAll()")
+	public Application findByRestName(String appRestName);
+
 }

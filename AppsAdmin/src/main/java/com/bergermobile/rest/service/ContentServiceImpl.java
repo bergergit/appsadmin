@@ -3,10 +3,14 @@ package com.bergermobile.rest.service;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
@@ -346,8 +350,90 @@ public class ContentServiceImpl implements ContentService {
 		}
 		return true;
 	}
-	
-	
-	
 
+	/**
+	 * This is the content query method used by mobile applications
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, Object> getContents(String appRestName, String menuRestName, String inlocale) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, List<Object>> responseMap = new HashMap<>();
+		
+		try {
+			// we first iterate over the menus of the application
+			Application application = applicationRepository.findByRestName(appRestName);
+			for (Menu menu : application.getMenus()) {
+				List<Object> fieldsList = null;
+				if (menuRestName == null || menu.getRestName().equals(menuRestName)) {
+					Map<String, Object> fieldMap = new HashMap<>(); // contentId, Map<String, String>
+					//fieldsList = new ArrayList<Object>();
+					
+					// now iterate over the fields of this menu
+					for (Field field : menu.getFields()) {
+						fieldsList = new ArrayList<Object>();
+						for (Content content : field.getContents()) {
+							//if (content.getLocale().equals(inlocale)) {
+							if (isLocaleEligible(content, inlocale, application)) {
+								Map<String, String> contentMap;
+								// grouping contents with the same groupId in the fieldMap
+								if (fieldMap.containsKey(content.getGroupId())) {
+									contentMap = (HashMap<String, String>) fieldMap.get(content.getGroupId()); 
+								} else {
+									contentMap = new HashMap<>();
+								}
+								
+								contentMap.put(field.getRestName(), content.getContent());
+								fieldMap.put(content.getGroupId(), contentMap);
+								fieldsList.add(contentMap);
+							}
+						}
+					}
+				}
+				if (fieldsList != null) {
+					responseMap.put(menu.getRestName(), fieldsList);
+				}
+			}
+			
+		} catch (NullPointerException e) {
+			LOG.error("getContents() NullPointerException", e);
+		}
+		finally {
+			resultMap.put("response", responseMap);
+		}
+		
+		return resultMap;
+	}
+
+	/**
+	 * Find if this content is eligible for being included in the result, respecting the rules:
+	 * 1. If content matches the inlocale, true
+	 * 2. if app doesnt have this inlocale, true if content locales matches main local
+	 * 
+	 * @param content
+	 * @param inlocale
+	 * @param application
+	 * @return
+	 */
+	public static boolean isLocaleEligible(Content content, String inlocale, Application application) {
+		if (inlocale == null) {
+			inlocale = application.getMainLocale();
+		}
+			
+		// 'normalizing' locales - also adding - and _ locales: pt-br will be pt_br and pt-br
+		List<String> inlocales = Arrays.asList(inlocale.replaceAll("-", "_").toLowerCase(), inlocale.replaceAll("_", "_").toLowerCase());
+		LOG.debug("inlocales: " + inlocales);
+		
+		// Rule 1
+		if (inlocales.indexOf(content.getLocale().toLowerCase()) != -1) {
+			return true;
+		}
+		// Rule 2
+		if (Collections.disjoint(Arrays.asList(application.getSupportedLocales().split(",")), inlocales)) {
+			return (content.getLocale().toLowerCase().equals(application.getMainLocale().toLowerCase()));
+		}
+		
+		return false;
+	}
+	
 }

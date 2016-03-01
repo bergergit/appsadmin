@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -47,6 +48,7 @@ public class Field implements Serializable {
 
 	// bi-directional many-to-one association to Content
 	@OneToMany(mappedBy = "field")
+	@OrderBy("groupId")
 	@RestResource(exported=false)
 	private List<Content> contents;
 

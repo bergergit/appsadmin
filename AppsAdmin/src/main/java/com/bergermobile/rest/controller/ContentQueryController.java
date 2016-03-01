@@ -1,28 +1,20 @@
 package com.bergermobile.rest.controller;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.hateoas.Resources;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.bergermobile.persistence.domain.Content;
 import com.bergermobile.rest.service.ContentService;
 
-@RepositoryRestController
-//@RestController
+//@RepositoryRestController
+@RestController
+@RequestMapping(value="/mobileapps", method=RequestMethod.GET)
 public class ContentQueryController {
 	
 	static Log LOG = LogFactory.getLog(ContentQueryController.class);
@@ -34,6 +26,7 @@ public class ContentQueryController {
 	 * @param appId
 	 * @param inLocale
 	 */
+	/*
 	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
 	@RequestMapping(value = "/contents/full/app/{appId}", method = RequestMethod.GET)
 	@ResponseBody ResponseEntity<?> getContentsFull(@PathVariable String appId) {
@@ -44,5 +37,31 @@ public class ContentQueryController {
 		resources.add(linkTo(methodOn(ContentQueryController.class).getContentsFull(appId)).withSelfRel()); 
 
 		return ResponseEntity.ok(resources);
+	}
+	*/
+	
+	/**
+	 * This is the content query method used by mobile applications
+	 * Will retrieve contents for a single menu
+	 */
+	@RequestMapping("/contents/app/{appRestName}/menu/{menuRestName}/inlocale/{inlocale}")
+	public Map<String, Object> getContentsForMenu(@PathVariable String appRestName, 
+			@PathVariable String menuRestName, @PathVariable String inlocale) {
+		//LOG.debug("ContentController - full");
+		
+		return contentService.getContents(appRestName, menuRestName, inlocale);
+		
+	}
+	
+	/**
+	 * This is the content query method used by mobile applications
+	 * Will retrieve all contents for all menus
+	 */
+	@RequestMapping("/contents/app/{appRestName}/inlocale/{inlocale}")
+	public Map<String, Object> getContents(@PathVariable String appRestName, @PathVariable String inlocale) {
+		//LOG.debug("ContentController - full");
+		
+		return contentService.getContents(appRestName, null, inlocale);
+		
 	}
 }
