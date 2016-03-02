@@ -211,7 +211,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 		 					jQuery(gridId).jqGrid('addRowData', content.groupId, {
 		 						"_edit": content.groupId,
 		 						"_delete": content.groupId,
-		 						"group_id": content.groupId
+		 						"groupId": content.groupId
 		 					});
 		 				}
 		 				
@@ -228,6 +228,10 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 		jQuery("#menu_" + data.menuId + " .wrapper .emptyMessage").first().remove();
 	 		
 	 		formatGridButtons();
+	 		
+ 			// make it sortable
+ 			makeSortable(jQuery("#menu_" + data.menuId + " .ui-common-table"));
+	 		
 	 		//jQuery(gridId).jqGrid('setGridHeight', jQuery(gridId).height());	
 	 	} else {
 	 		// no content for anything? destroy the grid
@@ -544,7 +548,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 	jQuery("#dialog-form-content").dialog("option", "title", $translate.instant('frontend.dialog.content.title.of') +  dataNode.data("name"));
 	 	var columns = {};
 	 	
-	 	if (data._embedded && data._embedded.menus)
+	 	if (data._embedded && data._embedded.menus) {
 		 	// iterate over menuSet to get the right one
 		 	jQuery.each(data._embedded.menus, function(index, row) {
 		 		if (row.menuId == dataNode.data("menuId")) {	
@@ -575,7 +579,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 		 						content = "";
 		 						contentId = "";
 		 					}
-		 					var theInput = buildInput(field, locale, content, contentId)
+		 					var theInput = buildInput(field, locale, content, contentId);
 		 					fieldSet.append(theInput);
 		 					
 		 					// builds the hidden field id and conten id values
@@ -608,9 +612,72 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 		 			return false;			
 		 		}		
 		 	});
+	 	}
 	 		
 	 	jQuery( "#dialog-form-content" ).dialog( "open" );   
 	 }
+	 
+	 /**
+	 * Make a node sortable, so we can update content order (by swaping contentIds)
+	 */
+	function makeSortable(node) {
+		// adding original IDs sequence so we can find what was the swapped id
+		node.data('originalIds', node.jqGrid('getDataIDs'));
+		
+		node.sortableRows({
+			delay: 50,
+			update: function(event, ui) {			
+				var thisMenuId = ui.item.parents(".sortable-accordion").data("menuId");
+				var thisGrid = jQuery(".fieldGrid#grid_" + thisMenuId);
+				
+				//console.debug('originalIds', thisGrid.data('originalIds'));
+				//console.debug('afterChange', thisGrid.jqGrid('getDataIDs'));
+				
+				//var swappedGroupIds = findSwappedGroudIds(thisGrid.data('originalIds'), thisGrid.jqGrid('getDataIDs'));
+				var originalIds = thisGrid.data('originalIds');
+				
+				node.data('originalIds', thisGrid.jqGrid('getDataIDs'));
+				
+				var idsObj = {
+					originalIds: "" + originalIds,
+	 				changedIds: "" + thisGrid.jqGrid('getDataIDs')	
+				}
+				
+				// send order swap to server
+				jQuery.ajax(utils.restPrefix + "/contents/swap", {
+					type: 'POST',
+		 			contentType: "application/json",
+		 			dataType: "json",
+		 			url: utils.restPrefix + '/contents',
+		 			data: JSON.stringify(idsObj)
+				});
+			}
+		});
+		node.disableSelection();	
+	}
+	
+	/**
+	 * Simple logic to find what os the swapped IDs by comparing the original Ids and the changed ID
+	 */
+	/*
+	function findSwappedGroudIds(original, changed) {
+		var swappedIds = [];
+		for (var i = 0; i < original.length; i++) {
+			if (original[i] !== changed[i]) {
+				swappedIds.push(original[i]);
+				// we do have to change with the after-row to change order. 
+				if (i < changed.length - 1) {
+					swappedIds.push(changed[i + 1]);
+				// if it's the last line, we create a new id
+				} else {
+					swappedIds.push(utils.uniqueId());
+				}
+				break;
+			}
+		}
+		return swappedIds;
+	}
+	*/
 
 	 function editContent(groupId, obj) {
 	 	var dataNode = jQuery(obj).parents(".sortable-accordion");

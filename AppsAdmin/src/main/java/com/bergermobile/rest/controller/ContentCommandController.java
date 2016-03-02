@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bergermobile.persistence.domain.Menu;
 import com.bergermobile.rest.domain.ContentRest;
+import com.bergermobile.rest.domain.SwapRest;
 import com.bergermobile.rest.service.ContentService;
 
 @RepositoryRestController
@@ -63,7 +64,18 @@ public class ContentCommandController {
 		
 		contentService.deleteByGroupId(groupId);
 		return ResponseEntity.ok(resource);
-
 	}
+	
+	/**
+	 * Swaps 2 groupIds, so we can change content order
+	 * @param groupIds
+	 */
+	@RequestMapping(value = "/contents/swap", method = RequestMethod.POST)
+	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+	ResponseEntity<?> swapGroupIds(@RequestBody SwapRest swapRest) {
+		contentService.swapGroupIds(swapRest);
+		return ResponseEntity.ok(null);
+	}
+	
 
 }

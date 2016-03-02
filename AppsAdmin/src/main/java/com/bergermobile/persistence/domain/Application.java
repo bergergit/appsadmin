@@ -45,7 +45,6 @@ public class Application implements Serializable {
 	//bi-directional many-to-one association to Menu
 	@OneToMany(mappedBy="application")
 	@OrderBy("menuOrder")
-	//@RestResource(exported=false)
 	private List<Menu> menus;
 	
 	//bi-directional many-to-one association to Menu

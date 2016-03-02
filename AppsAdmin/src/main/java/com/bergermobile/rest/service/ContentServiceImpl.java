@@ -35,6 +35,7 @@ import com.bergermobile.persistence.repository.ContentRepository;
 import com.bergermobile.persistence.repository.FieldRepository;
 import com.bergermobile.persistence.repository.MenuRepository;
 import com.bergermobile.rest.domain.ContentRest;
+import com.bergermobile.rest.domain.SwapRest;
 import com.bergermobile.security.SecurityUser;
 
 @Service
@@ -435,5 +436,24 @@ public class ContentServiceImpl implements ContentService {
 		
 		return false;
 	}
+
+	/**
+	 * Swaps all groupIds with the other one.
+	 */
+	@Override
+	@Transactional
+	public void swapGroupIds(SwapRest swapRest) {
+		String[] changedIds = swapRest.getChangedIds().split(",");
+		
+		for (int i = 0; i < changedIds.length; i++) {
+			contentRepository.updateGroupId(contentRepository.findByGroupId(changedIds[i]), uniqueId());
+		}
+
+	}
+
+	public static String uniqueId() {
+		return new Date().getTime() + "-" + UUID.randomUUID().toString();
+	}
+	
 	
 }

@@ -14,6 +14,7 @@ import javax.persistence.TemporalType;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 
 /**
@@ -23,6 +24,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @EqualsAndHashCode(of={"contentId"})
+@ToString(of={"contentId","content","locale","groupId"})
 public class Content implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -44,7 +46,6 @@ public class Content implements Serializable {
 
 	//bi-directional many-to-one association to Field
 	@ManyToOne
-	//@JsonBackReference
 	private Field field;
 	
 }

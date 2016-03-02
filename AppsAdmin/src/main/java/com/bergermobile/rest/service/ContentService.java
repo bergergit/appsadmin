@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.bergermobile.persistence.domain.Menu;
 import com.bergermobile.rest.domain.ContentRest;
+import com.bergermobile.rest.domain.SwapRest;
 
 public interface ContentService {
 
@@ -28,5 +29,7 @@ public interface ContentService {
 	boolean isAuthorized(String groupId);
 
 	Map<String, Object> getContents(String appRestName, String menuRestName, String inlocale);
+
+	void swapGroupIds(SwapRest swapRest);
 
 }

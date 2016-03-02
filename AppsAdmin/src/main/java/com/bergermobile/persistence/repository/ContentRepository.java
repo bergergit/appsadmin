@@ -2,7 +2,10 @@ package com.bergermobile.persistence.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -19,4 +22,8 @@ public interface ContentRepository extends CrudRepository<Content, Integer> {
 	public Integer deleteByContent(String content);
 
 	public Content findByContent(String contentStr);
+	
+	@Query("update Content c set c.groupId = :groupId where c in (:contents)")
+	@Modifying
+	public void updateGroupId(@Param("contents") List<Content> contents, @Param("groupId") String groupId);
 }
