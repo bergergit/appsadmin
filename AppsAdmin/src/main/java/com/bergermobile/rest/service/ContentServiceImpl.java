@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
-import javax.transaction.Transactional;
+import javax.persistence.EntityManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -57,6 +58,9 @@ public class ContentServiceImpl implements ContentService {
 	
 	@Autowired
 	ApplicationRepository applicationRepository;
+	
+	@Autowired
+	EntityManager entityManager;
 
 	/**
 	 * Main save method for Content
@@ -439,16 +443,23 @@ public class ContentServiceImpl implements ContentService {
 
 	/**
 	 * Swaps all groupIds with the other one.
+	 * @return last generated uniqueid
 	 */
 	@Override
 	@Transactional
-	public void swapGroupIds(SwapRest swapRest) {
+	public String swapGroupIds(SwapRest swapRest) {
 		String[] changedIds = swapRest.getChangedIds().split(",");
+		String uniqueId = null;
 		
 		for (int i = 0; i < changedIds.length; i++) {
-			contentRepository.updateGroupId(contentRepository.findByGroupId(changedIds[i]), uniqueId());
+			uniqueId = uniqueId();
+			contentRepository.updateGroupId(contentRepository.findByGroupId(changedIds[i]), uniqueId);
 		}
-
+		
+		entityManager.flush();
+		entityManager.clear();
+		
+		return uniqueId;
 	}
 
 	public static String uniqueId() {

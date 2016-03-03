@@ -30,6 +30,6 @@ public interface ContentService {
 
 	Map<String, Object> getContents(String appRestName, String menuRestName, String inlocale);
 
-	void swapGroupIds(SwapRest swapRest);
+	String swapGroupIds(SwapRest swapRest);
 
 }

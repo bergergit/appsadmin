@@ -25,5 +25,5 @@ public interface ContentRepository extends CrudRepository<Content, Integer> {
 	
 	@Query("update Content c set c.groupId = :groupId where c in (:contents)")
 	@Modifying
-	public void updateGroupId(@Param("contents") List<Content> contents, @Param("groupId") String groupId);
+	public Integer updateGroupId(@Param("contents") List<Content> contents, @Param("groupId") String groupId);
 }

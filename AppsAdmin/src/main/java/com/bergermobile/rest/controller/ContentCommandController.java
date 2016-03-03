@@ -29,7 +29,7 @@ public class ContentCommandController {
 	
 	@Autowired
 	ContentService contentService;
-		
+	
 	@RequestMapping(value = "/contents", method = RequestMethod.POST)
 	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
 	ResponseEntity<?> save(@RequestBody ContentRest contentRest) {
@@ -73,8 +73,15 @@ public class ContentCommandController {
 	@RequestMapping(value = "/contents/swap", method = RequestMethod.POST)
 	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
 	ResponseEntity<?> swapGroupIds(@RequestBody SwapRest swapRest) {
-		contentService.swapGroupIds(swapRest);
-		return ResponseEntity.ok(null);
+		String groupId = contentService.swapGroupIds(swapRest);
+		
+		System.out.println("*** Got groupId " + groupId);
+		
+		Menu menu = contentService.getMenuFromGroupId(groupId);	
+		Resource<Menu> resource = new Resource<>(menu);
+		resource.add(linkTo(methodOn(ContentCommandController.class).swapGroupIds(swapRest)).withSelfRel());
+		
+		return ResponseEntity.ok(resource);
 	}
 	
 

@@ -631,7 +631,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 				var thisGrid = jQuery(".fieldGrid#grid_" + thisMenuId);
 				
 				//console.debug('originalIds', thisGrid.data('originalIds'));
-				//console.debug('afterChange', thisGrid.jqGrid('getDataIDs'));
+				//console.debug('afterChangeId', thisGrid.jqGrid('getDataIDs'));
 				
 				//var swappedGroupIds = findSwappedGroudIds(thisGrid.data('originalIds'), thisGrid.jqGrid('getDataIDs'));
 				var originalIds = thisGrid.data('originalIds');
@@ -649,7 +649,10 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 		 			contentType: "application/json",
 		 			dataType: "json",
 		 			url: utils.restPrefix + '/contents',
-		 			data: JSON.stringify(idsObj)
+		 			data: JSON.stringify(idsObj),
+		 			success: function(sucessData) {
+		 				buildContentGrid(sucessData, ".fieldGrid#grid_" + sucessData.menuId);
+		 			}
 				});
 			}
 		});
