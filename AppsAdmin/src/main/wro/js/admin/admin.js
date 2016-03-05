@@ -177,7 +177,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 					       utils.updateTipsError($translate.instant('admin.msg.registry.delete.error'), jQuery( "#dialog-form-menu .validateTips"))
 				        }  
 					});
-	            },
+	            }
 	        },{
 	        	text: $translate.instant('btn.cancel'),
 	            click: function() {
@@ -500,7 +500,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 						        }	 
 							});
 	  					}
-	                },
+	                }
 	            },{
 	                text: $translate.instant('btn.cancel'),
 	            	click: function() {
@@ -893,7 +893,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 				jQuery.ajax(utils.restPrefix + "/menus/updateorder/" + menuIds + "/orders/" + menuOrders,
 					{type: 'POST'}
 				);			
-			},
+			}
 		});
 		node.disableSelection();	
 	}

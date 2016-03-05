@@ -9,7 +9,7 @@ angular.module('appsadmin.admin', ['ngResource','ui.bootstrap','appsadmin.adminj
 	
 	adminjs();
 }])
-
+ 
 /**
  * Controller for Appsadmin Types Screen
  */

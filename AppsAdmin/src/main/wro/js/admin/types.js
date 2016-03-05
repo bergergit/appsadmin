@@ -158,10 +158,8 @@ angular.module('appsadmin.typesjs', ['appsadmin.utils'])
 								}
  							}  
  						});
- 						
-  						//jQuery( this ).dialog( "close" );
    					}
-                 },
+                 }
              },{
             	text:  $translate.instant('btn.cancel'),
                 click: function() {

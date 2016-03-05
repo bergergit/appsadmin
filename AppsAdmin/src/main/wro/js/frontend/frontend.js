@@ -175,7 +175,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 			hoverrows: true,	
 	 			jsonReader : {
 	     			repeatitems : false,
-	     			root: "response",
+	     			root: "response"
 	     		},
 	 			beforeSelectRow: function(rowid, e) {
 	 		    	return false;
@@ -406,7 +406,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 					//console.debug("serialized data", jQuery("#editFormContent").serialize());
 	 					submitContent();
 	 				}
-	             },
+	             }
 	         },{
 	        	 text: $translate.instant('btn.cancel'),
 	             click: function() {
@@ -500,7 +500,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	         draggable: false,
 	         show: {
 	 			effect: "scale",
-	 			duration: 100,
+	 			duration: 100
 	 		},
 	 		hide: {
 	 			effect: "scale",
@@ -526,7 +526,7 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 						utils.updateTipsError($translate.instant('frontend.msg.content.delete.error'), jQuery( "#dialog-confirm .validateTips"))
 	 					}  
 	 				});
-	             },
+	             }
 	         },{
 	        	 text: $translate.instant('btn.cancel'),
 	             click: function() {
@@ -875,10 +875,9 @@ angular.module('appsadmin.frontendjs', ['appsadmin.utils'])
 	 	        disableImageResize: false,
 	 	        singleFileUploads: false,
 	 	        previewMaxWidth: 100,
+	 	        //forceIframeTransport: true,
 	 	        previewMaxHeight: 100,
-	 	        previewCrop: true,
-	 	        
-	 	        //forceIframeTransport: true
+	 	        previewCrop: true
 	 		}).on('fileuploadadd', function (e, data) {
 	 	    	data.context = jQuery('<div class="file-container"/>').appendTo(label);
 	 	    	jQuery(this).addClass("hasFile");
