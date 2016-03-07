@@ -427,7 +427,6 @@ public class ContentServiceImpl implements ContentService {
 			
 		// 'normalizing' locales - also adding - and _ locales: pt-br will be pt_br and pt-br
 		List<String> inlocales = Arrays.asList(inlocale.replaceAll("-", "_").toLowerCase(), inlocale.replaceAll("_", "_").toLowerCase());
-		LOG.debug("inlocales: " + inlocales);
 		
 		// Rule 1
 		if (inlocales.indexOf(content.getLocale().toLowerCase()) != -1) {

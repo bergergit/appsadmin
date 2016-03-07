@@ -158,7 +158,7 @@ span.maintitle {
 
 /** Custom accordion **/
 #accordion {
-	width: 450px;
+	width: 550px;
 	min-height: 100px;
 }
 #accordion.big-accordion {

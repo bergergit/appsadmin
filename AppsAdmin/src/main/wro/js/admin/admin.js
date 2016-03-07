@@ -33,7 +33,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 		mtype: 'GET',
 	   	colNames:['Aplicativo',' ', ' ', ' ', '_mobileapps_application_id', '_rest_name', '_description', '_main_locale', '_supported_locales'],
 	   	colModel:[
-	   		{name:'name', index:'name', width:350, align:'left', resizable: false, sortable:true, formatter:linkFormatter},
+	   		{name:'name', index:'name', width:450, align:'left', resizable: false, sortable:true, formatter:linkFormatter},
 	   		{name:'edit', width:50, resizable: false, sortable: false, align:'center', formatter:editFormatter},
 	   		{name:'clone', width:50, resizable: false, sortable: false, align:'center', formatter:cloneFormatter},
 	   		{name:'delete', width:50, resizable: false, sortable: false, align:'center', formatter:deleteFormatter},
@@ -464,6 +464,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 	                    bValid = bValid && utils.checkLength( fieldName, $translate.instant('form.error.length', {name: $translate.instant('admin.dialog.field.label.name'), min: 2, max: 40}), 2, 40 );
 	                                                           
 	 					if ( bValid ) {
+	 						jQuery("#h_fieldFrontPage").val(jQuery("#fieldFrontpage").is(':checked'));
 	 						// submits for data via POST
 	 						jQuery.ajax({  
 	 							timeout: AJAX_TIMEOUT,
@@ -962,7 +963,7 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 				data: data.fields,
 			   	//colNames:['Nome',' '],
 			   	colModel:[
-			   		{name:'name', index:'name', width:350, align:'left', resizable: false, sortable:true, formatter:editFieldFormatter},		   		
+			   		{name:'name', index:'name', width:450, align:'left', resizable: false, sortable:true, formatter:editFieldFormatter},		   		
 			   		{name:'deleteField', width:35, resizable: false, sortable: false, fixed: true, align:'center', formatter:deleteFieldFormatter},
 			   		{name:'fieldId', hidden: true},
 			   		{name:'menu.menuId', hidden: true},
@@ -998,7 +999,6 @@ angular.module('appsadmin.adminjs', ['appsadmin.utils'])
 					
 					jQuery( ".editField" ).off().click(function() {
 						//openAndPopulateFormField(jQuery(this).data('id'), jQuery(this).parent().data('menuid'));
-						console.debug('parent data', jQuery(this).parents('.sortable-accordion').data());
 						openAndPopulateFormField(jQuery(this).data('id'), jQuery(this).parents('.sortable-accordion').data('menuId'));
 						
 					});

@@ -96,7 +96,7 @@
         <label for="fieldName">{{ 'admin.dialog.field.label.name' | translate }}</label>
         <input type="text" name="name" id="fieldName" maxlength="100" class="text ui-widget-content ui-corner-all" />
         <label for="fieldFrontpage" style="display: inline">{{ 'admin.dialog.field.label.frontpage' | translate }}</label>
-        <input type="checkbox" name="frontpage" id="fieldFrontpage" value="true" style="display: inline"></input>
+        <input type="checkbox" name="frontpage_" id="fieldFrontpage" value="true" style="display: inline"></input>
         <label for="fieldLevel" style="margin: 10px 0 2px 0; display: block">{{ 'admin.dialog.field.label.level' | translate }}</label>
         <select name="level" id="fieldLevel"></select> 
         <label for="fieldType">{{ 'admin.dialog.type.label.type' | translate }}</label>
@@ -108,7 +108,8 @@
         
         <input type="hidden" name="menu" id="fieldMenuId"/>
         <input type="hidden" name="fieldId" id="fieldId"/>
-        <input type="hidden" name="fieldOrder" id="fieldOrder"/>    
+        <input type="hidden" name="fieldOrder" id="fieldOrder"/>   
+        <input type="hidden" name="frontpage" id="h_fieldFrontPage"/> 
     </fieldset>
     </form>
 </div>
