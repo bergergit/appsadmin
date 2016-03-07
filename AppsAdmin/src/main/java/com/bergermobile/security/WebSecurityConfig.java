@@ -57,7 +57,7 @@ public class WebSecurityConfig {
 			http
 				.authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/", "/fonts/**", "/webjars/**", "/messageBundle/**",
-						"/fragments/**","/login/**","/bmauth/**")
+						"/fragments/**","/login/**","/bmauth/**","/mobileapps/contents/**", "/files/**")
 					.permitAll()
 				.antMatchers(HttpMethod.POST, "/bmauth/logout")
 					.permitAll()
