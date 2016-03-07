@@ -16,6 +16,7 @@ import javax.persistence.OrderBy;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * The persistent class for the application database table.
@@ -24,6 +25,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @EqualsAndHashCode(of={"applicationId"})
+@ToString(of={"applicationId","name","restName"})
 public class Application implements Serializable {
 	private static final long serialVersionUID = 1L;
 

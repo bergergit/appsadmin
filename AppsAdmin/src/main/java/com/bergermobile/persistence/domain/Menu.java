@@ -15,6 +15,7 @@ import javax.persistence.OrderBy;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import org.springframework.data.rest.core.annotation.RestResource;
 
@@ -26,6 +27,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 @Entity
 @Data
 @EqualsAndHashCode(of={"menuId"})
+@ToString(of={"menuId","parentMenu","name","restName"})
 public class Menu implements Serializable {
 	private static final long serialVersionUID = 1L;
 

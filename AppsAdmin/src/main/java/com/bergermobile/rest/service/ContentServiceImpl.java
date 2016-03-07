@@ -8,7 +8,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -164,8 +166,6 @@ public class ContentServiceImpl implements ContentService {
             String originalFileExtension = mpf.getOriginalFilename().substring(mpf.getOriginalFilename().lastIndexOf("."));
             String newFilename = newFilenameBase + originalFileExtension;
             String storageDirectory = fileUploadDirectory + "/" + menu.getApplication().getRestName();
-            //String contentType = mpf.getContentType();
-            
             
             try {
             	File storageDirectoryFile = new File(storageDirectory);
@@ -181,24 +181,6 @@ public class ContentServiceImpl implements ContentService {
                 File thumbnailFile = new File(storageDirectory + "/" + thumbnailFilename);
                 ImageIO.write(thumbnail, "png", thumbnailFile);
                 
-                /*
-                Image image = new Image();
-                image.setName(mpf.getOriginalFilename());
-                image.setThumbnailFilename(thumbnailFilename);
-                image.setNewFilename(newFilename);
-                image.setContentType(contentType);
-                image.setSize(mpf.getSize());
-                image.setThumbnailSize(thumbnailFile.length());
-                //image = imageDao.create(image);
-                
-                image.setUrl("/picture/"+image.getId());
-                image.setThumbnailUrl("/thumbnail/"+image.getId());
-                image.setDeleteUrl("/delete/"+image.getId());
-                image.setDeleteType("DELETE");
-                
-                list.add(image);
-                 */
-                 
                 // save the file as a content
                 Content content;
                 
@@ -207,7 +189,6 @@ public class ContentServiceImpl implements ContentService {
                 String[] contentIds = request.getParameter("contentIds").split(",", -1);
                 String contentIdStr = contentIds[generalPosition];
                 String[] fieldIds = request.getParameter("fieldIds").split(",");
-                //String[] locales = request.getParameter("locales").split(",");
                 
                 if (!contentIdStr.isEmpty()) {
 					content = contentRepository.findOne(Integer.parseInt(contentIdStr));
@@ -368,36 +349,44 @@ public class ContentServiceImpl implements ContentService {
 		try {
 			// we first iterate over the menus of the application
 			Application application = applicationRepository.findByRestName(appRestName);
+			//List<Object> fieldsList = null;
 			for (Menu menu : application.getMenus()) {
 				List<Object> fieldsList = null;
-				if (menuRestName == null || menu.getRestName().equals(menuRestName)) {
+				//if (menuRestName == null || menu.getRestName().equals(menuRestName)) {
+				if (menuRestName == null || menuShouldBeIncluded(menu, menuRestName)) {
 					Map<String, Object> fieldMap = new HashMap<>(); // contentId, Map<String, String>
-					//fieldsList = new ArrayList<Object>();
+					fieldsList = new ArrayList<>();
 					
 					// now iterate over the fields of this menu
 					for (Field field : menu.getFields()) {
-						fieldsList = new ArrayList<Object>();
+						//fieldsList = new ArrayList<Object>();
 						for (Content content : field.getContents()) {
 							//if (content.getLocale().equals(inlocale)) {
-							if (isLocaleEligible(content, inlocale, application)) {
+							if (isLocaleEligible(content, inlocale, application) && content.getContent() != null && !content.getContent().isEmpty()) {
 								Map<String, String> contentMap;
 								// grouping contents with the same groupId in the fieldMap
 								if (fieldMap.containsKey(content.getGroupId())) {
-									contentMap = (HashMap<String, String>) fieldMap.get(content.getGroupId()); 
+									contentMap = (LinkedHashMap<String, String>) fieldMap.get(content.getGroupId()); 
 								} else {
-									contentMap = new HashMap<>();
+									contentMap = new LinkedHashMap<>();
+									fieldsList.add(contentMap);
 								}
 								
 								contentMap.put(field.getRestName(), content.getContent());
 								fieldMap.put(content.getGroupId(), contentMap);
-								fieldsList.add(contentMap);
+								//fieldsList.add(contentMap);
 							}
 						}
+						//if (!fieldsList.isEmpty()) {
+						//	responseMap.put(menu.getRestName(), fieldsList);
+						//}
 					}
+					
 				}
-				if (fieldsList != null) {
+				if (fieldsList != null && !fieldsList.isEmpty()) {
 					responseMap.put(menu.getRestName(), fieldsList);
 				}
+				
 			}
 			
 		} catch (NullPointerException e) {
@@ -408,6 +397,22 @@ public class ContentServiceImpl implements ContentService {
 		}
 		
 		return resultMap;
+	}
+
+	/**
+	 * Goes recursevily into submenus to see if any of them matches this menuRestName  
+	 * @param menu
+	 * @param menuRestName
+	 * @return
+	 */
+	private boolean menuShouldBeIncluded(Menu menu, String menuRestName) {
+		if (menu.getParentMenu() != null) {
+			return menuShouldBeIncluded(menu.getParentMenu(), menuRestName);
+		}
+		if (menu.getRestName().equals(menuRestName)) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
