@@ -12,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.bergermobile.persistence.domain.Content;
-import com.bergermobile.security.SecurityUser;
+import com.bergermobile.commons.security.SecurityUser;
 
 @RepositoryEventHandler(Content.class)
 @Component

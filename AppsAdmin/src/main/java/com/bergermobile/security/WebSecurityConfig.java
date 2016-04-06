@@ -7,8 +7,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+
+import com.bergermobile.commons.security.CsrfHeaderFilter;
 
 
 /**
@@ -78,15 +78,10 @@ public class WebSecurityConfig {
 					.logout().logoutUrl("/logout")
 				.and()
 	            	.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
-	            	.csrf().csrfTokenRepository(csrfTokenRepository());
+	            	.csrf().csrfTokenRepository(CsrfHeaderFilter.csrfTokenRepository());
 			// @formatter:on
 		}
-		
-		private CsrfTokenRepository csrfTokenRepository() {
-			HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-			repository.setHeaderName("X-XSRF-TOKEN");
-			return repository;
-		}
+
 	}
 	
 }

@@ -38,7 +38,7 @@ import com.bergermobile.persistence.repository.FieldRepository;
 import com.bergermobile.persistence.repository.MenuRepository;
 import com.bergermobile.rest.domain.ContentRest;
 import com.bergermobile.rest.domain.SwapRest;
-import com.bergermobile.security.SecurityUser;
+import com.bergermobile.commons.security.SecurityUser;
 
 @Service
 public class ContentServiceImpl implements ContentService {
