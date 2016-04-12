@@ -18,6 +18,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import org.springframework.data.rest.core.annotation.RestResource;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * The persistent class for the application database table.
  * 
@@ -53,12 +57,16 @@ public class Application implements Serializable {
 	@OneToMany(mappedBy="application", cascade={ CascadeType.ALL })
 	private List<ApplicationUser> applicationUsers;
 	
+	//@JsonIgnore
+	//@RestResource(exported = false)
 	public Map<Integer, Boolean> getApplicationUserIds() {
 		Map<Integer, Boolean> userIds = new HashMap<>();
-		for (ApplicationUser applicationUser : applicationUsers) {
-			userIds.put(applicationUser.getUserId(), true);
+		if (applicationUsers != null) {
+			for (ApplicationUser applicationUser : applicationUsers) {
+				userIds.put(applicationUser.getUserId(), true);
+			}
 		}
 		return userIds;
 	}
-
+	
 }

@@ -6,11 +6,10 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.session.data.redis.config.ConfigureRedisAction;
-import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @SpringBootApplication
 @EnableZuulProxy
-@EnableRedisHttpSession
+//@EnableRedisHttpSession
 @EnableAsync
 public class AppsAdminApplication {
 
