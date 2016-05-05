@@ -5,7 +5,7 @@
 
 	<groupId>com.bergermobile</groupId>
 	<artifactId>appsadmin</artifactId>
-	<version>0.7</version>
+	<version>0.8</version>
 	<packaging>war</packaging>
 
 	<name>AppsAdmin</name>

@@ -34,8 +34,9 @@ angular.module('appsadmin', [
     }
 }])
 
-.config(['$routeProvider', '$translateProvider', '$locationProvider', '$httpProvider',
-         function($routeProvider, $translateProvider, $locationProvider, $httpProvider) {
+.config(['$routeProvider', '$translateProvider', '$locationProvider', '$httpProvider','$compileProvider',
+         function($routeProvider, $translateProvider, $locationProvider, $httpProvider, $compileProvider) {
+	$compileProvider.debugInfoEnabled(false);
 	// routes configuration
 	$routeProvider.when('/', { 
 		  templateUrl: 'fragments/home/home.html',
@@ -61,6 +62,9 @@ angular.module('appsadmin', [
 		  templateUrl: 'fragments/frontend/content.html',
 		  controller: 'FrontendCtrl',
 		  controllerAs: 'vm'
+	}).when('/reset/:token/:userid', { 
+		  templateUrl: 'fragments/home/resetPassword.html',
+		  controllerAs: 'vm' 
 	})
 	.otherwise({redirectTo: '/'});
 	

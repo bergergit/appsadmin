@@ -4,7 +4,6 @@
 		<css>webjar:bootstrap/@bootstrap.version@/less/bootstrap.less</css>
 		<css>webjar:font-awesome/@font-awesome.version@/less/font-awesome.less</css>
 		<js>webjar:jquery/@jquery.version@/jquery.min.js</js>
-		
 		<js minimize="@minimize-code@">webjar:angularjs/@angular.version@/angular.js</js>
     	<js>webjar:angularjs/@angular.version@/angular-route.min.js</js>
     	<js>webjar:angularjs/@angular.version@/angular-resource.min.js</js>
